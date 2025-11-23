@@ -31,6 +31,10 @@ include("Hookstep.jl")
 
 export hookstepsolve, SearchParams
 
+include("TWModels.jl")
+
+export TWModel, has_shift_symmetry, save_sigma
+
 # Visualization functions - these are only available when CairoMakie is loaded
 # The actual implementations are in ext/CloudAtlasVisualizationExt.jl
 
@@ -72,4 +76,5 @@ function velocity_fields_dns end
 function velocity_fields_comparison end
 export velocity_fields, velocity_fields_dns, velocity_fields_comparison, PlotSettings
 # export PlotSettings
+
 end # module CloudAtlas
