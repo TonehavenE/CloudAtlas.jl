@@ -1,0 +1,9 @@
+Command:  /home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/findsoln -R 200.0 -eqb -zrel -symms /home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/tw_fuzzing/sxytxz.asc -od fuzz_results/sol_1_2_3_id12_11-DD-111128 -T 20 fuzz_results/sol_1_2_3_id12_11-DD-111128/u_guess.nc 
+PWD:      /home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/tw_fuzzing
+Host:     ebenq-ideapad, PID: 686757
+Time:     2025-12-03 11:11:29
+Version:  2.0.2
+Git rev:  91ba77f93bba73af4ef25e3d3cecf35521badbfd
+Compiler: GNU 14.2.0
+
+

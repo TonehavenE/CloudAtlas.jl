@@ -1,27 +1,46 @@
 name = "CloudAtlas"
 uuid = "b31a9ccd-01a9-4409-bcc3-9c4abd24a9a3"
-version = "0.1.0"
 authors = ["John F. Gibson <johnfgibson@gmail.com>"]
+version = "0.1.0"
 
 [deps]
+BifurcationKit = "0f109fa4-8a5d-4b75-95aa-f515264e7665"
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+ChannelflowWrapper = "96086318-f2c4-4a08-8036-25bfacd5eac3"
+Channelflow_jll = "3f71b17c-0b5c-5f71-8ab7-7b799a58f30d"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+IJulia = "7073ff75-c697-5162-941a-fcdaad2a7d2a"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
 OffsetArrays = "6fe1bfb0-de20-5000-8ca7-80f57d26f881"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 StringBuilders = "db12335b-fddc-5e1b-b0ee-42071d21ae50"
 
-[weakdeps]
-CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
-
+[sources]
+ChannelflowWrapper = {url = "https://github.com/TonehavenE/ChannelflowWrapper.jl"}
+Channelflow_jll = {url = "https://github.com/TonehavenE/Channelflow_jll.jl"}
 
 [extensions]
-# Extension name = triggering package(s)
 CloudAtlasVisualizationExt = "CairoMakie"
+
 [compat]
-LinearAlgebra = "1.12.0"
+BifurcationKit = "0.5.3"
+CairoMakie = "0.15.7"
+ChannelflowWrapper = "1.0.0"
+Channelflow_jll = "1.0.3"
+DataFrames = "1.8.1"
+DelimitedFiles = "1.9.1"
+IJulia = "1.32.1"
+LinearAlgebra = "1.11.0"
+Makie = "0.24.7"
 OffsetArrays = "1.17.0"
+Plots = "1.41.1"
 Polynomials = "4.1.0"
-SparseArrays = "1.12.0"
+SparseArrays = "1.11.0"
 StaticArrays = "1.9.15"
 StringBuilders = "0.3.3"

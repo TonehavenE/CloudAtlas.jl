@@ -1,0 +1,165 @@
+Tue Dec  2 23:11:15 2025	656952	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-tw1-1-1-3.asc 
+Tue Dec  2 23:11:17 2025	656955	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-tw1-1-1-3.nc 
+Tue Dec  2 23:11:18 2025	656959	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-tw1-1-2-3.asc 
+Tue Dec  2 23:11:20 2025	656963	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-tw1-1-2-3.nc 
+Tue Dec  2 23:11:21 2025	656967	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-tw1-1-3-5.asc 
+Tue Dec  2 23:11:27 2025	656971	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-tw1-1-3-5.nc 
+Tue Dec  2 23:11:35 2025	657030	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-tw1-2-4-7.asc 
+Tue Dec  2 23:11:54 2025	657050	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-tw1-2-4-7.nc 
+Tue Dec  2 23:15:00 2025	657329	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-tw1-1-1-3.asc 
+Tue Dec  2 23:15:02 2025	657330	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-tw1-1-1-3.nc 
+Tue Dec  2 23:15:02 2025	657333	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-tw1-1-2-3.asc 
+Tue Dec  2 23:15:04 2025	657344	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-tw1-1-2-3.nc 
+Tue Dec  2 23:15:05 2025	657347	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-tw1-1-3-5.asc 
+Tue Dec  2 23:15:11 2025	657358	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-tw1-1-3-5.nc 
+Tue Dec  2 23:15:19 2025	657457	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-tw1-2-4-7.asc 
+Tue Dec  2 23:15:38 2025	657490	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-tw1-2-4-7.nc 
+Tue Dec  2 23:17:25 2025	657629	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-tw1-1-1-3.asc 
+Tue Dec  2 23:17:26 2025	657630	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-tw1-1-1-3.nc 
+Tue Dec  2 23:17:27 2025	657633	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-tw1-1-2-3.asc 
+Tue Dec  2 23:17:29 2025	657638	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-tw1-1-2-3.nc 
+Tue Dec  2 23:27:44 2025	659453	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-1-3.asc 
+Tue Dec  2 23:27:46 2025	659461	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-1-3.nc 
+Tue Dec  2 23:27:48 2025	659463	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-2-3.asc 
+Tue Dec  2 23:27:51 2025	659468	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-2-3.nc 
+Tue Dec  2 23:28:23 2025	659495	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-1-3.asc 
+Tue Dec  2 23:28:25 2025	659497	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-1-3.nc 
+Tue Dec  2 23:28:26 2025	659499	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-2-3.asc 
+Tue Dec  2 23:28:29 2025	659503	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-2-3.nc 
+Tue Dec  2 23:33:35 2025	660455	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./EQ7Re250-32x49x40.nc x-proj-jkl-1-1-3.asc 
+Tue Dec  2 23:33:36 2025	660457	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./EQ7Re250-32x49x40.nc u-proj-jkl-1-1-3.nc 
+Tue Dec  2 23:33:36 2025	660459	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./EQ7Re250-32x49x40.nc x-proj-jkl-1-2-3.asc 
+Tue Dec  2 23:33:37 2025	660460	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./EQ7Re250-32x49x40.nc u-proj-jkl-1-2-3.nc 
+Tue Dec  2 23:33:51 2025	660476	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./EQ7Re250-32x49x40.nc x-proj-jkl-1-1-3.asc 
+Tue Dec  2 23:33:51 2025	660479	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./EQ7Re250-32x49x40.nc u-proj-jkl-1-1-3.nc 
+Tue Dec  2 23:33:51 2025	660481	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./EQ7Re250-32x49x40.nc x-proj-jkl-1-2-3.asc 
+Tue Dec  2 23:33:52 2025	660482	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./EQ7Re250-32x49x40.nc u-proj-jkl-1-2-3.nc 
+Tue Dec  2 23:34:01 2025	660790	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./EQ7Re250-32x49x40.nc x-proj-jkl-1-1-3.asc 
+Tue Dec  2 23:34:02 2025	660791	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./EQ7Re250-32x49x40.nc u-proj-jkl-1-1-3.nc 
+Tue Dec  2 23:34:03 2025	660794	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./EQ7Re250-32x49x40.nc x-proj-jkl-1-2-3.asc 
+Tue Dec  2 23:34:04 2025	660795	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./EQ7Re250-32x49x40.nc u-proj-jkl-1-2-3.nc 
+Tue Dec  2 23:34:04 2025	660798	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./EQ7Re250-32x49x40.nc x-proj-jkl-1-3-5.asc 
+Tue Dec  2 23:34:07 2025	660803	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./EQ7Re250-32x49x40.nc u-proj-jkl-1-3-5.nc 
+Tue Dec  2 23:34:09 2025	660809	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./EQ7Re250-32x49x40.nc x-proj-jkl-2-4-7.asc 
+Tue Dec  2 23:34:16 2025	660813	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./EQ7Re250-32x49x40.nc u-proj-jkl-2-4-7.nc 
+Tue Dec  2 23:41:00 2025	661437	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./EQ7Re250-32x49x40.nc x-proj-jkl-1-1-3.asc 
+Tue Dec  2 23:41:00 2025	661438	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./EQ7Re250-32x49x40.nc u-proj-jkl-1-1-3.nc 
+Tue Dec  2 23:41:01 2025	661442	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./EQ7Re250-32x49x40.nc x-proj-jkl-1-2-3.asc 
+Tue Dec  2 23:41:01 2025	661443	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./EQ7Re250-32x49x40.nc u-proj-jkl-1-2-3.nc 
+Tue Dec  2 23:41:02 2025	661449	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./EQ7Re250-32x49x40.nc x-proj-jkl-1-3-5.asc 
+Tue Dec  2 23:41:04 2025	661450	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./EQ7Re250-32x49x40.nc u-proj-jkl-1-3-5.nc 
+Tue Dec  2 23:41:05 2025	661454	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./EQ7Re250-32x49x40.nc x-proj-jkl-2-4-7.asc 
+Tue Dec  2 23:41:11 2025	661466	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./EQ7Re250-32x49x40.nc u-proj-jkl-2-4-7.nc 
+Tue Dec  2 23:41:52 2025	661571	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-1-3.asc 
+Tue Dec  2 23:41:54 2025	661575	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-1-3.nc 
+Tue Dec  2 23:41:56 2025	661578	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-1-3.nc 
+Tue Dec  2 23:41:57 2025	661580	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-2-3.asc 
+Tue Dec  2 23:42:01 2025	661583	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-2-3.nc 
+Tue Dec  2 23:42:02 2025	661587	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-2-3.nc 
+Tue Dec  2 23:42:36 2025	661638	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-1-3.asc 
+Tue Dec  2 23:42:38 2025	661641	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-1-3.nc 
+Tue Dec  2 23:42:39 2025	661644	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-1-3.nc 
+Tue Dec  2 23:42:39 2025	661647	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-2-3.asc 
+Tue Dec  2 23:42:43 2025	661650	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-2-3.nc 
+Tue Dec  2 23:42:44 2025	661653	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-2-3.nc 
+Tue Dec  2 23:53:48 2025	662867	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-1-3.asc 
+Tue Dec  2 23:53:50 2025	662870	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-1-3.nc 
+Tue Dec  2 23:54:14 2025	662903	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-1-3.asc 
+Tue Dec  2 23:54:15 2025	662905	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-1-3.nc 
+Tue Dec  2 23:54:16 2025	662908	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-1-3.nc 
+Tue Dec  2 23:54:17 2025	662911	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-2-3.asc 
+Tue Dec  2 23:54:19 2025	662915	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-2-3.nc 
+Tue Dec  2 23:54:19 2025	662920	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-2-3.nc 
+Tue Dec  2 23:57:02 2025	663197	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-1-1.asc 
+Tue Dec  2 23:57:03 2025	663199	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-1-1.nc 
+Tue Dec  2 23:57:04 2025	663202	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-1-1.nc 
+Tue Dec  2 23:57:04 2025	663205	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-1-2.asc 
+Tue Dec  2 23:57:05 2025	663207	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-1-2.nc 
+Tue Dec  2 23:57:05 2025	663210	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-1-2.nc 
+Tue Dec  2 23:57:06 2025	663213	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-1-3.asc 
+Tue Dec  2 23:57:07 2025	663217	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-1-3.nc 
+Tue Dec  2 23:57:08 2025	663220	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-1-3.nc 
+Tue Dec  2 23:57:08 2025	663223	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-2-3.asc 
+Tue Dec  2 23:57:10 2025	663225	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-2-3.nc 
+Tue Dec  2 23:57:11 2025	663229	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-2-3.nc 
+Tue Dec  2 23:57:12 2025	663235	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-3-5.asc 
+Tue Dec  2 23:57:17 2025	663238	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-3-5.nc 
+Tue Dec  2 23:57:19 2025	663243	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-3-5.nc 
+Tue Dec  2 23:57:27 2025	663252	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-2-4-7.asc 
+Tue Dec  2 23:57:46 2025	663280	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-2-4-7.nc 
+Tue Dec  2 23:57:50 2025	663286	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-2-4-7.nc 
+Tue Dec  2 23:59:03 2025	663651	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-3-5-9.asc 
+Tue Dec  2 23:59:52 2025	663820	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-3-5-9.nc 
+Wed Dec  3 00:00:01 2025	663862	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-3-5-9.nc 
+Wed Dec  3 00:01:26 2025	664021	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-1-1.asc 
+Wed Dec  3 00:01:27 2025	664022	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-1-1.nc 
+Wed Dec  3 00:01:28 2025	664025	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-1-1.nc 
+Wed Dec  3 00:01:28 2025	664028	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-1-2.asc 
+Wed Dec  3 00:01:29 2025	664029	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-1-2.nc 
+Wed Dec  3 00:01:29 2025	664032	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-1-2.nc 
+Wed Dec  3 00:01:30 2025	664035	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-1-3.asc 
+Wed Dec  3 00:01:31 2025	664037	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-1-3.nc 
+Wed Dec  3 00:01:31 2025	664040	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-1-3.nc 
+Wed Dec  3 00:01:32 2025	664043	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-2-3.asc 
+Wed Dec  3 00:01:34 2025	664046	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-2-3.nc 
+Wed Dec  3 00:01:34 2025	664049	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-2-3.nc 
+Wed Dec  3 00:01:36 2025	664058	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-3-5.asc 
+Wed Dec  3 00:01:41 2025	664095	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-3-5.nc 
+Wed Dec  3 00:01:42 2025	664098	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-3-5.nc 
+Wed Dec  3 00:01:50 2025	664104	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-2-4-7.asc 
+Wed Dec  3 00:02:09 2025	664118	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-2-4-7.nc 
+Wed Dec  3 00:02:13 2025	664122	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-2-4-7.nc 
+Wed Dec  3 00:03:24 2025	664226	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-3-5-9.asc 
+Wed Dec  3 00:04:13 2025	664263	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-3-5-9.nc 
+Wed Dec  3 00:04:22 2025	664279	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-3-5-9.nc 
+Wed Dec  3 00:21:20 2025	666731	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-1-1.asc 
+Wed Dec  3 00:21:21 2025	666794	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-1-1.nc 
+Wed Dec  3 00:21:22 2025	666797	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-1-1.nc 
+Wed Dec  3 00:21:22 2025	666800	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-1-2.asc 
+Wed Dec  3 00:21:23 2025	666801	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-1-2.nc 
+Wed Dec  3 00:21:24 2025	666804	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-1-2.nc 
+Wed Dec  3 00:21:24 2025	666807	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-1-3.asc 
+Wed Dec  3 00:21:25 2025	666808	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-1-3.nc 
+Wed Dec  3 00:21:26 2025	666811	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-1-3.nc 
+Wed Dec  3 00:21:26 2025	666815	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-2-3.asc 
+Wed Dec  3 00:21:28 2025	666817	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-2-3.nc 
+Wed Dec  3 00:21:29 2025	666821	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-2-3.nc 
+Wed Dec  3 00:21:30 2025	666824	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-3-5.asc 
+Wed Dec  3 00:21:35 2025	666829	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-3-5.nc 
+Wed Dec  3 00:21:37 2025	666839	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-3-5.nc 
+Wed Dec  3 00:21:44 2025	666881	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-2-4-7.asc 
+Wed Dec  3 00:22:03 2025	666897	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-2-4-7.nc 
+Wed Dec  3 00:22:08 2025	666904	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-2-4-7.nc 
+Wed Dec  3 00:23:18 2025	666980	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-3-5-9.asc 
+Wed Dec  3 00:24:07 2025	667024	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-3-5-9.nc 
+Wed Dec  3 00:24:16 2025	667036	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-3-5-9.nc 
+Wed Dec  3 00:36:04 2025	669889	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-1-1.asc 
+Wed Dec  3 00:36:04 2025	669891	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-1-1.nc 
+Wed Dec  3 00:36:06 2025	669894	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-1-1.nc 
+Wed Dec  3 00:36:06 2025	669897	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-1-2.asc 
+Wed Dec  3 00:36:07 2025	669898	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-1-2.nc 
+Wed Dec  3 00:36:07 2025	669902	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-1-2.nc 
+Wed Dec  3 00:36:08 2025	669905	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-1-3.asc 
+Wed Dec  3 00:36:09 2025	669908	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-1-3.nc 
+Wed Dec  3 00:36:09 2025	669912	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-1-3.nc 
+Wed Dec  3 00:36:10 2025	669915	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-2-3.asc 
+Wed Dec  3 00:36:12 2025	669917	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-2-3.nc 
+Wed Dec  3 00:36:13 2025	669920	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-2-3.nc 
+Wed Dec  3 00:36:14 2025	669923	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-1-3-5.asc 
+Wed Dec  3 00:36:19 2025	669927	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-1-3-5.nc 
+Wed Dec  3 00:36:21 2025	669937	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-1-3-5.nc 
+Wed Dec  3 00:36:29 2025	669944	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-2-4-7.asc 
+Wed Dec  3 00:36:48 2025	669992	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-2-4-7.nc 
+Wed Dec  3 00:36:53 2025	669997	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-2-4-7.nc 
+Wed Dec  3 00:37:15 2025	670220	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-3-4-7.asc 
+Wed Dec  3 00:37:42 2025	670392	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-3-4-7.nc 
+Wed Dec  3 00:37:51 2025	670423	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-3-4-7.nc 
+Wed Dec  3 00:38:36 2025	670600	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-4-4-7.asc 
+Wed Dec  3 00:39:10 2025	670614	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-4-4-7.nc 
+Wed Dec  3 00:39:20 2025	670619	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-4-4-7.nc 
+Wed Dec  3 00:40:35 2025	670697	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-3-5-9.asc 
+Wed Dec  3 00:41:23 2025	670727	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-3-5-9.nc 
+Wed Dec  3 00:41:33 2025	670772	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-3-5-9.nc 
+Wed Dec  3 00:44:08 2025	671066	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc x-proj-jkl-4-5-9.asc 
+Wed Dec  3 00:45:13 2025	671281	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-proj-jkl-4-5-9.nc 
+Wed Dec  3 00:45:27 2025	671288	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u-ode-jkl-4-5-9.nc 
