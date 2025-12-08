@@ -21,11 +21,12 @@ export SparseBilinear, sparse
 
 include("BasisFunctions.jl")
 
-export FourierMode, BasisComponent, BasisFunction, compatible, isorthogonal, innerproduct, derivative, xderivative, yderivative, zderivative, *, zero, regularize, laplacian, dotgrad, fourierIndices, basisIndices, basisSet, estr, Estr, ustr, psistr, legendrePolynomials, xreflection, yreflection, zreflection, xtranslationLx2, ztranslationLz2, vex, norm, norm2, loworder, ijkl2file, save, polyparity, basis_index_dict, changebasis
+export FourierMode, BasisComponent, BasisFunction, compatible, isorthogonal, innerproduct, derivative, xderivative, yderivative, zderivative, *, zero, regularize, laplacian, dotgrad, fourierIndices, basisIndices, basisSet, estr, Estr, ustr, psistr, legendrePolynomials, xreflection, yreflection, zreflection, xtranslationLx2, ztranslationLz2, vex, norm, norm2, loworder, ijkl2file, save, polyparity, basis_index_dict, changebasis, curl, dissipation_term
 
 include("ODEModels.jl")
 
 export ODEModel, shear, length
+export build_dissipation_matrix, power_input, dissipation_rate
 
 include("Hookstep.jl")
 
@@ -33,15 +34,16 @@ export hookstepsolve, SearchParams
 
 include("TWModels.jl")
 
-export TWModel, has_shift_symmetry, save_sigma
+export TWModel, has_shift_symmetry, save_sigma, extract_components
 
-# Visualization functions - these are only available when CairoMakie is loaded
-# The actual implementations are in ext/CloudAtlasVisualizationExt.jl
+# ====================================================================================
+# VISUALIZATION API
+# These types and function names are defined here so they can be exported.
+# The implementation of the plotting functions is loaded conditionally 
+# in ext/CloudAtlasVisualizationExt.jl when CairoMakie is loaded.
 
-# Note: we define PlotSettings here, because extensions cannot nicely export strutures.
 """
     PlotSettings
-
 Configuration for velocity field plots.
 """
 Base.@kwdef struct PlotSettings
@@ -55,26 +57,54 @@ Base.@kwdef struct PlotSettings
     fig_size::Tuple{Int,Int} = (900, 1200)
 end
 
-# function velocity_fields(model::Union{ODEModel, TWModel}, x::Vector;
-#                         settings::PlotSettings=PlotSettings(),
-#                         Lx::Real=2π, Lz::Real=π,
-#                         save_path::Union{String,Nothing}=nothing) end
-# function velocity_fields_dns(root::String;
-#                             settings::PlotSettings=PlotSettings(),
-#                             Lx::Real=2π, Lz::Real=π,
-#                             save_path::Union{String,Nothing}=nothing) end
-# function velocity_fields_comparison(model::Union{ODEModel, TWModel}, 
-#                                     x::Vector,
-#                                     root::String;
-#                                     settings::PlotSettings=PlotSettings(),
-#                                     Lx::Real=2π, Lz::Real=π,
-#                                     save_dir::Union{String,Nothing}=nothing)
-#      end
+"""
+    VelocityField
+Callable struct that evaluates velocity components from a CloudAtlas model solution.
+(Moved here because it is pure math/physics, not visualization)
+"""
+struct VelocityField{T<:Real, M}
+    Ψ::Vector{BasisFunction{T}}
+    x::Vector{T}
+    model::M
+    add_baseflow::Bool
+    
+    function VelocityField(model::Union{ODEModel{T}, TWModel{T}}, x::Vector{T}; add_baseflow::Bool=false) where T<:Real
+        new{T, typeof(model)}(model.Ψ, x, model, add_baseflow)
+    end
+end
 
+# Evaluate velocity component at a point
+function (vf::VelocityField)(component::Symbol, x::Real, y::Real, z::Real)
+    idx = component == :u ? 1 : (component == :v ? 2 : 3)
+    perturbation = sum(vf.Ψ[i].u[idx](x, y, z) * vf.x[i] for i in eachindex(vf.x))
+    if vf.add_baseflow && component == :u
+        return perturbation + y
+    else
+        return perturbation
+    end
+end
+
+# Define function stubs for the plotting commands.
+# The extension will add methods to these specific functions.
+function plot_xz_plane! end
+function plot_xy_plane! end
+function plot_yz_plane! end
 function velocity_fields end
 function velocity_fields_dns end
 function velocity_fields_comparison end
-export velocity_fields, velocity_fields_dns, velocity_fields_comparison, PlotSettings
-# export PlotSettings
+function animate_flow end 
+function plot_id_series end
+function animate_tw_fluctuations end
+
+# EXPORTS
+export PlotSettings, VelocityField
+export plot_xz_plane!, plot_xy_plane!, plot_yz_plane!
+export velocity_fields, velocity_fields_dns, velocity_fields_comparison, animate_flow, plot_id_series
+
+# ====================================================================================
+# Diff Eqs API
+
+function integrate_flow end
+export integrate_flow
 
 end # module CloudAtlas

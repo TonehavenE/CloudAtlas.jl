@@ -14,40 +14,6 @@ Read delimited file with comments (lines starting with %).
 """
 myreaddlm(filename) = readdlm(filename, comments=true, comment_char='%')
 
-"""
-    VelocityField
-
-Callable struct that evaluates velocity components from a CloudAtlas model solution.
-"""
-struct VelocityField{T<:Real, M}
-    Ψ::Vector{CloudAtlas.BasisFunction{T}}
-    x::Vector{T}
-    model::M
-    add_baseflow::Bool
-    
-    function VelocityField(model::Union{CloudAtlas.ODEModel{T}, CloudAtlas.TWModel{T}}, x::Vector{T}; add_baseflow::Bool=false) where T<:Real
-        new{T, typeof(model)}(model.Ψ, x, model, add_baseflow)
-    end
-end
-
-"""
-    (vf::VelocityField)(component::Symbol, x, y, z)
-
-Evaluate velocity component at a point.
-component ∈ [:u, :v, :w] for streamwise, wall-normal, spanwise velocity.
-"""
-function (vf::VelocityField)(component::Symbol, x::Real, y::Real, z::Real)
-    idx = component == :u ? 1 : (component == :v ? 2 : 3)
-    perturbation = sum(vf.Ψ[i].u[idx](x, y, z) * vf.x[i] for i in eachindex(vf.x))
-    
-    # Add baseflow for streamwise velocity if requested
-    if vf.add_baseflow && component == :u
-        return perturbation + y  # Linear profile: u_base = y
-    else
-        return perturbation
-    end
-end
-
 # Convenience methods for all three components at once
 function (vf::VelocityField)(x::Real, y::Real, z::Real)
     u = vf(:u, x, y, z)
@@ -61,7 +27,7 @@ end
 
 Plot (u, w) velocity field in the xz-plane at fixed y.
 """
-function plot_xz_plane!(ax, vf::VelocityField, settings::CloudAtlas.PlotSettings; 
+function CloudAtlas.plot_xz_plane!(ax, vf::VelocityField, settings::CloudAtlas.PlotSettings; 
                         Lx=2π, Lz=π, y_slice=0.0)
     xs = range(0, Lx, settings.num_points)
     zs = range(0, Lz, settings.num_points)
@@ -94,7 +60,7 @@ end
 
 Plot (u, v) velocity field in the xy-plane at fixed z.
 """
-function plot_xy_plane!(ax, vf::VelocityField, settings::CloudAtlas.PlotSettings; 
+function CloudAtlas.plot_xy_plane!(ax, vf::VelocityField, settings::CloudAtlas.PlotSettings; 
                         Lx=2π, z_slice=0.0)
     xs = range(0, Lx, settings.num_points)
     ys = range(-1, 1, settings.num_points)
@@ -117,7 +83,7 @@ end
 
 Plot (v, w) velocity field in the yz-plane at fixed x, with u heatmap background.
 """
-function plot_yz_plane!(ax, vf::VelocityField, settings::CloudAtlas.PlotSettings; 
+function CloudAtlas.plot_yz_plane!(ax, vf::VelocityField, settings::CloudAtlas.PlotSettings; 
                         Lz=π, x_slice=0.0)
     zs = range(0, Lz, settings.num_points)
     ys = range(-1, 1, settings.num_points)
@@ -478,4 +444,106 @@ function CloudAtlas.velocity_fields_comparison(model::Union{CloudAtlas.ODEModel,
     
     return (fig_xz, fig_xy, fig_yz)
 end
+
+"""
+    animate_flow(model, sol, filename; settings=PlotSettings(), Lx=2π, Lz=π)
+
+Generates an MP4 animation of the flow evolution from an ODE solution.
+"""
+function CloudAtlas.animate_flow(model, sol, filename::String; 
+                                 settings::CloudAtlas.PlotSettings=CloudAtlas.PlotSettings(), add_baseflow::Bool=false)
+
+    Lx=2π/model.α
+    Lz=2π/model.γ
+    
+    settings = PlotSettings()
+    fig = Figure(size=settings.fig_size)
+    # XZ plane: mean (u, w) averaged over y
+    ax_xz = Axis(fig[1, 1],
+        title="Mean (u, w) in xz-plane",
+        xlabel="X", ylabel="Z", limits = (0, Lx, 0, Lz))
+    
+    # XY plane: (u, v) at z = 0
+    ax_xy = Axis(fig[2, 1],
+        title="(u, v) in xy-plane at z = 0",
+        xlabel="X", ylabel="Y", limits = (0, Lx, -1, 1))
+    
+    # YZ plane: (v, w) at x = 0 with u heatmap
+    ax_yz = Axis(fig[3, 1],
+        title="(v, w) in yz-plane at x = 0",
+        xlabel="Z", ylabel="Y",
+        aspect=DataAspect(), limits = (0, Lz, -1, 1))
+    
+    Colorbar(fig[3, 2], 
+             colormap=settings.colormap,
+             limits=(-1, 1),
+             label="Streamwise velocity u")
+        
+    frames = 1:length(sol.t)
+    
+    println("Rendering animation with $(length(frames)) frames...")
+    
+    record(fig, filename, frames; framerate=15) do i
+        t = sol.t[i]
+        x_state = sol.u[i]
+        
+        # Update the title with current time
+        ax_xz.title = "XZ Plane - t = $(round(t, digits=2))"
+        ax_xy.title = "XY Plane - t = $(round(t, digits=2))"
+        ax_yz.title = "YZ Plane - t = $(round(t, digits=2))"
+
+        
+        # 1. Construct VelocityField for current state
+        #    Set add_baseflow=true to see the physical flow, or false to see just perturbations
+        vf = VelocityField(model, x_state; add_baseflow=add_baseflow) 
+        
+        # 2. Clear previous arrows/heatmaps
+        empty!(ax_xz)
+        empty!(ax_xy)
+        empty!(ax_yz)
+        
+        # 3. Plot new frame using your utilities
+        #    Note: We pass the axes we created above
+        plot_xz_plane!(ax_xz, vf, settings, Lx=2π/model.α, Lz=2π/model.γ, y_slice=:mean)
+        plot_xy_plane!(ax_xy, vf, settings, Lx=2π/model.α, z_slice=0.0)
+        plot_yz_plane!(ax_yz, vf, settings, Lz=2π/model.γ, x_slice=0.0)
+    end
+    
+    println("Animation saved to $(filename).")
+
+end
+
+"""
+    plot_id_series(model, sol, D_matrix; filename=nothing)
+
+Plots the Power Input (I) vs Dissipation (D) time series and trajectory.
+"""
+function CloudAtlas.plot_id_series(model, sol, D_matrix; filename::Union{String, Nothing}=nothing)
+    # 1. Compute I and D for all time steps
+    I_vals = [CloudAtlas.power_input(model, u) for u in sol.u]
+    D_vals = [CloudAtlas.dissipation_rate(D_matrix, u) for u in sol.u]
+    t = sol.t
+
+    fig = Figure(size=(1000, 500))
+
+    # Panel 1: Time Series
+    ax1 = Axis(fig[1, 1], title="Energy Balance Time Series", xlabel="Time", ylabel="Magnitude")
+    lines!(ax1, t, I_vals, label="Power Input (I)", color=:blue)
+    lines!(ax1, t, D_vals, label="Dissipation (D)", color=:red)
+    axislegend(ax1)
+
+    # Panel 2: I vs D Plane
+    ax2 = Axis(fig[1, 2], title="I vs D Trajectory", xlabel="Dissipation (D)", ylabel="Power Input (I)")
+    lines!(ax2, D_vals, I_vals, color=t, colormap=:viridis)
+    
+    # Add diagonal line (Equilibrium condition I=D)
+    limits = (min(minimum(I_vals), minimum(D_vals)), max(maximum(I_vals), maximum(D_vals)))
+    lines!(ax2, [limits...], [limits...], color=:black, linestyle=:dash, label="Equilibrium (I=D)")
+    
+    if !isnothing(filename)
+        save(filename, fig)
+    end
+    return fig
+end
+
 end

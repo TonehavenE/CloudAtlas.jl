@@ -76,3 +76,8 @@ Wed Dec  3 10:43:47 2025	683377	/home/ebenq/.julia/artifacts/6c1f2435997ed534492
 Wed Dec  3 10:45:37 2025	683523	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u_guess.nc 
 Wed Dec  3 11:01:53 2025	685027	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u_guess.nc 
 Wed Dec  3 11:11:28 2025	686756	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u_guess.nc 
+Sun Dec  7 16:13:53 2025	1258937	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc ./TW1-2pi1piRe200-40x49x40.nc u_guess.nc 
+Sun Dec  7 16:25:53 2025	1261077	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc reference_field_1.5707963267948966_1.0471975511965976.nc u_guess.nc 
+Sun Dec  7 17:54:58 2025	1274209	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc reference_field_1.5707963267948966_1.0471975511965976.nc u_guess.nc 
+Sun Dec  7 21:31:52 2025	1286148	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc reference_field_1.5707963267948966_1.0471975511965976.nc u_guess.nc 
+Mon Dec  8 00:03:29 2025	1368032	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc reference_field_1.5707963267948966_1.0471975511965976.nc u_guess.nc 

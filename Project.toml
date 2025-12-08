@@ -10,6 +10,7 @@ ChannelflowWrapper = "96086318-f2c4-4a08-8036-25bfacd5eac3"
 Channelflow_jll = "3f71b17c-0b5c-5f71-8ab7-7b799a58f30d"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
 IJulia = "7073ff75-c697-5162-941a-fcdaad2a7d2a"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
@@ -27,6 +28,7 @@ Channelflow_jll = {url = "https://github.com/TonehavenE/Channelflow_jll.jl"}
 
 [extensions]
 CloudAtlasVisualizationExt = "CairoMakie"
+CloudAtlasDiffEqExt = "DifferentialEquations"
 
 [compat]
 BifurcationKit = "0.5.3"
@@ -35,6 +37,7 @@ ChannelflowWrapper = "1.0.0"
 Channelflow_jll = "1.0.3"
 DataFrames = "1.8.1"
 DelimitedFiles = "1.9.1"
+DifferentialEquations = "7.17.0"
 IJulia = "1.32.1"
 LinearAlgebra = "1.11.0"
 Makie = "0.24.7"

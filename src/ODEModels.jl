@@ -69,3 +69,38 @@ end
 
 length(model::ODEModel{T}) where T<:Real = length(model.Ψ)
 shear(x::Vector{T}, model::ODEModel{T}) where T<:Real = one(T) + dot(x, model.Ψshear)
+
+"""
+    build_dissipation_matrix(model)
+Constructs the matrix D where D_ij = < curl(Ψi), curl(Ψj) >
+"""
+function build_dissipation_matrix(model)
+    m = length(model)
+    D_mat = zeros(m, m)
+    println("Building dissipation matrix...")
+    Threads.@threads for j in 1:m
+        for i in 1:m
+            # Symmetric matrix
+            if i <= j
+                val = dissipation_term(model.Ψ[i], model.Ψ[j])
+                D_mat[i, j] = val
+                D_mat[j, i] = val
+            end
+        end
+    end
+    return D_mat
+end
+
+"""
+    power_input(model, x)
+Calculates Power Input I = 1 + < d(u_pert)/dy >_wall.
+This is equivalent to the wall shear rate.
+"""
+power_input(model, x) = shear(x, model)
+
+"""
+    dissipation_rate(D_matrix, x)
+Calculates Total Dissipation D = 1 + || curl(u) ||^2 / Volume.
+Assumes D_matrix is the precomputed inner product of curls.
+"""
+dissipation_rate(D_matrix::AbstractMatrix, x::Vector) = 1.0 + dot(x, D_matrix * x)

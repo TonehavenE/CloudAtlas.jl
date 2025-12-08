@@ -976,6 +976,97 @@ function shearFunction(Ψ::AbstractVector{BasisFunction{T}}) where {T<:Real}
 end
 ======================================#
 
+import Base: *, -, +, zero, intersect
+
+function +(f::BasisComponent, g::BasisComponent)
+    # Check basic compatibility (wavenumbers)
+    compatible(f, g) || error("Incompatible BasisComponents (wavenumber mismatch)")
+    
+    # CRITICAL: Check indices and polynomial parity/content
+    if f.ejx.waveindex != g.ejx.waveindex || 
+       f.ekz.waveindex != g.ekz.waveindex ||
+       f.pparity != g.pparity ||
+       f.p != g.p # Assuming Polynomial supports equality check
+       
+       error("Cannot add BasisComponents with different modes/polynomials via coefficient sum.")
+    end
+
+    return BasisComponent(f.coeff + g.coeff, f.ejx, f.ekz, f.p, f.pparity)
+end
+
+function -(f::BasisComponent, g::BasisComponent)
+    # Check basic compatibility (wavenumbers)
+    compatible(f, g) || error("Incompatible BasisComponents (wavenumber mismatch)")
+    
+    # CRITICAL: Check indices and polynomial parity/content
+    if f.ejx.waveindex != g.ejx.waveindex || 
+       f.ekz.waveindex != g.ekz.waveindex ||
+       f.pparity != g.pparity ||
+       f.p != g.p # Assuming Polynomial supports equality check
+       
+       error("Cannot add BasisComponents with different modes/polynomials via coefficient sum.")
+    end
+
+    return BasisComponent(f.coeff - g.coeff, f.ejx, f.ekz, f.p, f.pparity)
+end
+
+"""
+    dissipation_term(f::BasisFunction, g::BasisFunction)
+
+Computes the inner product of the curls of two basis functions:
+D_ij = < curl(f), curl(g) >
+     = < (∂y w - ∂z v), (∂y w - ∂z v) >  (x-component)
+     + < (∂z u - ∂x w), (∂z u - ∂x w) >  (y-component)
+     + < (∂x v - ∂y u), (∂x v - ∂y u) >  (z-component)
+
+This expands the terms to avoid creating 'summed' BasisComponents.
+"""
+function dissipation_term(f::BasisFunction{T}, g::BasisFunction{T}) where {T<:Real}
+    # --- Derivatives for f ---
+    # f.u[1] = u, f.u[2] = v, f.u[3] = w
+    f_dy_u = yderivative(f.u[1])
+    f_dz_u = zderivative(f.u[1])
+    
+    f_dx_v = xderivative(f.u[2])
+    f_dz_v = zderivative(f.u[2])
+    
+    f_dx_w = xderivative(f.u[3])
+    f_dy_w = yderivative(f.u[3])
+
+    # --- Derivatives for g ---
+    g_dy_u = yderivative(g.u[1])
+    g_dz_u = zderivative(g.u[1])
+    
+    g_dx_v = xderivative(g.u[2])
+    g_dz_v = zderivative(g.u[2])
+    
+    g_dx_w = xderivative(g.u[3])
+    g_dy_w = yderivative(g.u[3])
+
+    # --- Inner Products (Component by Component) ---
+    
+    # 1. X-component: <dy w - dz v, dy w - dz v>
+    # Expansion: <dy w, dy w> - <dy w, dz v> - <dz v, dy w> + <dz v, dz v>
+    val_x = innerproduct(f_dy_w, g_dy_w) - 
+            innerproduct(f_dy_w, g_dz_v) - 
+            innerproduct(f_dz_v, g_dy_w) + 
+            innerproduct(f_dz_v, g_dz_v)
+
+    # 2. Y-component: <dz u - dx w, dz u - dx w>
+    val_y = innerproduct(f_dz_u, g_dz_u) - 
+            innerproduct(f_dz_u, g_dx_w) - 
+            innerproduct(f_dx_w, g_dz_u) + 
+            innerproduct(f_dx_w, g_dx_w)
+
+    # 3. Z-component: <dx v - dy u, dx v - dy u>
+    val_z = innerproduct(f_dx_v, g_dx_v) - 
+            innerproduct(f_dx_v, g_dy_u) - 
+            innerproduct(f_dy_u, g_dx_v) + 
+            innerproduct(f_dy_u, g_dy_u)
+
+    return val_x + val_y + val_z
+end
+
 """
     basis_index_dict(ijklΨ, ijklΦ)
 
