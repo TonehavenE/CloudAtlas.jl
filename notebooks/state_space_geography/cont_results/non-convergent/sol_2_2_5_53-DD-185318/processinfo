@@ -1,0 +1,9 @@
+Command:  /home/ebenq/.local/bin/findsoln -R 400.0 -eqb -xrel -symms ./sztx.asc -sigma ./sigmabest.asc -T 10.0 -od further_cont ubest.nc 
+PWD:      /home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/state_space_geography/cont_results/non-convergent/sol_2_2_5_53-DD-185318
+Host:     ebenq-ideapad, PID: 2193742
+Time:     2025-12-09 10:08:16
+Version:  2.0.2
+Git rev:  91ba77f93bba73af4ef25e3d3cecf35521badbfd
+Compiler: GNU 14.2.1
+
+

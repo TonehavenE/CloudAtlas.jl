@@ -1,0 +1,9 @@
+Command:  /home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/findsoln -R 400.0 -eqb -zrel -symms /home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/edge_tracking/sxytxz.asc -sigma cont_results/sol_1_2_3_24-DD-032409/sigma.asc -od cont_results/sol_1_2_3_24-DD-032409 -T 10.0 cont_results/sol_1_2_3_24-DD-032409/u_guess.nc 
+PWD:      /home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/edge_tracking
+Host:     ebenq-ideapad, PID: 2365902
+Time:     2025-12-10 03:24:09
+Version:  2.0.2
+Git rev:  91ba77f93bba73af4ef25e3d3cecf35521badbfd
+Compiler: GNU 14.2.0
+
+

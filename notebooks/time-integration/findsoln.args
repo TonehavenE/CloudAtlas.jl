@@ -1,0 +1,1 @@
+Wed Dec 10 00:43:58 2025	2282395	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/findsoln -R 400.0 -eqb -xrel -symms /home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/time-integration/sztx.asc -sigma cont_results/sol_2_2_3_43-DD-004356/sigma.asc -od cont_results/sol_2_2_3_43-DD-004356 -T 10.0 cont_results/sol_2_2_3_43-DD-004356/u_guess.nc 

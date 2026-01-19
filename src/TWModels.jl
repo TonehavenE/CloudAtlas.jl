@@ -119,8 +119,6 @@ function TWModel(α::T, γ::T, J::Int, K::Int, L::Int, H::Vector{Symmetry};
     # ODE form: dx/dt = f(x, cx, cz, R)
     # This is the "lab frame" equation: ∂u/∂t = -u·∇u - v ex - cx ∂u/∂x - cz ∂u/∂z - ∇p + (1/R)∇²u
     function f(x::AbstractVector, cx::Real, cz::Real, R::Real)
-        println("The traveling wave cx term is: cx*Cx*x = $(cx*Cx*x)")
-        println("The traveling wave cz term is: cz*Cz*x = $(cz*Cz*x)")
         return Bfact \ (A1*x + (1/R)*(A2*x) + cx*Cx*x + cz*Cz*x + N(x))
     end
     
@@ -248,7 +246,7 @@ function extract_components(ξ::AbstractVector, model::TWModel)
     elseif model.keep_cx 
         return ξ[1:m], ξ[m+1], 0.0
     elseif model.keep_cz
-        return ξ[1:m], 0.0, ξ[m+1]
+        return ξ[1:m], 0.0, ξ[m+2]
     else
         return ξ[1:m], 0.0, 0.0
     end

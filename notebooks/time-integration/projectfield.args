@@ -1,0 +1,2 @@
+Wed Dec 10 00:43:47 2025	2282314	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc reference_field_1.0471975511965976_1.5707963267948966.nc u_guess.nc 
+Wed Dec 10 00:43:56 2025	2282387	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/projectfield -x temp_x.asc temp_ijkl.asc reference_field_1.0471975511965976_1.5707963267948966.nc u_guess.nc 

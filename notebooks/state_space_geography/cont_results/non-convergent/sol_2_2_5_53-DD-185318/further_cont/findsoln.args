@@ -1,0 +1,1 @@
+Tue Dec  9 23:50:33 2025	2250504	/home/ebenq/.local/bin/findsoln -R 400.0 -eqb -xrel -symms ./sztx.asc -sigma ./sigmabest.asc -T 10.0 -od further_further_cont ubest.nc 

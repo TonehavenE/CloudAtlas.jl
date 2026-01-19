@@ -59,24 +59,36 @@ end
 
 """
     VelocityField
-Callable struct that evaluates velocity components from a CloudAtlas model solution.
-(Moved here because it is pure math/physics, not visualization)
+
+Callable struct that evaluates velocity components.
 """
 struct VelocityField{T<:Real, M}
     Ψ::Vector{BasisFunction{T}}
-    x::Vector{T}
+    x::Vector{T} # The coefficient vector
     model::M
     add_baseflow::Bool
+    # Fields for Traveling Wave shifting
+    cx::T
+    cz::T
+    t::T
     
-    function VelocityField(model::Union{ODEModel{T}, TWModel{T}}, x::Vector{T}; add_baseflow::Bool=false) where T<:Real
-        new{T, typeof(model)}(model.Ψ, x, model, add_baseflow)
+    function VelocityField(model::Union{ODEModel{T}, TWModel{T}}, x::Vector{T}; 
+                           add_baseflow::Bool=false, cx::Real=0.0, cz::Real=0.0, t::Real=0.0) where T<:Real
+        new{T, typeof(model)}(model.Ψ, x, model, add_baseflow, T(cx), T(cz), T(t))
     end
 end
 
 # Evaluate velocity component at a point
 function (vf::VelocityField)(component::Symbol, x::Real, y::Real, z::Real)
+    # Apply Galilean transformation (shift to moving frame)
+    x_shifted = x - vf.cx * vf.t
+    z_shifted = z - vf.cz * vf.t
+
+    # Evaluate perturbation at shifted coordinates
     idx = component == :u ? 1 : (component == :v ? 2 : 3)
-    perturbation = sum(vf.Ψ[i].u[idx](x, y, z) * vf.x[i] for i in eachindex(vf.x))
+    
+    perturbation = sum(vf.Ψ[i].u[idx](x_shifted, y, z_shifted) * vf.x[i] for i in eachindex(vf.x))
+    
     if vf.add_baseflow && component == :u
         return perturbation + y
     else
@@ -95,11 +107,13 @@ function velocity_fields_comparison end
 function animate_flow end 
 function plot_id_series end
 function animate_tw_fluctuations end
+function plot_coefficient_evolution end
+function plot_stability_spectrum end
 
 # EXPORTS
 export PlotSettings, VelocityField
 export plot_xz_plane!, plot_xy_plane!, plot_yz_plane!
-export velocity_fields, velocity_fields_dns, velocity_fields_comparison, animate_flow, plot_id_series
+export velocity_fields, velocity_fields_dns, velocity_fields_comparison, animate_flow, plot_id_series, animate_tw_fluctuations, plot_coefficient_evolution, plot_stability_spectrum
 
 # ====================================================================================
 # Diff Eqs API

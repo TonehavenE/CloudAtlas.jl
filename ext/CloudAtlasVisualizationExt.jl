@@ -4,6 +4,7 @@ using CairoMakie
 using CloudAtlas
 using Statistics
 using DelimitedFiles
+using LinearAlgebra
 
 export velocity_fields, velocity_fields_dns, velocity_fields_comparison, PlotSettings, DNSData, VelocityField
 
@@ -456,7 +457,7 @@ function CloudAtlas.animate_flow(model, sol, filename::String;
     Lx=2π/model.α
     Lz=2π/model.γ
     
-    settings = PlotSettings()
+    # settings = PlotSettings()
     fig = Figure(size=settings.fig_size)
     # XZ plane: mean (u, w) averaged over y
     ax_xz = Axis(fig[1, 1],
@@ -543,6 +544,192 @@ function CloudAtlas.plot_id_series(model, sol, D_matrix; filename::Union{String,
     if !isnothing(filename)
         save(filename, fig)
     end
+    return fig
+end
+
+"""
+    get_fluctuations_only(model, x)
+
+Returns a copy of the state vector x with all streamwise-invariant modes (Streaks/Mean) set to zero.
+"""
+function get_fluctuations_only(model::TWModel{T}, x::Vector{T}) where T
+    x_fluct = copy(x)
+    
+    for i in eachindex(x_fluct)
+        # Access the streamwise component (u[1]) and its x-mode (ejx)
+        # We assume u, v, w share the same periodicity for a given basis index.
+        wave_idx_x = model.Ψ[i].u[1].ejx.waveindex
+        
+        # If waveindex is 0, the function is constant in x (Streak or Mean Flow)
+        if wave_idx_x == 0
+            x_fluct[i] = zero(T)
+        end
+    end
+    
+    return x_fluct
+end
+
+function CloudAtlas.animate_tw_fluctuations(model::TWModel, ξ::Vector, filename::String; 
+                                            t_span::Tuple=(0.0, 20.0),
+                                            fps=15,
+                                            settings::CloudAtlas.PlotSettings=CloudAtlas.PlotSettings())
+    
+    # Extract components
+    m = model.m
+    x_full = ξ[1:m]
+    cx = ξ[m+1]
+    cz = ξ[m+2]
+
+    # Filter out static streaks to see the wave
+    x_wave = get_fluctuations_only(model, x_full)
+    
+    println("Animating TW fluctuations (Streaks removed).")
+    println("Wave speeds: cx = $cx, cz = $cz")
+
+    # Setup Figure
+    Lx = 2π/model.α
+    Lz = 2π/model.γ
+    fig = Figure(size=settings.fig_size)
+
+    # settings = PlotSettings()
+    fig = Figure(size=settings.fig_size)
+    # XZ plane: mean (u, w) averaged over y
+    ax_xz = Axis(fig[1, 1],
+        title="Fluctations (u', w') in xz-plane",
+        xlabel="X", ylabel="Z", limits = (0, Lx, 0, Lz))
+    
+    # XY plane: (u, v) at z = 0
+    ax_xy = Axis(fig[2, 1],
+        title="Fluctuations (u', v') in xy-plane at z = 0",
+        xlabel="X", ylabel="Y", limits = (0, Lx, -1, 1))
+    
+    # YZ plane: (v, w) at x = 0 with u heatmap
+    ax_yz = Axis(fig[3, 1],
+        title="Fluctuations (v', w') in yz-plane at x = 0",
+        xlabel="Z", ylabel="Y",
+        aspect=DataAspect(), limits = (0, Lz, -1, 1))
+    
+    Colorbar(fig[3, 2], 
+             colormap=settings.colormap,
+             limits=(-1, 1),
+             label="Streamwise fluctuation u")
+
+    # Animation Loop
+    times = range(t_span[1], t_span[2], step=1/fps)
+    
+    record(fig, filename, times; framerate=fps) do t_current
+        ax_xz.title = "XZ Fluctuations - t = $(round(t_current, digits=2))"
+        
+        # Pass t, cx, cz to VelocityField. 
+        # It handles the coordinate shift u(x-cx*t) internally.
+        vf = VelocityField(model, x_wave; 
+                           add_baseflow=false, 
+                           cx=cx, cz=cz, t=t_current)
+        
+        empty!(ax_xz); empty!(ax_xy); empty!(ax_yz)
+        
+        plot_xz_plane!(ax_xz, vf, settings, Lx=Lx, Lz=Lz, y_slice=0.0)
+        plot_xy_plane!(ax_xy, vf, settings, Lx=Lx, z_slice=0.0)
+        plot_yz_plane!(ax_yz, vf, settings, Lz=Lz, x_slice=0.0)
+    end
+    
+    println("Saved fluctuation animation to $filename")
+end
+
+"""
+    plot_coefficient_evolution(model, sol; filename=nothing)
+
+Creates a single heatmap showing the evolution of ALL spectral coefficients over time.
+X-axis: Time
+Y-axis: Basis Function Index (1:m)
+Color: log10 magnitude
+"""
+function CloudAtlas.plot_coefficient_evolution(model, sol; filename::Union{String, Nothing}=nothing)
+    # 1. Extract Data
+    t = sol.t
+    # hcat(sol.u...) creates [Coeffs x Time], so transpose ' makes it [Time x Coeffs]
+    # This matches the (x, y) dimensions required by heatmap!
+    u_matrix = hcat(sol.u...)' 
+    m = size(u_matrix, 2)
+    
+    # 2. Plotting
+    fig = Figure(size=(1000, 600))
+    
+    ax = Axis(fig[1, 1], 
+              title="Spectral Coefficient Evolution (All Modes)", 
+              xlabel="Time", 
+              ylabel="Basis Function Index")
+    
+    # Log scale for visibility
+    data = log10.(abs.(u_matrix) .+ 1e-12)
+    
+    # Plot everything on one axis
+    hm = heatmap!(ax, t, 1:m, data, colormap=:inferno)
+    
+    Colorbar(fig[1, 2], hm, label="log10(|coeff|)")
+
+    if !isnothing(filename)
+        save(filename, fig)
+    end
+    
+    return fig
+end
+
+"""
+    plot_stability_spectrum(model, ξ, Re; filename=nothing)
+
+Computes and plots the eigenvalues of the linearized Jacobian.
+- ξ: The fixed point solution (includes wave speeds)
+- Re: Reynolds number
+"""
+function CloudAtlas.plot_stability_spectrum(model::TWModel, ξ, Re; filename::Union{String, Nothing}=nothing)
+    # 1. Extract State
+    x, cx, cz = extract_components(ξ, model)
+    
+    # 2. Get Jacobian of the DYNAMICAL system
+    # Note: model.Df gives the Jacobian of dx/dt = f(...)
+    # We use this, NOT model.Dg (which is the residual Jacobian and has wrong signs/constraints)
+    J = model.Df(x, cx, cz, Re)
+    
+    # 3. Compute Eigenvalues
+    println("Computing eigenvalues for m=$(model.m) system...")
+    λ = eigen(Matrix(J)).values
+    
+    # Sort by real part (most unstable first)
+    sort!(λ, by = x -> real(x), rev=true)
+    
+    # 4. Plotting
+    fig = Figure(size=(600, 600))
+    ax = Axis(fig[1, 1], 
+              title="Linear Stability Spectrum (Re=$Re)", 
+              xlabel="Real(λ) (Growth Rate)", 
+              ylabel="Imag(λ) (Frequency)")
+    
+    # Draw axes
+    lines!(ax, [0, 0], [-maximum(imag(λ)), maximum(imag(λ))], color=:black, linestyle=:dash)
+    lines!(ax, [-maximum(real(λ)), maximum(real(λ))], [0, 0], color=:black, linestyle=:dash)
+    
+    # Plot Stable vs Unstable
+    unstable = filter(z -> real(z) > 1e-5, λ)
+    stable   = filter(z -> real(z) <= 1e-5, λ)
+    
+    scatter!(ax, real(stable), imag(stable), color=:blue, label="Stable", markersize=6)
+    scatter!(ax, real(unstable), imag(unstable), color=:red, label="Unstable", markersize=10)
+    
+    axislegend(ax)
+    
+    # Annotate the "Leading Eigenvalue"
+    if !isempty(unstable)
+        leading = unstable[1]
+        text!(ax, real(leading), imag(leading), 
+              text=" λ = $(round(real(leading), digits=4))", 
+              align=(:left, :bottom))
+    end
+
+    if !isnothing(filename)
+        save(filename, fig)
+    end
+    
     return fig
 end
 

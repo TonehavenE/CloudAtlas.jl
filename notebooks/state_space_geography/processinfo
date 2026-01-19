@@ -1,0 +1,9 @@
+Command:  /home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/findsoln -R 400.0 -eqb -xrel -symms /home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/state_space_geography/sztx.asc -sigma cont_results/sol_2_2_5_17-DD-061709/sigma.asc -od cont_results/sol_2_2_5_17-DD-061709 -T 10.0 cont_results/sol_2_2_5_17-DD-061709/u_guess.nc 
+PWD:      /home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/state_space_geography
+Host:     ebenq-ideapad, PID: 2454356
+Time:     2025-12-10 06:17:11
+Version:  2.0.2
+Git rev:  91ba77f93bba73af4ef25e3d3cecf35521badbfd
+Compiler: GNU 14.2.0
+
+
