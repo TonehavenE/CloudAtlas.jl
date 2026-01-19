@@ -256,7 +256,7 @@ function plot_dns_yz_plane!(ax, dns::DNSData, settings::CloudAtlas.PlotSettings;
     ys = range(-1, 1, length=ny)
     
     # Background heatmap
-    heatmap!(ax, zs, ys, reverse(transpose(dns.u_yz)), 
+    heatmap!(ax, reverse(zs), ys, reverse(transpose(dns.u_yz)), 
              colormap=settings.colormap)
     
     # Overlay arrows
@@ -363,7 +363,7 @@ function CloudAtlas.velocity_fields_comparison(model::Union{CloudAtlas.ODEModel,
         arrow_tipwidth = settings.arrow_tipwidth,
         arrow_shaftwidth = settings.arrow_shaftwidth,
         colormap = settings.colormap,
-        fig_size = (1920, 1080)  # Wider format for side-by-side
+        fig_size = (1600, 1100)  # Wider format for side-by-side
     )
 
     # Use explicit keyword arguments to avoid positional errors
@@ -408,17 +408,28 @@ function CloudAtlas.velocity_fields_comparison(model::Union{CloudAtlas.ODEModel,
     plot_dns_xy_plane!(ax_xy_dns, dns, comparison_settings, Lx=Lx)
     
     # === YZ PLANE ===
-    fig_yz = Figure(size=comparison_settings.fig_size)
+    fig_yz = Figure(size=comparison_settings.fig_size, fontsize=30)
     ax_yz_ode = Axis(fig_yz[1, 1],
-        title="Model (v, w) in yz-plane",
+        title="Model in yz-plane",
         xlabel="Z", ylabel="Y",
         aspect=DataAspect())
     ax_yz_dns = Axis(fig_yz[1, 2],
-        title="DNS (v, w) in yz-plane",
+        title="DNS in yz-plane",
         xlabel="Z", ylabel="Y",
         aspect=DataAspect())
+
+    yz_comparison_settings = CloudAtlas.PlotSettings(
+        num_points = settings.num_points,
+        arrow_scale = settings.arrow_scale*1.2,
+        arrow_lengthscale = settings.arrow_lengthscale,
+        arrow_tiplength = settings.arrow_tiplength,
+        arrow_tipwidth = settings.arrow_tipwidth,
+        arrow_shaftwidth = settings.arrow_shaftwidth,
+        colormap = settings.colormap,
+        fig_size = (1600, 1100)  # Wider format for side-by-side
+    )
     
-    plot_yz_plane!(ax_yz_ode, vf, comparison_settings, Lz=Lz, x_slice=0.0)
+    plot_yz_plane!(ax_yz_ode, vf, yz_comparison_settings, Lz=Lz, x_slice=0.0)
     plot_dns_yz_plane!(ax_yz_dns, dns, comparison_settings, Lz=Lz)
     
     Colorbar(fig_yz[1, 3],
@@ -427,11 +438,13 @@ function CloudAtlas.velocity_fields_comparison(model::Union{CloudAtlas.ODEModel,
              label="Streamwise velocity u"
             )
     # Force the row to match the axis height
-    rowsize!(fig_yz.layout, 1, Fixed(600))  # Adjust 600 for desired height...
+    rowsize!(fig_yz.layout, 1, Fixed(400))  # Adjust 600 for desired height...
     
     ny, nx = size(dns.u_xy)
     nz = size(dns.u_xz, 1)
     println("DNS grid: Nx × Ny × Nz = $nx × $ny × $nz")
+
+    resize_to_layout!(fig_yz)
     
     # Save if directory provided
     if save_path !== nothing

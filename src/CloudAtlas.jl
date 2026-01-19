@@ -53,7 +53,8 @@ Base.@kwdef struct PlotSettings
     arrow_tiplength::Float64 = 14.0   # Values in pixels 
     arrow_tipwidth::Float64 = 14.0    # Values in pixels
     arrow_shaftwidth::Float64 = 2.0   # Value in pixels
-    colormap::Vector{Symbol} = [:navyblue, :aqua, :lime, :orange, :red4]
+    colormap = :RdBu
+    # colormap::Vector{Symbol} = [:navyblue, :aqua, :lime, :orange, :red4]
     fig_size::Tuple{Int,Int} = (900, 1200)
 end
 
