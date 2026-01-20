@@ -13,7 +13,7 @@ import SparseArrays: sparse
 
 include("Symmetries.jl")
 
-export Symmetry, symmetric, halfbox_symmetries
+export Symmetry, symmetric, halfbox_symmetries, has_shift_symmetry
 
 include("SparseBilinear.jl")
 
@@ -25,7 +25,7 @@ export FourierMode, BasisComponent, BasisFunction, compatible, isorthogonal, inn
 
 include("ODEModels.jl")
 
-export ODEModel, shear, length
+export ODEModel, shear, length, is_tw
 export build_dissipation_matrix, power_input, dissipation_rate
 
 include("Hookstep.jl")
@@ -34,7 +34,7 @@ export hookstepsolve, SearchParams
 
 include("TWModels.jl")
 
-export TWModel, has_shift_symmetry, save_sigma, extract_components
+export TWModel, TWState, save_sigma, extract_components
 
 # ====================================================================================
 # VISUALIZATION API
@@ -73,7 +73,7 @@ struct VelocityField{T<:Real, M}
     cz::T
     t::T
     
-    function VelocityField(model::Union{ODEModel{T}, TWModel{T}}, x::Vector{T}; 
+    function VelocityField(model::ODEModel{T}, x::Vector{T}; 
                            add_baseflow::Bool=false, cx::Real=0.0, cz::Real=0.0, t::Real=0.0) where T<:Real
         new{T, typeof(model)}(model.Ψ, x, model, add_baseflow, T(cx), T(cz), T(t))
     end

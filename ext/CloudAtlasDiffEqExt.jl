@@ -22,19 +22,20 @@ end
 
 
 """
-    integrate_flow(tw_model, x0, tspan; R=400.0, saveat=0.5)
+    integrate_flow(model, state::TWState, tspan; R=400.0, saveat=0.5, lab_frame=false)
 
 Integrates the TW model and returns the solution object.
 """
-function CloudAtlas.integrate_flow(model::TWModel, ξ, tspan; R=400.0, saveat=0.5, lab_frame=false)
-    x0 = ξ[1:model.m]
+function CloudAtlas.integrate_flow(model::ODEModel, state::TWState, tspan; R=400.0, saveat=0.5, lab_frame=false)
+    model.f_tw === nothing && error("model has no TW dynamics; use an EQB model instead")
+    x0 = state.x
     # If lab_frame is true, force speeds to 0 to see the drift
-    cx0 = lab_frame ? 0.0 : ξ[end - 1]
-    cz0 = lab_frame ? 0.0 : ξ[end]
+    cx0 = lab_frame ? 0.0 : state.cx
+    cz0 = lab_frame ? 0.0 : state.cz
     
     function ode_rhs!(dx, x, p, t)
         cx, cz, Re = p
-        dx .= model.f(x, cx, cz, Re)
+        dx .= model.f_tw(x, cx, cz, Re)
     end
 
     prob = ODEProblem(ode_rhs!, x0, tspan, (cx0, cz0, R))

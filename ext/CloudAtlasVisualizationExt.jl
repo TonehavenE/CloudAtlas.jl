@@ -109,13 +109,13 @@ function CloudAtlas.plot_yz_plane!(ax, vf::VelocityField, settings::CloudAtlas.P
 end
 
 """
-    velocity_fields(model::Union{ODEModel, TWModel}, x::Vector; 
+    velocity_fields(model::ODEModel, x::Vector; 
                     settings=PlotSettings(), Lx=2π, Lz=π, save_path=nothing, add_baseflow=false)
 
 Create a three-panel visualization of velocity field (xz, xy, yz planes).
 
 # Arguments
-- `model`: ODEModel or TWModel instance
+- `model`: ODEModel instance
 - `x`: Solution vector
 - `settings`: PlotSettings for customization
 - `Lx`: Domain length in x-direction (default: 2π)
@@ -123,7 +123,7 @@ Create a three-panel visualization of velocity field (xz, xy, yz planes).
 - `save_path`: Optional path to save figure
 - `add_baseflow`: If true, adds laminar Couette baseflow u = y (default: false)
 """
-function CloudAtlas.velocity_fields(model::Union{CloudAtlas.ODEModel, CloudAtlas.TWModel}, x::Vector;
+function CloudAtlas.velocity_fields(model::CloudAtlas.ODEModel, x::Vector;
                         settings::CloudAtlas.PlotSettings=CloudAtlas.PlotSettings(),
                         Lx::Real=2π, Lz::Real=π,
                         save_path::Union{String,Nothing}=nothing,
@@ -327,14 +327,14 @@ function CloudAtlas.velocity_fields_dns(root::String;
 end
 
 """
-    velocity_fields_comparison(model::Union{ODEModel, TWModel}, x::Vector, root::String;
+    velocity_fields_comparison(model::ODEModel, x::Vector, root::String;
                                settings=PlotSettings(), Lx=2π, Lz=π, save_path=nothing, add_baseflow=false)
 
 Create side-by-side comparison plots of model solution and DNS data.
 Saves three separate figures (xz, xy, yz) if save_path is provided.
 
 # Arguments
-- `model`: ODEModel or TWModel instance
+- `model`: ODEModel instance
 - `x`: Solution vector
 - `root`: Root path for DNS data files (without extension)
 - `settings`: PlotSettings for customization
@@ -343,7 +343,7 @@ Saves three separate figures (xz, xy, yz) if save_path is provided.
 - `save_path`: Optional directory path to save figures
 - `add_baseflow`: If true, adds laminar Couette baseflow u = y to model (default: false)
 """
-function CloudAtlas.velocity_fields_comparison(model::Union{CloudAtlas.ODEModel, CloudAtlas.TWModel}, 
+function CloudAtlas.velocity_fields_comparison(model::CloudAtlas.ODEModel, 
                                     x::Vector,
                                     root::String;
                                     settings::CloudAtlas.PlotSettings=CloudAtlas.PlotSettings(),
@@ -565,7 +565,7 @@ end
 
 Returns a copy of the state vector x with all streamwise-invariant modes (Streaks/Mean) set to zero.
 """
-function get_fluctuations_only(model::TWModel{T}, x::Vector{T}) where T
+function get_fluctuations_only(model::ODEModel{T}, x::Vector{T}) where T
     x_fluct = copy(x)
     
     for i in eachindex(x_fluct)
@@ -582,16 +582,13 @@ function get_fluctuations_only(model::TWModel{T}, x::Vector{T}) where T
     return x_fluct
 end
 
-function CloudAtlas.animate_tw_fluctuations(model::TWModel, ξ::Vector, filename::String; 
+function CloudAtlas.animate_tw_fluctuations(model::ODEModel, state::TWState, filename::String; 
                                             t_span::Tuple=(0.0, 20.0),
                                             fps=15,
                                             settings::CloudAtlas.PlotSettings=CloudAtlas.PlotSettings())
     
     # Extract components
-    m = model.m
-    x_full = ξ[1:m]
-    cx = ξ[m+1]
-    cz = ξ[m+2]
+    x_full, cx, cz = extract_components(state)
 
     # Filter out static streaks to see the wave
     x_wave = get_fluctuations_only(model, x_full)
@@ -695,17 +692,18 @@ Computes and plots the eigenvalues of the linearized Jacobian.
 - ξ: The fixed point solution (includes wave speeds)
 - Re: Reynolds number
 """
-function CloudAtlas.plot_stability_spectrum(model::TWModel, ξ, Re; filename::Union{String, Nothing}=nothing)
+function CloudAtlas.plot_stability_spectrum(model::ODEModel, state::TWState, Re; filename::Union{String, Nothing}=nothing)
     # 1. Extract State
-    x, cx, cz = extract_components(ξ, model)
+    x, cx, cz = extract_components(state)
     
     # 2. Get Jacobian of the DYNAMICAL system
     # Note: model.Df gives the Jacobian of dx/dt = f(...)
     # We use this, NOT model.Dg (which is the residual Jacobian and has wrong signs/constraints)
-    J = model.Df(x, cx, cz, Re)
+    model.Df_tw === nothing && error("model has no TW dynamics")
+    J = model.Df_tw(x, cx, cz, Re)
     
     # 3. Compute Eigenvalues
-    println("Computing eigenvalues for m=$(model.m) system...")
+    println("Computing eigenvalues for m=$(length(model.Ψ)) system...")
     λ = eigen(Matrix(J)).values
     
     # Sort by real part (most unstable first)

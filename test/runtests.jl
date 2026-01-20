@@ -1,6 +1,7 @@
 using Test
 using Polynomials
 using LinearAlgebra
+using Random
 
 using CloudAtlas
 
@@ -35,6 +36,39 @@ tz = Symmetry(1, 1, 1, 0//1, 1//2)
         xsolve, success = hookstepsolve(f, Df, xguess)
 
         @test norm(xsolve-xsolution) < 1e-10
+    end
+
+    @time @testset "Shift symmetry detection" begin
+        H_no_shift = [sx*sy*sz]
+        H_shift_x = [tx]
+        H_shift_z = [tz]
+        H_shift_both = [tx*tz]
+
+        @test !has_shift_symmetry(H_no_shift, :x)
+        @test !has_shift_symmetry(H_no_shift, :z)
+        @test has_shift_symmetry(H_shift_x, :x)
+        @test has_shift_symmetry(H_shift_z, :z)
+        @test has_shift_symmetry(H_shift_both, :x)
+        @test has_shift_symmetry(H_shift_both, :z)
+
+        Random.seed!(1234)
+        α, γ = 1.0, 2.0
+        tol = 1e-12
+
+        model_no = ODEModel(α, γ, 1, 1, 1, H_no_shift; tw=true)
+        cxx = model_no.Cx * randn(length(model_no.Ψ))
+        keep_cx_rand = norm(cxx) > tol
+        @test keep_cx_rand == !has_shift_symmetry(H_no_shift, :x)
+
+        model_shift_x = ODEModel(α, γ, 0, 1, 1, H_shift_x; tw=true)
+        cxx = model_shift_x.Cx * randn(length(model_shift_x.Ψ))
+        keep_cx_rand = norm(cxx) > tol
+        @test keep_cx_rand == !has_shift_symmetry(H_shift_x, :x)
+
+        model_shift_z = ODEModel(α, γ, 1, 0, 1, H_shift_z; tw=true)
+        czx = model_shift_z.Cz * randn(length(model_shift_z.Ψ))
+        keep_cz_rand = norm(czx) > tol
+        @test keep_cz_rand == !has_shift_symmetry(H_shift_z, :z)
     end
 
     @time @testset "ODEModel evaluation on known equilibrium" begin

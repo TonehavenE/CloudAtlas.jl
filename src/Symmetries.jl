@@ -74,4 +74,25 @@ function halfbox_symmetries()
     sx, sy, sz, tx, tz
 end
 
+"""
+    has_shift_symmetry(H::Vector{Symmetry}, direction::Symbol)
+
+Return true if symmetry group H contains a nontrivial shift in the given direction (:x or :z).
+"""
+function has_shift_symmetry(H::Vector{Symmetry}, direction::Symbol)
+    for σ in H
+        if direction == :x
+            if (σ.ax % 1) != 0//1
+                return true
+            end
+        elseif direction == :z
+            if (σ.az % 1) != 0//1
+                return true
+            end
+        else
+            error("direction must be :x or :z")
+        end
+    end
+    return false
+end
 
