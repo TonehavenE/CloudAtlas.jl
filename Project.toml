@@ -1,9 +1,10 @@
 name = "CloudAtlas"
 uuid = "b31a9ccd-01a9-4409-bcc3-9c4abd24a9a3"
-authors = ["John F. Gibson <johnfgibson@gmail.com>"]
 version = "0.1.0"
+authors = ["John F. Gibson <johnfgibson@gmail.com>"]
 
 [deps]
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
 BifurcationKit = "0f109fa4-8a5d-4b75-95aa-f515264e7665"
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 ChannelflowWrapper = "96086318-f2c4-4a08-8036-25bfacd5eac3"
@@ -17,6 +18,7 @@ Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
 OffsetArrays = "6fe1bfb0-de20-5000-8ca7-80f57d26f881"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
+Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
@@ -27,10 +29,11 @@ ChannelflowWrapper = {url = "https://github.com/TonehavenE/ChannelflowWrapper.jl
 Channelflow_jll = {url = "https://github.com/TonehavenE/Channelflow_jll.jl"}
 
 [extensions]
-CloudAtlasVisualizationExt = "CairoMakie"
 CloudAtlasDiffEqExt = "DifferentialEquations"
+CloudAtlasVisualizationExt = "CairoMakie"
 
 [compat]
+BenchmarkTools = "1.6.3"
 BifurcationKit = "0.5.3"
 CairoMakie = "0.15.7"
 ChannelflowWrapper = "1.0.0"
@@ -44,6 +47,7 @@ Makie = "0.24.7"
 OffsetArrays = "1.17.0"
 Plots = "1.41.1"
 Polynomials = "4.1.0"
+Revise = "3.13.1"
 SparseArrays = "1.11.0"
 StaticArrays = "1.9.15"
 StringBuilders = "0.3.3"
