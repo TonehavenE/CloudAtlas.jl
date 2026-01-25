@@ -156,16 +156,26 @@ function fuzz_once(model, Re; n_attempts = 1000)
     fingerprints = Vector{SolutionFingerprint}()
 
     data_lock = ReentrantLock()
-    rngs = [MersenneTwister(0xBADC0DE + i) for i in 1:nthreads()]
+    rngs = [MersenneTwister(0xBADC0DE + i) for i in 1:Threads.maxthreadid()]
+    progress = Threads.Atomic{Int}(0)
+    progress_every = max(1, n_attempts ÷ 100)
+    g = model.g
+    Dg = model.Dg
+    g === nothing && error("model.g is nothing. Make sure you built the model with TWModel (tw=true).")
+    use_jac = Dg !== nothing
 
     @threads for attempt in 1:n_attempts
-        rng = rngs[threadid()]
+        tid = threadid()
+        rng = tid <= length(rngs) ? rngs[tid] : Random.default_rng()
         ξ_guess = random_guess(model, rng; xnorm = xnorm)
 
-        f(ξ) = model.g(ξ, Re)
-        Df(ξ) = model.Dg(ξ, Re)
-
-        ξ_star, converged = CloudAtlas.hookstepsolve(f, Df, ξ_guess, hookparams)
+        f(ξ) = g(ξ, Re)
+        if use_jac
+            Df(ξ) = Dg(ξ, Re)
+            ξ_star, converged = CloudAtlas.hookstepsolve(f, Df, ξ_guess, hookparams)
+        else
+            ξ_star, converged = CloudAtlas.hookstepsolve(f, ξ_guess, hookparams)
+        end
 
         if converged
             x, cx, cz = extract_components(ξ_star, model)
@@ -178,6 +188,12 @@ function fuzz_once(model, Re; n_attempts = 1000)
                     end
                 end
             end
+        end
+
+        done = Threads.atomic_add!(progress, 1)
+        if done % progress_every == 0 || done == n_attempts
+            pct = round(100 * done / n_attempts; digits=1)
+            println("Progress: $(done)/$(n_attempts) ($(pct)%)")
         end
     end
 
@@ -192,11 +208,16 @@ function sweep_boxsizes(symm; alpha_vals, gamma_vals)
     nα = length(alpha_vals)
     nγ = length(gamma_vals)
     counts = zeros(Int, nα, nγ)
+    total = nα * nγ
+    idx = 0
 
     for (i, α) in enumerate(alpha_vals)
         for (j, γ) in enumerate(gamma_vals)
+            idx += 1
+            pct = round(100 * idx / total; digits=1)
             println("α=$(round(α, digits=4)), γ=$(round(γ, digits=4)), symm=$(symm.name)")
-            model = TWModel(α, γ, J, K, L, symm.H; normalize=false)
+            println("Grid progress: $(idx)/$(total) ($(pct)%)")
+            model = ODEModel(α, γ, J, K, L, symm.H; normalize=false, tw=true)
             counts[i, j] = fuzz_once(model, Re; n_attempts = attempts_per_point)
         end
     end

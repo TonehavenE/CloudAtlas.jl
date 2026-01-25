@@ -237,10 +237,13 @@ function fuzz_tw_solutions(model::TWModel, Re::Real;
     data_lock = ReentrantLock()
     io_lock = ReentrantLock()
 
-    rngs = [MersenneTwister(0xC0FFEE + i) for i in 1:nthreads()]
+    rngs = [MersenneTwister(0xC0FFEE + i) for i in 1:Threads.maxthreadid()]
+    progress = Threads.Atomic{Int}(0)
+    progress_every = max(1, n_attempts ÷ 100)
 
     @threads for attempt in 1:n_attempts
-        rng = rngs[threadid()]
+        tid = threadid()
+        rng = tid <= length(rngs) ? rngs[tid] : Random.default_rng()
         ξ_guess = build_guess(model, rng;
             strategy = strategy,
             xnorm = xnorm,
@@ -269,9 +272,11 @@ function fuzz_tw_solutions(model::TWModel, Re::Real;
             end
         end
 
-        if attempt % 250 == 0
+        done = Threads.atomic_add!(progress, 1)
+        if done % progress_every == 0 || done == n_attempts
             lock(io_lock) do
-                println("Attempt $(attempt)/$(n_attempts) (unique=$(length(solutions)))")
+                pct = round(100 * done / n_attempts; digits=1)
+                println("Progress: $(done)/$(n_attempts) ($(pct)%) (unique=$(length(solutions)))")
             end
         end
     end
@@ -344,7 +349,7 @@ for symm in symmetry_groups
     for (J, K, L) in discretizations
         println("\n--- J,K,L = $(J),$(K),$(L) ---")
 
-        model = TWModel(α, γ, J, K, L, H; normalize = false)
+        model = ODEModel(α, γ, J, K, L, H; normalize = false, tw = true)
 
         level_dir = joinpath(out_dir, symm_name, "jkl_$(J)_$(K)_$(L)")
         mkpath(level_dir)
