@@ -133,7 +133,7 @@ function generate_turbulent_trajectory(model::TWModel, Re::Real, tspan; xnorm=0.
     ξ_init = [x0; 0.0; 0.0] 
     
     # Run integration (lab_frame=true effectively simulates DNS)
-    sol = integrate_flow(model, TWState(extract_components(ξ_init, model)...), tspan; R=Re, saveat=0.5, lab_frame=true)
+    sol = integrate_flow(model, ODEState(extract_components(ξ_init, model)...), tspan; R=Re, saveat=0.5, lab_frame=true)
     
     return sol
 end

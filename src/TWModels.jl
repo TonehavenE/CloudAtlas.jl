@@ -14,32 +14,35 @@ function TWModel(α, γ, J::Int, K::Int, L::Int, H::Vector{Symmetry}; normalize=
 end
 
 """
-    TWState(x, cx, cz)
+    ODEState(x, cx, cz)
 
-Container for traveling-wave solutions.
+Container for ODE states. For equilibria, cx and cz can be `nothing`.
 """
-struct TWState{T<:Real}
+struct ODEState{T<:Real}
     x::Vector{T}
-    cx::T
-    cz::T
+    cx::Union{T, Nothing}
+    cz::Union{T, Nothing}
 end
 
-TWState(x::Vector{T}, cx::Real, cz::Real) where {T<:Real} = TWState{T}(x, T(cx), T(cz))
+ODEState(x::Vector{T}) where {T<:Real} = ODEState{T}(x, nothing, nothing)
+ODEState(x::Vector{T}, cx::Real, cz::Real) where {T<:Real} = ODEState{T}(x, T(cx), T(cz))
 
 """
-    extract_components(state::TWState)
+    extract_components(state::ODEState)
 
-Return (x, cx, cz).
+Return (x, cx, cz) with missing speeds as 0.0.
 """
-function extract_components(state::TWState)
-    return state.x, state.cx, state.cz
+function extract_components(state::ODEState)
+    cx = state.cx === nothing ? 0.0 : state.cx
+    cz = state.cz === nothing ? 0.0 : state.cz
+    return state.x, cx, cz
 end
 
 """
     extract_components(xi, model)
 
 Backward-compatible helper to extract (x, cx, cz) from a concatenated vector.
-Prefer TWState for new code.
+Prefer ODEState for new code.
 """
 function extract_components(xi::AbstractVector, model::ODEModel)
     m = length(model.Ψ)
@@ -57,6 +60,56 @@ function extract_components(xi::AbstractVector, model::ODEModel)
         return xi, 0.0, 0.0
     else
         error("xi has invalid length")
+    end
+end
+
+"""
+    state_to_xi(model, state)
+
+Pack an ODEState into a concatenated vector compatible with TW solvers.
+"""
+function state_to_xi(model::ODEModel, state::ODEState)
+    x = state.x
+    if model.keep_cx && model.keep_cz
+        return [x; state.cx === nothing ? 0.0 : state.cx; state.cz === nothing ? 0.0 : state.cz]
+    elseif model.keep_cx && !model.keep_cz
+        return [x; state.cx === nothing ? 0.0 : state.cx]
+    elseif !model.keep_cx && model.keep_cz
+        return [x; state.cz === nothing ? 0.0 : state.cz]
+    else
+        return x
+    end
+end
+
+"""
+    xi_to_state(model, xi)
+
+Convert a concatenated vector into an ODEState using model phase flags.
+"""
+function xi_to_state(model::ODEModel, xi::AbstractVector)
+    x, cx, cz = extract_components(xi, model)
+    if model.keep_cx || model.keep_cz
+        return ODEState(x, cx, cz)
+    else
+        return ODEState(x)
+    end
+end
+
+"""
+    save_state(state, filename; header=true)
+
+Save an ODEState to a text file. First line is a comment with cx/cz if present.
+"""
+function save_state(state::ODEState, filename::String; header::Bool=true)
+    open(filename, "w") do io
+        if header
+            cx = state.cx === nothing ? "none" : string(state.cx)
+            cz = state.cz === nothing ? "none" : string(state.cz)
+            println(io, "% cx=$(cx) cz=$(cz)")
+        end
+        for v in state.x
+            println(io, v)
+        end
     end
 end
 

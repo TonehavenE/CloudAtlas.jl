@@ -582,7 +582,7 @@ function get_fluctuations_only(model::ODEModel{T}, x::Vector{T}) where T
     return x_fluct
 end
 
-function CloudAtlas.animate_tw_fluctuations(model::ODEModel, state::TWState, filename::String; 
+function CloudAtlas.animate_tw_fluctuations(model::ODEModel, state::ODEState, filename::String; 
                                             t_span::Tuple=(0.0, 20.0),
                                             fps=15,
                                             settings::CloudAtlas.PlotSettings=CloudAtlas.PlotSettings())
@@ -692,7 +692,7 @@ Computes and plots the eigenvalues of the linearized Jacobian.
 - ξ: The fixed point solution (includes wave speeds)
 - Re: Reynolds number
 """
-function CloudAtlas.plot_stability_spectrum(model::ODEModel, state::TWState, Re; filename::Union{String, Nothing}=nothing)
+function CloudAtlas.plot_stability_spectrum(model::ODEModel, state::ODEState, Re; filename::Union{String, Nothing}=nothing)
     # 1. Extract State
     x, cx, cz = extract_components(state)
     

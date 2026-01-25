@@ -34,7 +34,7 @@ export hookstepsolve, SearchParams
 
 include("TWModels.jl")
 
-export TWModel, TWState, save_sigma, extract_components
+export TWModel, ODEState, save_sigma, extract_components, state_to_xi, xi_to_state, save_state
 
 # ====================================================================================
 # VISUALIZATION API
