@@ -89,8 +89,8 @@ function ODEModel(α::T, γ::T, J::Int, K::Int, L::Int, H::Vector{Symmetry};
         Cx = [innerproduct(Ψ[i], xderivative(Ψ[j])) for i in 1:m, j in 1:m]
         Cz = [innerproduct(Ψ[i], zderivative(Ψ[j])) for i in 1:m, j in 1:m]
 
-        keep_cx = !has_shift_symmetry(H, :x)
-        keep_cz = !has_shift_symmetry(H, :z)
+        keep_cx = !all(iszero, Cx)
+        keep_cz = !all(iszero, Cz)
 
         println("Phase constraints: keep_cx = $keep_cx, keep_cz = $keep_cz")
 

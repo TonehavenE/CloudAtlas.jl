@@ -207,12 +207,22 @@ function build_guess(model, rng; strategy = :random, xnorm = 0.4, target = 1.2, 
 end
 
 function save_summary(path, solutions, model)
-    rows = Vector{Vector{Float64}}(undef, length(solutions))
+    header = ["id" "cx" "cz" "norm" "shear"]
+    if isempty(solutions)
+        writedlm(path, header, ',')
+        return
+    end
+
+    rows = Matrix{Float64}(undef, length(solutions), 5)
     for (i, ξ) in enumerate(solutions)
         x, cx, cz = extract_components(ξ, model)
-        rows[i] = [i, cx, cz, norm(x), shear(x, model)]
+        rows[i, 1] = i
+        rows[i, 2] = cx
+        rows[i, 3] = cz
+        rows[i, 4] = norm(x)
+        rows[i, 5] = shear(x, model)
     end
-    header = ["id" "cx" "cz" "norm" "shear"]
+
     writedlm(path, vcat(header, rows), ',')
 end
 

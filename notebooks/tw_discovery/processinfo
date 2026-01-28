@@ -1,0 +1,9 @@
+Command:  /home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/findsoln -R 300.0 -eqb -xrel -symms /home/ebenq/dev/MyCloudAtlas.jl/notebooks/tw_discovery/sztx.asc -sigma /home/ebenq/dev/MyCloudAtlas.jl/notebooks/tw_discovery/tw_discovery_re300/sztx/jkl_2_4_7/findsoln/sol_10_50-DD-185057/sigma.asc -od /home/ebenq/dev/MyCloudAtlas.jl/notebooks/tw_discovery/tw_discovery_re300/sztx/jkl_2_4_7/findsoln/sol_10_50-DD-185057 -T 10.0 /home/ebenq/dev/MyCloudAtlas.jl/notebooks/tw_discovery/tw_discovery_re300/sztx/jkl_2_4_7/findsoln/sol_10_50-DD-185057/u_guess.nc 
+PWD:      /home/ebenq/dev/MyCloudAtlas.jl/notebooks/tw_discovery
+Host:     EbenDesktop, PID: 68837
+Time:     2026-01-27 06:51:03
+Version:  2.0.2
+Git rev:  91ba77f93bba73af4ef25e3d3cecf35521badbfd
+Compiler: GNU 14.2.0
+
+
