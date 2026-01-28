@@ -263,10 +263,7 @@ function fuzz_tw_solutions(model::TWModel, Re::Real;
             tol = shear_tol,
         )
 
-        f(ξ) = model.g(ξ, Re)
-        Df(ξ) = model.Dg(ξ, Re)
-
-        ξ_star, converged = CloudAtlas.hookstepsolve(f, Df, ξ_guess, hookparams)
+        ξ_star, converged = CloudAtlas.hookstepsolve_tw(model, Re, ξ_guess, hookparams)
 
         if converged
             x, cx, cz = extract_components(ξ_star, model)

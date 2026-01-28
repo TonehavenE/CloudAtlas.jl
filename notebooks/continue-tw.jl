@@ -70,11 +70,8 @@ x0 = myreaddlm("data/xtw1projection-Re$(R)-$(J)-$(K)-$(L)-$(m)d.asc")
 ξ0 = [x0; cx0; cz0] # combine everything into initial guess
 
 # %%
-# Create closures for g and Dg that capture R
-g_closure(ξ) = model.g(ξ, R)
-Dg_closure(ξ) = model.Dg(ξ, R)
-# Use hookstep to find a solution
-ξ_final, converged = hookstepsolve(g_closure, Dg_closure, ξ0, hookparams)
+# Use hookstep to find a solution with fixed-reference phase constraints
+ξ_final, converged = hookstepsolve_tw(model, R, ξ0, hookparams)
 
 # %%
 x_sol = ξ_final[1:m]

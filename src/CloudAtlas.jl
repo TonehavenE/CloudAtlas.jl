@@ -30,7 +30,7 @@ export build_dissipation_matrix, power_input, dissipation_rate
 
 include("Hookstep.jl")
 
-export hookstepsolve, SearchParams
+export hookstepsolve, hookstepsolve_tw, SearchParams
 
 include("TWModels.jl")
 

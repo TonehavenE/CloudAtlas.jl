@@ -78,13 +78,8 @@ function find_fixed_points(model::TWModel, Re::Real; n_attempts=50, xnorm=0.4, h
         cz_guess = model.keep_cz ? randn() * 0.1 : 0
         ξ_guess = [x_guess; cx_guess; cz_guess]
 
-        # 2. Solver Wrappers
-        f(ξ) = model.g(ξ, Re)
-        Df(ξ) = model.Dg(ξ, Re)
-        
-        # 3. Solve
-        # Note: hookstepsolve must be imported or available
-        ξ_star, converged = CloudAtlas.hookstepsolve(f, Df, ξ_guess, hookparams)
+        # 2. Solve with fixed-reference phase constraints
+        ξ_star, converged = CloudAtlas.hookstepsolve_tw(model, Re, ξ_guess, hookparams)
         
         # 4. Validation & Storage
         if converged
@@ -303,12 +298,9 @@ function harvest_solutions_from_trajectory(model::TWModel, Re::Real, sol)
     # Reuse the logic from your fuzzing code
     hookparams = CloudAtlas.SearchParams(Nnewton=40, Nhook=5) # More generous for these guesses
     
-    f(ξ) = model.g(ξ, Re)
-    Df(ξ) = model.Dg(ξ, Re)
-
     for (t_val, ξ_guess) in candidates
         print("  Searching from snapshot at t=$t_val... ")
-        ξ_star, converged = CloudAtlas.hookstepsolve(f, Df, ξ_guess, hookparams)
+        ξ_star, converged = CloudAtlas.hookstepsolve_tw(model, Re, ξ_guess, hookparams)
         
         if converged
             # Check if it's a trivial solution (Laminar flow has norm ≈ 0 usually, depending on basis)

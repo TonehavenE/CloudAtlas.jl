@@ -71,6 +71,35 @@ tz = Symmetry(1, 1, 1, 0//1, 1//2)
         @test keep_cz_rand == !has_shift_symmetry(H_shift_z, :z)
     end
 
+    @time @testset "Phase constraint sanity" begin
+        Random.seed!(1234)
+        α, γ = 1.0, 2.0
+        H = [sx*sy*sz]
+
+        model = ODEModel(α, γ, 1, 1, 1, H; tw=true)
+        m = length(model.Ψ)
+
+        xref = randn(m)
+        xref ./= norm(xref)
+        xs = [randn(m) for _ in 1:10]
+
+        if model.keep_cx
+            old_vals = [dot(model.Cx * x, x) for x in xs]
+            @test maximum(abs.(old_vals)) < 1e-8
+
+            new_vals = [dot(model.Cx * xref, x - xref) for x in xs]
+            @test maximum(abs.(new_vals)) > 1e-10
+        end
+
+        if model.keep_cz
+            old_vals = [dot(model.Cz * x, x) for x in xs]
+            @test maximum(abs.(old_vals)) < 1e-8
+
+            new_vals = [dot(model.Cz * xref, x - xref) for x in xs]
+            @test maximum(abs.(new_vals)) > 1e-10
+        end
+    end
+
     @time @testset "ODEModel evaluation on known equilibrium" begin
 
         # set up ODE model for some tests

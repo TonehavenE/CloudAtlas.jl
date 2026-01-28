@@ -164,23 +164,12 @@ function fuzz_once(model, Re; n_attempts = 1000)
     rngs = [MersenneTwister(0xBADC0DE + i) for i in 1:Threads.maxthreadid()]
     progress = Threads.Atomic{Int}(0)
     progress_every = max(1, n_attempts ÷ 100)
-    g = model.g
-    Dg = model.Dg
-    g === nothing && error("model.g is nothing. Make sure you built the model with TWModel (tw=true).")
-    use_jac = Dg !== nothing
-
     @threads for attempt in 1:n_attempts
         tid = threadid()
         rng = tid <= length(rngs) ? rngs[tid] : Random.default_rng()
         ξ_guess = random_guess(model, rng; xnorm = xnorm)
 
-        f(ξ) = g(ξ, Re)
-        if use_jac
-            Df(ξ) = Dg(ξ, Re)
-            ξ_star, converged = CloudAtlas.hookstepsolve(f, Df, ξ_guess, hookparams)
-        else
-            ξ_star, converged = CloudAtlas.hookstepsolve(f, ξ_guess, hookparams)
-        end
+        ξ_star, converged = CloudAtlas.hookstepsolve_tw(model, Re, ξ_guess, hookparams)
 
         if converged
             x, cx, cz = extract_components(ξ_star, model)

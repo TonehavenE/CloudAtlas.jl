@@ -182,10 +182,7 @@ progress_every = max(1, length(guesses) ÷ 100)
 @threads for i in 1:length(guesses)
     _, ξ_guess = guesses[i]
 
-    f(ξ) = model.g(ξ, Re)
-    Df(ξ) = model.Dg(ξ, Re)
-
-    ξ_star, converged = CloudAtlas.hookstepsolve(f, Df, ξ_guess, hookparams)
+    ξ_star, converged = CloudAtlas.hookstepsolve_tw(model, Re, ξ_guess, hookparams)
 
     if converged
         x, cx, cz = extract_components(ξ_star, model)

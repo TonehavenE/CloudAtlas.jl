@@ -25,8 +25,8 @@ struct ODEModel{T<:Real, TB, TF, TDF}
     keep_cz::Bool                # whether to enforce z-phase constraint
     f_tw::Union{Function, Nothing}         # RHS dx/dt = f(x, cx, cz, R)
     Df_tw::Union{Function, Nothing}        # Jacobian of f_tw w.r.t. x
-    g::Union{Function, Nothing}            # TW residual g(xi, R) = 0
-    Dg::Union{Function, Nothing}           # TW bordered Jacobian
+    g::Union{Function, Nothing}            # TW residual factory g(xref)(xi, R) = 0
+    Dg::Union{Function, Nothing}           # TW bordered Jacobian factory
 end
 
 function ODEModel(α::T, γ::T, J::Int, K::Int, L::Int, H::Vector{Symmetry}; 
@@ -104,78 +104,123 @@ function ODEModel(α::T, γ::T, J::Int, K::Int, L::Int, H::Vector{Symmetry};
             return Bfact \ (A1 + (1/R)*A2 + cx*Cx + cz*Cz + derivative(N, x))
         end
 
-        # Residual function for traveling wave: g(xi, R) = 0
-        # where xi = [x; cx; cz] is the augmented state vector
-        function g_inner(xi::AbstractVector, R::Real)
-            x = xi[1:m]
-            cx = xi[m+1]
-            cz = xi[m+2]
-
-            residual = (cx*Cx + cz*Cz)*x - A1*x - (1/R)*A2*x - N(x)
-
-            dim = m + (keep_cx ? 1 : 0) + (keep_cz ? 1 : 0)
-            g_full = zeros(eltype(residual), dim)
-            g_full[1:m] = residual
-
-            idx = m
-            if keep_cx
-                idx += 1
-                g_full[idx] = dot(Cx*x, x)
-            end
-            if keep_cz
-                idx += 1
-                g_full[idx] = dot(Cz*x, x)
-            end
-
-            return g_full
-        end
-
-        # Bordered Jacobian: Dg(xi, R)
-        function Dg_inner(xi::AbstractVector, R::Real)
-            x = xi[1:m]
-            cx = xi[m+1]
-            cz = xi[m+2]
-
-            Jx = cx*Cx + cz*Cz - A1 - (1/R)*A2 - derivative(N, x)
-
-            ∂r_∂cx = Cx * x
-            ∂r_∂cz = Cz * x
-
-            m_rows = m + (keep_cx ? 1 : 0) + (keep_cz ? 1 : 0)
-            m_cols = m + 2
-
-            Dg_matrix = zeros(eltype(Jx), m_rows, m_cols)
-            Dg_matrix[1:m, 1:m] = Jx
-            Dg_matrix[1:m, m+1] = ∂r_∂cx
-            Dg_matrix[1:m, m+2] = ∂r_∂cz
-
-            row = m
-            if keep_cx
-                row += 1
-                Dg_matrix[row, 1:m] = 2 * (Cx*x)'
-            end
-            if keep_cz
-                row += 1
-                Dg_matrix[row, 1:m] = 2 * (Cz*x)'
-            end
-
-            return Dg_matrix
-        end
-
         f_tw = f_tw_inner
         Df_tw = Df_tw_inner
-        g = g_inner
-        Dg = Dg_inner
     end
-    
-    ODEModel(α, γ, H, ijkl, Ψ, Ψshear, B, A1, A2, N, Bfact, f, Df,
-             Cx, Cz, keep_cx, keep_cz, f_tw, Df_tw, g, Dg)
+
+    build_model(g_fn, Dg_fn) = ODEModel(α, γ, H, ijkl, Ψ, Ψshear, B, A1, A2, N, Bfact, f, Df,
+                                        Cx, Cz, keep_cx, keep_cz, f_tw, Df_tw, g_fn, Dg_fn)
+
+    model = build_model(g, Dg)
+    if tw
+        g_factory = xref -> g_tw_with_ref(model, xref)
+        Dg_factory = xref -> Dg_tw_with_ref(model, xref)
+        model = build_model(g_factory, Dg_factory)
+    end
+
+    return model
 end
 
 length(model::ODEModel{T}) where T<:Real = length(model.Ψ)
 shear(x::Vector{T}, model::ODEModel{T}) where T<:Real = one(T) + dot(x, model.Ψshear)
 
 is_tw(model::ODEModel) = model.Cx !== nothing && model.Cz !== nothing
+
+"""
+    g_tw_with_ref(model, xref)
+
+Return a closure (xi, R) -> g(xi, R) that enforces ChannelFlow-style phase constraints
+using the fixed reference state xref.
+"""
+function g_tw_with_ref(model::ODEModel, xref::AbstractVector)
+    model.Cx === nothing && error("model has no TW operators (Cx)")
+    model.Cz === nothing && error("model has no TW operators (Cz)")
+
+    m = length(model.Ψ)
+    length(xref) == m || error("xref must have length $m")
+
+    ex = model.keep_cx ? (model.Cx * xref) : nothing
+    ez = model.keep_cz ? (model.Cz * xref) : nothing
+
+    return function (xi::AbstractVector, R::Real)
+        x, cx, cz = extract_components(xi, model)
+
+        residual = (cx*model.Cx + cz*model.Cz)*x - model.A1*x - (1/R)*model.A2*x - model.N(x)
+
+        dim = m + (model.keep_cx ? 1 : 0) + (model.keep_cz ? 1 : 0)
+        g_full = zeros(eltype(residual), dim)
+        g_full[1:m] = residual
+
+        idx = m
+        # Phase conditions are enforced using a fixed reference state xref equal to the initial guess for the Newton solve (ChannelFlow-style). Constraints are dot(Cx*xref, x-xref)=0 and dot(Cz*xref, x-xref)=0.
+        if model.keep_cx
+            idx += 1
+            g_full[idx] = dot(ex, x - xref)
+        end
+        if model.keep_cz
+            idx += 1
+            g_full[idx] = dot(ez, x - xref)
+        end
+
+        return g_full
+    end
+end
+
+"""
+    Dg_tw_with_ref(model, xref)
+
+Return a closure (xi, R) -> Dg(xi, R) that enforces ChannelFlow-style phase constraints
+using the fixed reference state xref.
+"""
+function Dg_tw_with_ref(model::ODEModel, xref::AbstractVector)
+    model.Cx === nothing && error("model has no TW operators (Cx)")
+    model.Cz === nothing && error("model has no TW operators (Cz)")
+
+    m = length(model.Ψ)
+    length(xref) == m || error("xref must have length $m")
+
+    ex = model.keep_cx ? (model.Cx * xref) : nothing
+    ez = model.keep_cz ? (model.Cz * xref) : nothing
+
+    return function (xi::AbstractVector, R::Real)
+        x, cx, cz = extract_components(xi, model)
+
+        Jx = cx*model.Cx + cz*model.Cz - model.A1 - (1/R)*model.A2 - derivative(model.N, x)
+
+        m_rows = m + (model.keep_cx ? 1 : 0) + (model.keep_cz ? 1 : 0)
+        m_cols = length(xi)
+
+        Dg_matrix = zeros(eltype(Jx), m_rows, m_cols)
+        Dg_matrix[1:m, 1:m] = Jx
+
+        if m_cols == m + 2
+            Dg_matrix[1:m, m+1] = model.Cx * x
+            Dg_matrix[1:m, m+2] = model.Cz * x
+        elseif m_cols == m + 1
+            if model.keep_cx && !model.keep_cz
+                Dg_matrix[1:m, m+1] = model.Cx * x
+            elseif !model.keep_cx && model.keep_cz
+                Dg_matrix[1:m, m+1] = model.Cz * x
+            else
+                error("ambiguous xi length for phase constraints")
+            end
+        elseif m_cols != m
+            error("xi has invalid length")
+        end
+
+        row = m
+        if model.keep_cx
+            row += 1
+            Dg_matrix[row, 1:m] = ex'
+        end
+        if model.keep_cz
+            row += 1
+            Dg_matrix[row, 1:m] = ez'
+        end
+
+        return Dg_matrix
+    end
+end
 
 """
     build_dissipation_matrix(model)

@@ -160,10 +160,7 @@ function compute_branch(J, K, L, udns_file; Re_start=200.0, α=1.0, γ=2.0, H=[(
     # 3. Solve for Fixed Point (Newton/Hookstep) at Re_start
     println("Finding fixed point at Re=$Re_start...")
     
-    g_closure(ξ) = model.g(ξ, Re_start)
-    Dg_closure(ξ) = model.Dg(ξ, Re_start)
-    
-    ξ_final, converged = hookstepsolve(g_closure, Dg_closure, ξ0, hookparams)
+    ξ_final, converged = hookstepsolve_tw(model, Re_start, ξ0, hookparams)
     
     if !converged
         println("WARNING: Newton solver did not converge for $J,$K,$L")
