@@ -30,3 +30,9 @@ Manifest.toml
 # Jupyter notebook checkpoints shouldn't be tracked
 .ipynb_checkpoints
 .virtual_documents/*
+
+venv/
+notebooks/boxsize/notebooks/boxsize/boxsize_sweep_results
+notebooks/boxsize/tw_boxsize_dynamics_re300
+findsoln/
+notebooks/tw_fuzzing-updated/fuzz_results/

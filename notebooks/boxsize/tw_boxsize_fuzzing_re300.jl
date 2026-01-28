@@ -25,6 +25,9 @@
 # - Multi-threading uses `Threads.@threads` over attempts. Adjust `JULIA_NUM_THREADS`.
 
 # %%
+import Pkg; Pkg.activate("../../.")
+
+# %%
 using CloudAtlas
 using LinearAlgebra
 using Statistics
@@ -44,8 +47,10 @@ J, K, L = 1, 2, 3
 
 # Grid of (α, γ). Edit as needed.
 # α = 2π/Lx, γ = 2π/Lz
-alpha_vals = range(2π/8.0, 2π/4.0, length=6)  # example: Lx in [8, 4]
-gamma_vals = range(2π/8.0, 2π/4.0, length=6)  # example: Lz in [8, 4]
+Lx_vals = range(1.0, 10.0, length=10)
+Lz_vals = range(1.0, 10.0, length=10)
+alpha_vals = 2π ./ Lx_vals
+gamma_vals = 2π ./ Lz_vals
 
 # Attempts per grid point
 attempts_per_point = 10_000  # set to 100_000 if you have time
