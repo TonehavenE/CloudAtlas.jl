@@ -141,10 +141,17 @@ end
 
 Save symmetry file in Channelflow format.
 """
-function save_sigma(::ODEModel, cx::Real, cz::Real, T::Real, filename::String)
+function save_sigma(::Type{ODEModel}, cx::Real, cz::Real, T::Real, filename::String)
     open(filename, "w") do file
         az = cz ≈ 0 ? 0 : round(-cz * T, sigdigits=6)
         ax = cx ≈ 0 ? 0 : round(-cx * T, sigdigits=6)
         write(file, "% 1\n1 1 1 1 $(ax) $(az)")
     end
+end
+
+function save_sigma(model::ODEModel, cx::Real, cz::Real, T::Real, filename::String)
+    # If a phase is not being constrained, treat its drift speed as zero for DNS promotion.
+    cx_eff = model.keep_cx ? cx : zero(cx)
+    cz_eff = model.keep_cz ? cz : zero(cz)
+    save_sigma(ODEModel, cx_eff, cz_eff, T, filename)
 end

@@ -137,6 +137,8 @@ fp_tol = (
 # Accept/reject thresholds
 norm_threshold = 1e-3
 speed_threshold = 1e-5
+promote_norm_threshold = 1e-2
+promote_residual_tol = 1e-6
 
 # Channelflow promotion settings
 T = 10.0
@@ -179,8 +181,8 @@ function random_guess(model, rng; xnorm = 0.4)
     m = length(model)
     x = randn(rng, m)
     x = xnorm / norm(x) * x
-    cx = randn(rng) * 0.1
-    cz = randn(rng) * 0.1
+    cx = model.keep_cx ? randn(rng) * 0.1 : 0.0
+    cz = model.keep_cz ? randn(rng) * 0.1 : 0.0
     return [x; cx; cz]
 end
 
@@ -301,10 +303,35 @@ function promote_with_findsoln!(solutions, model, Re;
     out_dir,
     reference_field_converted,
     T = 10.0,
+    promote_norm_threshold = 1e-2,
+    promote_residual_tol = 1e-6,
 )
     m = length(model)
     mkpath(out_dir)
-    for (idx, ξ) in enumerate(solutions)
+    io_lock = ReentrantLock()
+    progress = Threads.Atomic{Int}(0)
+    total = length(solutions)
+    progress_every = max(1, total ÷ 100)
+    @threads for idx in 1:total
+        ξ = solutions[idx]
+        x, cx, cz = extract_components(ξ, model)
+        cx_eff = model.keep_cx ? cx : 0.0
+        cz_eff = model.keep_cz ? cz : 0.0
+        resnorm = norm(CloudAtlas.residual(model, x, cx_eff, cz_eff, Re))
+        if norm(x) < promote_norm_threshold || resnorm > promote_residual_tol
+            lock(io_lock) do
+                println("Skipping promotion idx=$(idx): ||x||=$(norm(x)), ||res||=$(resnorm), cx=$(cx_eff), cz=$(cz_eff)")
+            end
+            done = Threads.atomic_add!(progress, 1)
+            if done % progress_every == 0 || done == total
+                lock(io_lock) do
+                    pct = round(100 * done / total; digits=1)
+                    println("Promotion progress: $(done)/$(total) ($(pct)%)")
+                end
+            end
+            continue
+        end
+
         timestamp = Dates.format(now(), "MM-DD-HHMMSS")
         sol_dir = joinpath(out_dir, "sol_$(idx)_$(timestamp)")
         mkpath(sol_dir)
@@ -312,10 +339,13 @@ function promote_with_findsoln!(solutions, model, Re;
         guess_path = joinpath(sol_dir, "u_guess.nc")
         sigma_file = joinpath(sol_dir, "sigma.asc")
 
-        coeff2field(ξ[1:m], model.ijkl, reference_field_converted, guess_path)
-        save_sigma(model, ξ[end - 1], ξ[end], T, sigma_file)
+        coeff2field(x, model.ijkl, reference_field_converted, guess_path)
+        save_sigma(model, cx_eff, cz_eff, T, sigma_file)
 
         try
+            lock(io_lock) do
+                println("Promoting idx=$(idx): ||x||=$(norm(x)), ||res||=$(resnorm), cx=$(cx_eff), cz=$(cz_eff)")
+            end
             findsoln(guess_path;
                 R = Re,
                 eqb = true,
@@ -327,7 +357,17 @@ function promote_with_findsoln!(solutions, model, Re;
                 T = T,
             )
         catch e
-            println("findsoln failed: $(e)")
+            lock(io_lock) do
+                println("findsoln failed idx=$(idx): $(e)")
+            end
+        end
+
+        done = Threads.atomic_add!(progress, 1)
+        if done % progress_every == 0 || done == total
+            lock(io_lock) do
+                pct = round(100 * done / total; digits=1)
+                println("Promotion progress: $(done)/$(total) ($(pct)%)")
+            end
         end
     end
 end
@@ -386,6 +426,8 @@ for symm in symmetry_groups
             out_dir = joinpath(level_dir, "findsoln"),
             reference_field_converted = reference_field_converted,
             T = T,
+            promote_norm_threshold = promote_norm_threshold,
+            promote_residual_tol = promote_residual_tol,
         )
     end
 end
