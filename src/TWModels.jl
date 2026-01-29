@@ -25,7 +25,7 @@ struct ODEState{T<:Real}
 end
 
 ODEState(x::Vector{T}) where {T<:Real} = ODEState{T}(x, nothing, nothing)
-ODEState(x::Vector{T}, cx::Real, cz::Real) where {T<:Real} = ODEState{T}(x, T(cx), T(cz))
+ODEState(x::Vector{T}, cx::T, cz::T) where {T<:Real} = ODEState{T}(x, cx, cz)
 
 """
     extract_components(state::ODEState)
@@ -33,8 +33,9 @@ ODEState(x::Vector{T}, cx::Real, cz::Real) where {T<:Real} = ODEState{T}(x, T(cx
 Return (x, cx, cz) with missing speeds as 0.0.
 """
 function extract_components(state::ODEState)
-    cx = state.cx === nothing ? 0.0 : state.cx
-    cz = state.cz === nothing ? 0.0 : state.cz
+    T = eltype(state.x)
+    cx = state.cx === nothing ? zero(T) : state.cx
+    cz = state.cz === nothing ? zero(T) : state.cz
     return state.x, cx, cz
 end
 
@@ -46,18 +47,20 @@ Prefer ODEState for new code.
 """
 function extract_components(xi::AbstractVector, model::ODEModel)
     m = length(model.Ψ)
+    x = xi[1:m]
+    T = eltype(x)
     if length(xi) == m + 2
-        return xi[1:m], xi[m+1], xi[m+2]
+        return x, T(xi[m+1]), T(xi[m+2])
     elseif length(xi) == m + 1
         if model.keep_cx && !model.keep_cz
-            return xi[1:m], xi[m+1], 0.0
+            return x, T(xi[m+1]), zero(T)
         elseif !model.keep_cx && model.keep_cz
-            return xi[1:m], 0.0, xi[m+1]
+            return x, zero(T), T(xi[m+1])
         else
             error("ambiguous xi length for phase constraints")
         end
     elseif length(xi) == m
-        return xi, 0.0, 0.0
+        return x, zero(T), zero(T)
     else
         error("xi has invalid length")
     end

@@ -71,7 +71,7 @@ x0 = myreaddlm("data/xtw1projection-Re$(R)-$(J)-$(K)-$(L)-$(m)d.asc")
 
 # %%
 # Use hookstep to find a solution with fixed-reference phase constraints
-ξ_final, converged = hookstepsolve_tw(model, R, ξ0, hookparams)
+ξ_final, converged = hookstepsolve(model, R, ξ0, hookparams)
 
 # %%
 x_sol = ξ_final[1:m]

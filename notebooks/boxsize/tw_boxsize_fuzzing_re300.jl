@@ -124,36 +124,7 @@ mkpath(out_dir)
 # ## Helpers
 
 # %%
-struct SolutionFingerprint
-    cx::Float64
-    cz::Float64
-    nm::Float64
-end
-
-function fingerprint(model, ξ)
-    x, cx, cz = extract_components(ξ, model)
-    return SolutionFingerprint(cx, cz, norm(x))
-end
-
-function is_distinct(new_fp::SolutionFingerprint, archive::Vector{SolutionFingerprint}; tol = fp_tol)
-    for fp in archive
-        if isapprox(new_fp.cx, fp.cx, atol = tol.cx) &&
-           isapprox(new_fp.cz, fp.cz, atol = tol.cz) &&
-           isapprox(new_fp.nm, fp.nm, atol = tol.nm)
-            return false
-        end
-    end
-    return true
-end
-
-function random_guess(model, rng; xnorm = 0.4)
-    m = length(model)
-    x = randn(rng, m)
-    x = xnorm / norm(x) * x
-    cx = randn(rng) * 0.1
-    cz = randn(rng) * 0.1
-    return [x; cx; cz]
-end
+# Using shared fingerprint/guess utilities from CloudAtlas
 
 function fuzz_once(model, Re; n_attempts = 1000)
     m = length(model)
@@ -169,14 +140,14 @@ function fuzz_once(model, Re; n_attempts = 1000)
         rng = tid <= length(rngs) ? rngs[tid] : Random.default_rng()
         ξ_guess = random_guess(model, rng; xnorm = xnorm)
 
-        ξ_star, converged = CloudAtlas.hookstepsolve_tw(model, Re, ξ_guess, hookparams)
+        ξ_star, converged = CloudAtlas.hookstepsolve(model, Re, ξ_guess, hookparams)
 
         if converged
             x, cx, cz = extract_components(ξ_star, model)
             if norm(x) > norm_threshold && (abs(cx) > speed_threshold || abs(cz) > speed_threshold)
-                fp = fingerprint(model, ξ_star)
+                fp = fingerprint(model, ξ_star; include_shear = false)
                 lock(data_lock) do
-                    if is_distinct(fp, fingerprints)
+                    if is_distinct(fp, fingerprints; tol = (cx = fp_tol.cx, cz = fp_tol.cz, nm = fp_tol.nm, shear = fp_tol.nm), compare_shear = false)
                         push!(fingerprints, fp)
                         push!(solutions, ξ_star)
                     end

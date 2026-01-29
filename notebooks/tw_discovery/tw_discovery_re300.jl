@@ -120,7 +120,7 @@ hookparams = SearchParams(
     verbosity = 0,
 )
 
-# Guess strategy options: :random, :shear_target, :trajectory
+# Guess strategy options: :random, :shear_target, :shear_band
 guess_strategy = :random
 xnorm = 0.4
 shear_target = 1.2
@@ -151,62 +151,6 @@ reference_field_converted = joinpath(out_dir, "reference_field_$(α)_$(γ).nc")
 
 # %% [markdown]
 # ## Helper types and functions
-
-# %%
-struct SolutionFingerprint
-    cx::Float64
-    cz::Float64
-    nm::Float64
-    shear::Float64
-end
-
-function fingerprint(model, ξ)
-    x, cx, cz = extract_components(ξ, model)
-    return SolutionFingerprint(cx, cz, norm(x), shear(x, model))
-end
-
-function is_distinct(new_fp::SolutionFingerprint, archive::Vector{SolutionFingerprint}; tol = fp_tol)
-    for fp in archive
-        if isapprox(new_fp.cx, fp.cx, atol = tol.cx) &&
-           isapprox(new_fp.cz, fp.cz, atol = tol.cz) &&
-           isapprox(new_fp.nm, fp.nm, atol = tol.nm) &&
-           isapprox(new_fp.shear, fp.shear, atol = tol.shear)
-            return false
-        end
-    end
-    return true
-end
-
-function random_guess(model, rng; xnorm = 0.4)
-    m = length(model)
-    x = randn(rng, m)
-    x = xnorm / norm(x) * x
-    cx = model.keep_cx ? randn(rng) * 0.1 : 0.0
-    cz = model.keep_cz ? randn(rng) * 0.1 : 0.0
-    return [x; cx; cz]
-end
-
-function shear_target_guess(model, rng; xnorm = 0.4, target = 1.2, tol = 0.05, max_tries = 100)
-    for _ in 1:max_tries
-        ξ = random_guess(model, rng; xnorm = xnorm)
-        x = ξ[1:length(model)]
-        if abs(shear(x, model) - target) <= tol
-            return ξ
-        end
-    end
-    # fallback
-    return random_guess(model, rng; xnorm = xnorm)
-end
-
-function build_guess(model, rng; strategy = :random, xnorm = 0.4, target = 1.2, tol = 0.05)
-    if strategy == :random
-        return random_guess(model, rng; xnorm = xnorm)
-    elseif strategy == :shear_target
-        return shear_target_guess(model, rng; xnorm = xnorm, target = target, tol = tol)
-    else
-        error("Unknown strategy: $(strategy)")
-    end
-end
 
 function save_summary(path, solutions, model)
     header = ["id" "cx" "cz" "norm" "shear"]
@@ -263,14 +207,14 @@ function fuzz_tw_solutions(model::TWModel, Re::Real;
             tol = shear_tol,
         )
 
-        ξ_star, converged = CloudAtlas.hookstepsolve_tw(model, Re, ξ_guess, hookparams)
+        ξ_star, converged = CloudAtlas.hookstepsolve(model, Re, ξ_guess, hookparams)
 
         if converged
             x, cx, cz = extract_components(ξ_star, model)
             if norm(x) > norm_threshold && (abs(cx) > speed_threshold || abs(cz) > speed_threshold)
                 fp = fingerprint(model, ξ_star)
                 lock(data_lock) do
-                    if is_distinct(fp, fingerprints)
+                    if is_distinct(fp, fingerprints; tol = fp_tol)
                         push!(fingerprints, fp)
                         push!(solutions, ξ_star)
                         lock(io_lock) do

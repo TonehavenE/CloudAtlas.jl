@@ -62,31 +62,6 @@ mkpath(out_dir)
 # %% [markdown]
 # ## Helper types
 
-# %%
-struct SolutionFingerprint
-    cx::Float64
-    cz::Float64
-    nm::Float64
-    shear::Float64
-end
-
-function fingerprint(model, ξ)
-    x, cx, cz = extract_components(ξ, model)
-    return SolutionFingerprint(cx, cz, norm(x), shear(x, model))
-end
-
-function is_distinct(new_fp::SolutionFingerprint, archive::Vector{SolutionFingerprint}; tol = fp_tol)
-    for fp in archive
-        if isapprox(new_fp.cx, fp.cx, atol=tol.cx) &&
-           isapprox(new_fp.cz, fp.cz, atol=tol.cz) &&
-           isapprox(new_fp.nm, fp.nm, atol=tol.nm) &&
-           isapprox(new_fp.shear, fp.shear, atol=tol.shear)
-            return false
-        end
-    end
-    return true
-end
-
 # %% [markdown]
 # ## Load solutions
 
@@ -125,7 +100,7 @@ progress = 0
 progress_every = max(1, length(solutions) ÷ 100)
 for (i, ξ) in enumerate(solutions)
     fp = fingerprint(model, ξ)
-    if is_distinct(fp, fp_archive)
+    if is_distinct(fp, fp_archive; tol = fp_tol)
         push!(fp_archive, fp)
         push!(unique_solutions, ξ)
     end

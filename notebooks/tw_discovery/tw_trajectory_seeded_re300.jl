@@ -77,40 +77,6 @@ mkpath(out_dir)
 # %% [markdown]
 # ## Helper types and functions
 
-# %%
-struct SolutionFingerprint
-    cx::Float64
-    cz::Float64
-    nm::Float64
-    shear::Float64
-end
-
-function fingerprint(model, ξ)
-    x, cx, cz = extract_components(ξ, model)
-    return SolutionFingerprint(cx, cz, norm(x), shear(x, model))
-end
-
-function is_distinct(new_fp::SolutionFingerprint, archive::Vector{SolutionFingerprint}; tol=(cx=1e-3, cz=1e-3, nm=2e-2, shear=2e-2))
-    for fp in archive
-        if isapprox(new_fp.cx, fp.cx, atol=tol.cx) &&
-           isapprox(new_fp.cz, fp.cz, atol=tol.cz) &&
-           isapprox(new_fp.nm, fp.nm, atol=tol.nm) &&
-           isapprox(new_fp.shear, fp.shear, atol=tol.shear)
-            return false
-        end
-    end
-    return true
-end
-
-function random_guess(model, rng; xnorm=0.4)
-    m = length(model)
-    x = randn(rng, m)
-    x = xnorm / norm(x) * x
-    cx = randn(rng) * 0.1
-    cz = randn(rng) * 0.1
-    return [x; cx; cz]
-end
-
 function find_trajectory_minima(model, sol, D_matrix; window=5, vel_threshold=0.5)
     I_vals = [CloudAtlas.power_input(model, u) for u in sol.u]
     D_vals = [CloudAtlas.dissipation_rate(D_matrix, u) for u in sol.u]
@@ -182,7 +148,7 @@ progress_every = max(1, length(guesses) ÷ 100)
 @threads for i in 1:length(guesses)
     _, ξ_guess = guesses[i]
 
-    ξ_star, converged = CloudAtlas.hookstepsolve_tw(model, Re, ξ_guess, hookparams)
+    ξ_star, converged = CloudAtlas.hookstepsolve(model, Re, ξ_guess, hookparams)
 
     if converged
         x, cx, cz = extract_components(ξ_star, model)

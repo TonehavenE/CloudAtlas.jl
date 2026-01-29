@@ -24,29 +24,7 @@ using LinearAlgebra
 using Statistics
 
 # %%
-struct SolutionFingerprint
-    cx::Float64
-    cz::Float64
-    nm::Float64
-end
-
-function get_fingerprint(model, ξ)
-    # Extract physical components (assuming ξ = [x..., cx, cz] based on TWModel)
-    x, cx, cz = extract_components(ξ, model)
-    return SolutionFingerprint(cx, cz, norm(x))
-end
-
-function is_distinct(new_fp::SolutionFingerprint, archive::Vector{SolutionFingerprint}; tol=1e-2)
-    for fp in archive
-        # Check wave speeds and norm
-        if isapprox(new_fp.cx, fp.cx, atol=tol) && 
-           isapprox(new_fp.cz, fp.cz, atol=tol) && 
-           isapprox(new_fp.nm, fp.nm, atol=tol)
-            return false # Duplicate found
-        end
-    end
-    return true
-end
+# Using shared fingerprint utilities from CloudAtlas
 
 # %%
 """
@@ -79,7 +57,7 @@ function find_fixed_points(model::TWModel, Re::Real; n_attempts=50, xnorm=0.4, h
         ξ_guess = [x_guess; cx_guess; cz_guess]
 
         # 2. Solve with fixed-reference phase constraints
-        ξ_star, converged = CloudAtlas.hookstepsolve_tw(model, Re, ξ_guess, hookparams)
+        ξ_star, converged = CloudAtlas.hookstepsolve(model, Re, ξ_guess, hookparams)
         
         # 4. Validation & Storage
         if converged
@@ -88,10 +66,10 @@ function find_fixed_points(model::TWModel, Re::Real; n_attempts=50, xnorm=0.4, h
             cx = ξ_star[m+1]
             cz = ξ_star[m+2]
             if norm(x_sol) > 1e-2 && (cx > 0 || cz > 0)
-                fp = get_fingerprint(model, ξ_star)
+                fp = fingerprint(model, ξ_star; include_shear = false)
                 
                 lock(data_lock) do
-                    if is_distinct(fp, fingerprints)
+                    if is_distinct(fp, fingerprints; tol = (cx = 1e-2, cz = 1e-2, nm = 1e-2, shear = 1e-2), compare_shear = false)
                         push!(fingerprints, fp)
                         push!(solutions, ξ_star)
                         lock(io_lock) do 
@@ -300,7 +278,7 @@ function harvest_solutions_from_trajectory(model::TWModel, Re::Real, sol)
     
     for (t_val, ξ_guess) in candidates
         print("  Searching from snapshot at t=$t_val... ")
-        ξ_star, converged = CloudAtlas.hookstepsolve_tw(model, Re, ξ_guess, hookparams)
+        ξ_star, converged = CloudAtlas.hookstepsolve(model, Re, ξ_guess, hookparams)
         
         if converged
             # Check if it's a trivial solution (Laminar flow has norm ≈ 0 usually, depending on basis)

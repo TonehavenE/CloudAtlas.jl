@@ -9,17 +9,24 @@ end
 Solve a traveling-wave residual using fixed-reference phase conditions.
 The reference xref is frozen to the initial guess (x part only) for the Newton solve.
 """
-function hookstepsolve_tw(
+function hookstepsolve(
     model::ODEModel,
     R::Real,
     xguess::AbstractVector{T},
-    params = SearchParams()
+    params = SearchParams();
+    xref = nothing
 ) where {T<:Real}
     model.Cx === nothing && error("model has no TW operators (Cx)")
     model.Cz === nothing && error("model has no TW operators (Cz)")
 
-    xref, _, _ = extract_components(xguess, model)
-    xref = copy(xref)
+    if xref === nothing
+        xref, _, _ = extract_components(xguess, model)
+        xref = copy(xref)
+    else
+        m = length(model)
+        length(xref) == m || error("xref must have length $m")
+        xref = copy(xref)
+    end
 
     g_ref = g_tw_with_ref(model, xref)
     Dg_ref = Dg_tw_with_ref(model, xref)
@@ -29,6 +36,9 @@ function hookstepsolve_tw(
 
     return hookstepsolve(f, Df, xguess, params)
 end
+
+hookstepsolve_tw(model::ODEModel, R::Real, xguess::AbstractVector{T}, params = SearchParams()) where {T<:Real} =
+    hookstepsolve(model, R, xguess, params)
 
 Base.@kwdef struct SearchParams{T<:Real}
     ftol::T=1e-08 

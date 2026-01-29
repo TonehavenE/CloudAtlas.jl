@@ -36,6 +36,11 @@ include("TWModels.jl")
 
 export TWModel, ODEState, save_sigma, extract_components, state_to_xi, xi_to_state, save_state
 
+include("Guessing.jl")
+
+export SolutionFingerprint, fingerprint, get_fingerprint, is_distinct
+export random_guess, get_random_guess, shear_target_guess, shear_dominant_indices, shear_band_guess, build_guess
+
 # ====================================================================================
 # VISUALIZATION API
 # These types and function names are defined here so they can be exported.
