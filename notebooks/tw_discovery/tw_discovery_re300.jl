@@ -13,6 +13,10 @@
 #     name: julia-1.11
 # ---
 
+# %%
+import Pkg
+Pkg.activate("../../.")
+
 # %% [markdown]
 # # Traveling-Wave Discovery (Re=300)
 #
@@ -23,8 +27,12 @@
 # This notebook is designed to handle multiple symmetry groups and discretizations.
 #
 # Notes:
-# - The default guess strategy is random. You can enable shear-targeted guesses or
-#   trajectory-sampled guesses by toggling `guess_strategy` below.
+# - The default guess strategy is random (Gaussian coefficients rescaled to `xnorm`,
+#   with random cx/cz if those speeds are kept).
+# - `:shear_target` uses rejection sampling until wall-shear is within `shear_tol`
+#   of `shear_target`.
+# - `:shear_band` (alias `:shear_modes`) samples dominant shear modes to land in a
+#   shear window [`shear_min`, `shear_max`] while keeping the remaining modes small.
 # - The `findsoln` stage will write results to `out_dir`.
 
 # %%
@@ -49,9 +57,10 @@ using ChannelflowWrapper
 Re = 300.0
 
 # Discretizations: (J, K, L)
-discretizations = [
+# Use a ladder: start coarse, then project/refine to finer discretizations.
+discretization_ladder = [
+    (1, 2, 3),
     (2, 4, 7),
-    (3, 5, 7),
     (3, 5, 9),
 ]
 
@@ -106,8 +115,11 @@ symmetry_groups = [
     ),
 ]
 
-# Attempts per symmetry/discretization
+# Attempts per symmetry at the coarsest ladder level
 attempts_per_level = 10_000
+
+# Only run promotion at the highest ladder level
+promote_each_level = false
 
 # Hookstep parameters
 hookparams = SearchParams(
@@ -120,11 +132,13 @@ hookparams = SearchParams(
     verbosity = 0,
 )
 
-# Guess strategy options: :random, :shear_target, :shear_band
-guess_strategy = :random
+# Guess strategy options: :random, :shear_target, :shear_band (aka :shear_modes)
+guess_strategy = :shear_band
 xnorm = 0.4
 shear_target = 1.2
 shear_tol = 0.05
+shear_min = 1.0
+shear_max = 3.0
 
 # Dedup tolerances
 fp_tol = (
@@ -172,6 +186,45 @@ function save_summary(path, solutions, model)
     writedlm(path, vcat(header, rows), ',')
 end
 
+function project_solution(ξ_from, model_from::ODEModel, model_to::ODEModel)
+    x_from, cx_from, cz_from = extract_components(ξ_from, model_from)
+    x_to = changebasis(x_from, model_from.ijkl, model_to.ijkl)
+    cx_to = model_to.keep_cx ? cx_from : zero(cx_from)
+    cz_to = model_to.keep_cz ? cz_from : zero(cz_from)
+    return state_to_xi(model_to, ODEState(x_to, cx_to, cz_to))
+end
+
+function refine_projected_solutions(model_from::ODEModel, model_to::ODEModel, Re;
+    solutions_from,
+    hookparams,
+    norm_threshold = 1e-3,
+    speed_threshold = 1e-5,
+)
+    refined = Vector{Vector{Float64}}()
+    fingerprints = Vector{SolutionFingerprint}()
+    io_lock = ReentrantLock()
+
+    @threads for i in eachindex(solutions_from)
+        ξ_guess = project_solution(solutions_from[i], model_from, model_to)
+        ξ_star, converged = CloudAtlas.hookstepsolve(model_to, Re, ξ_guess, hookparams)
+        if converged
+            x, cx, cz = extract_components(ξ_star, model_to)
+            if norm(x) > norm_threshold && (abs(cx) > speed_threshold || abs(cz) > speed_threshold)
+                fp = fingerprint(model_to, ξ_star)
+                lock(io_lock) do
+                    if is_distinct(fp, fingerprints; tol = fp_tol)
+                        push!(fingerprints, fp)
+                        push!(refined, ξ_star)
+                    end
+                end
+            end
+        end
+    end
+
+    return refined, fingerprints
+end
+
+
 # %% [markdown]
 # ## Fuzzing + deduplication
 
@@ -205,6 +258,8 @@ function fuzz_tw_solutions(model::TWModel, Re::Real;
             xnorm = xnorm,
             target = shear_target,
             tol = shear_tol,
+            shear_min = shear_min,
+            shear_max = shear_max,
         )
 
         ξ_star, converged = CloudAtlas.hookstepsolve(model, Re, ξ_guess, hookparams)
@@ -290,14 +345,20 @@ function promote_with_findsoln!(solutions, model, Re;
         guess_path = joinpath(sol_dir, "u_guess.nc")
         sigma_file = joinpath(sol_dir, "sigma.asc")
 
-        coeff2field(x, model.ijkl, reference_field_converted, guess_path)
+        println("[Thread $(threadid())] coeff2field idx=$(idx)")
+        coeff2field(x, model.ijkl, reference_field_converted, guess_path; workdir = sol_dir)
+        println("[Thread $(threadid())] save_sigma idx=$(idx)")
         save_sigma(model, cx_eff, cz_eff, T, sigma_file)
 
         try
             lock(io_lock) do
                 println("Promoting idx=$(idx): ||x||=$(norm(x)), ||res||=$(resnorm), cx=$(cx_eff), cz=$(cz_eff)")
             end
+            # Run findsoln inside its own directory to avoid temp file collisions.
+            # Also override temp dirs for Channelflow's temp_* files.
+            println("[Thread $(threadid())] findsoln start idx=$(idx)")
             findsoln(guess_path;
+                workdir = sol_dir,
                 R = Re,
                 eqb = true,
                 xrel = model.keep_cx,
@@ -307,6 +368,7 @@ function promote_with_findsoln!(solutions, model, Re;
                 od = sol_dir,
                 T = T,
             )
+            println("[Thread $(threadid())] findsoln done idx=$(idx)")
         catch e
             lock(io_lock) do
                 println("findsoln failed idx=$(idx): $(e)")
@@ -337,58 +399,76 @@ for symm in symmetry_groups
     println("\n=== Symmetry: $(symm_name) ===")
     println("symm_file: $(symm_file)")
 
-    for (J, K, L) in discretizations
-        println("\n--- J,K,L = $(J),$(K),$(L) ---")
+    prev_model = nothing
+    prev_solutions = Vector{Vector{Float64}}()
+
+    for (level_idx, (J, K, L)) in enumerate(discretization_ladder)
+        println("\n--- Ladder level $(level_idx): J,K,L = $(J),$(K),$(L) ---")
 
         model = ODEModel(α, γ, J, K, L, H; normalize = false, tw = true)
-
         level_dir = joinpath(out_dir, symm_name, "jkl_$(J)_$(K)_$(L)")
         mkpath(level_dir)
 
-        solutions, fingerprints = fuzz_tw_solutions(
-            model,
-            Re;
-            n_attempts = attempts_per_level,
-            xnorm = xnorm,
-            strategy = guess_strategy,
-            shear_target = shear_target,
-            shear_tol = shear_tol,
-            hookparams = hookparams,
-            norm_threshold = norm_threshold,
-            speed_threshold = speed_threshold,
-        )
+        if level_idx == 1
+            solutions, _ = fuzz_tw_solutions(
+                model,
+                Re;
+                n_attempts = attempts_per_level,
+                xnorm = xnorm,
+                strategy = guess_strategy,
+                shear_target = shear_target,
+                shear_tol = shear_tol,
+                hookparams = hookparams,
+                norm_threshold = norm_threshold,
+                speed_threshold = speed_threshold,
+            )
+            prev_solutions = solutions
+        else
+            solutions, _ = refine_projected_solutions(
+                prev_model,
+                model,
+                Re;
+                solutions_from = prev_solutions,
+                hookparams = hookparams,
+                norm_threshold = norm_threshold,
+                speed_threshold = speed_threshold,
+            )
+            prev_solutions = solutions
+        end
 
         # Save summary of unique solutions
         summary_path = joinpath(level_dir, "solutions_summary.csv")
-        save_summary(summary_path, solutions, model)
+        save_summary(summary_path, prev_solutions, model)
 
         # Save raw solutions (for later reuse)
         serialized_path = joinpath(level_dir, "solutions.bin")
         open(serialized_path, "w") do io
-            serialize(io, solutions)
+            serialize(io, prev_solutions)
         end
 
-        # Promote to Channelflow
-        promote_with_findsoln!(
-            solutions,
-            model,
-            Re;
-            symm_file = symm_file,
-            out_dir = joinpath(level_dir, "findsoln"),
-            reference_field_converted = reference_field_converted,
-            T = T,
-            promote_norm_threshold = promote_norm_threshold,
-            promote_residual_tol = promote_residual_tol,
-        )
+        if promote_each_level || level_idx == length(discretization_ladder)
+            promote_with_findsoln!(
+                prev_solutions,
+                model,
+                Re;
+                symm_file = symm_file,
+                out_dir = joinpath(level_dir, "findsoln"),
+                reference_field_converted = reference_field_converted,
+                T = T,
+                promote_norm_threshold = promote_norm_threshold,
+                promote_residual_tol = promote_residual_tol,
+            )
+        end
+
+        prev_model = model
     end
 end
 
 # %% [markdown]
 # ## Notes
 #
-# - To change the guess strategy, set `guess_strategy = :shear_target` or add your own
-#   generator in `build_guess`.
-# - For trajectory-based guesses (like state_space_geography), consider precomputing a
-#   pool of snapshots and sampling from that in `build_guess`.
+# - To change the guess strategy, set `guess_strategy = :shear_target` or
+#   `guess_strategy = :shear_band` (alias `:shear_modes`), or add your own generator in
+#   `build_guess` (see `src/Guessing.jl`).
 # - If `findsoln` is too heavy, comment out the `promote_with_findsoln!` call and run
 #   it later using the saved `solutions.bin`.

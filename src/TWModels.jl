@@ -148,7 +148,7 @@ function save_sigma(::Type{ODEModel}, cx::Real, cz::Real, T::Real, filename::Str
     open(filename, "w") do file
         az = cz ≈ 0 ? 0 : round(-cz * T, sigdigits=6)
         ax = cx ≈ 0 ? 0 : round(-cx * T, sigdigits=6)
-        write(file, "% 1\n1 1 1 1 $(ax) $(az)")
+        write(file, "% 1\n1 1 1 1 $(ax) $(az)\n\n")
     end
 end
 
