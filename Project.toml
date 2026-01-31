@@ -22,6 +22,7 @@ SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 StringBuilders = "db12335b-fddc-5e1b-b0ee-42071d21ae50"
+WGLMakie = "276b4fcb-3e11-5398-bf8b-a0c2d153d008"
 
 [sources]
 ChannelflowWrapper = {url = "https://github.com/TonehavenE/ChannelflowWrapper.jl"}
@@ -49,3 +50,4 @@ Random = "1.11.0"
 SparseArrays = "1.11.0"
 StaticArrays = "1.9.15"
 StringBuilders = "0.3.3"
+WGLMakie = "0.13.7"
