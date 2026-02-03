@@ -24,8 +24,8 @@ const L = 5
 const Re = 300.0
 
 # Grid in physical box sizes
-const Lx_vals = range(5, 15; length = 25)
-const Lz_vals = range(2, 10; length = 25)
+const Lx_vals = range(8, 12; length=30)
+const Lz_vals = range(5, 8; length=30)
 
 # Number of guesses per grid point
 const N = 1000
@@ -41,10 +41,10 @@ const top_k = nothing   # alternatively choose a fixed number of dominant modes
 # Accept/reject threshold for equilibria
 const norm_threshold = 1e-3
 # Dedup tolerances
-const fp_tol = (cx = 1e-3, cz = 1e-3, nm = 2e-2, shear = 2e-2)
+const fp_tol = (cx=1e-3, cz=1e-3, nm=2e-2, shear=2e-2)
 
 # Solver parameters
-const hookparams = SearchParams(ftol = 1e-8, xtol = 1e-10, Nnewton = 25, Nhook = 6, verbosity = 0)
+const hookparams = SearchParams(; ftol=1e-8, xtol=1e-10, Nnewton=25, Nhook=6, verbosity=0)
 
 # Continuation settings (edit as needed)
 const cont_Re_min = 100.0
@@ -68,7 +68,7 @@ const default_groups = ["A", "B", "C", "E", "F", "G"]
 const legacy_groups = Set(["D"])
 
 # Output root
-const group_root = joinpath(@__DIR__, "eqb_alpha_gamma_grid")
+const group_root = joinpath(@__DIR__, "eqb_alpha_gamma_grid", "high-res")
 
 # -------------------------
 # Symmetry groups
@@ -76,13 +76,13 @@ const group_root = joinpath(@__DIR__, "eqb_alpha_gamma_grid")
 function symmetry_groups()
     sx, sy, sz, tx, tz = halfbox_symmetries()
     return [
-        (name = "A", desc = "<sxyz, txz>", H = [sx * sy * sz, tx * tz]),
-        (name = "B", desc = "<sxy, sz>", H = [sx * sy, sz]),
-        (name = "C", desc = "<sxytz, sz>", H = [sx * sy * tz, sz]),
-        (name = "D", desc = "<sxy, sztx>", H = [sx * sy, sz * tx]),
-        (name = "E", desc = "<sxyz, sztxz>", H = [sx * sy * sz, sz * tx * tz]),
-        (name = "F", desc = "<sxy, sz, txz>", H = [sx * sy, sz, tx * tz]),
-        (name = "G", desc = "<sxyz>", H = [sx * sy * sz]),
+        (name="A", desc="<sxyz, txz>", H=[sx * sy * sz, tx * tz]),
+        (name="B", desc="<sxy, sz>", H=[sx * sy, sz]),
+        (name="C", desc="<sxytz, sz>", H=[sx * sy * tz, sz]),
+        (name="D", desc="<sxy, sztx>", H=[sx * sy, sz * tx]),
+        (name="E", desc="<sxyz, sztxz>", H=[sx * sy * sz, sz * tx * tz]),
+        (name="F", desc="<sxy, sz, txz>", H=[sx * sy, sz, tx * tz]),
+        (name="G", desc="<sxyz>", H=[sx * sy * sz]),
     ]
 end
 
@@ -92,7 +92,7 @@ function parse_group_args(all_groups)
         if arg == "--all"
             return names
         elseif startswith(arg, "--groups=")
-            grp_str = split(arg, "=", limit = 2)[2]
+            grp_str = split(arg, "="; limit=2)[2]
             req = [strip(s) for s in split(grp_str, ",") if !isempty(strip(s))]
             for g in req
                 g in names || error("Unknown group '$g'. Available: $(join(names, ", "))")
@@ -117,8 +117,17 @@ mutable struct ProgressState
     initial_done::Int
 end
 
-function make_progress(label, total; initial_done = 0, min_interval = 5.0)
-    state = ProgressState(Threads.Atomic{Int}(initial_done), total, time(), 0.0, min_interval, ReentrantLock(), label, initial_done)
+function make_progress(label, total; initial_done=0, min_interval=5.0)
+    state = ProgressState(
+        Threads.Atomic{Int}(initial_done),
+        total,
+        time(),
+        0.0,
+        min_interval,
+        ReentrantLock(),
+        label,
+        initial_done,
+    )
     return state
 end
 
@@ -133,7 +142,7 @@ function format_hhmmss(seconds::Float64)
     return @sprintf("%02d:%02d:%02d", h, m, s)
 end
 
-function progress_print(state::ProgressState; force = false)
+function progress_print(state::ProgressState; force=false)
     done = state.counter[]
     processed = done - state.initial_done
     now = time()
@@ -147,8 +156,15 @@ function progress_print(state::ProgressState; force = false)
     pct = 100 * done / state.total
     if force || done == state.total || (now - state.last_print) >= state.min_interval
         state.last_print = now
-        @printf("[%s] %d/%d (%.1f%%), elapsed %s, ETA %s\n",
-            state.label, done, state.total, pct, format_hhmmss(elapsed), format_hhmmss(eta))
+        @printf(
+            "[%s] %d/%d (%.1f%%), elapsed %s, ETA %s\n",
+            state.label,
+            done,
+            state.total,
+            pct,
+            format_hhmmss(elapsed),
+            format_hhmmss(eta)
+        )
     end
 end
 
@@ -159,9 +175,9 @@ function progress_update!(state::ProgressState)
     end
 end
 
-function find_index(vals::Vector{Float64}, target::Float64; atol = 1e-6)
+function find_index(vals::Vector{Float64}, target::Float64; atol=1e-6)
     for (i, v) in pairs(vals)
-        if isapprox(v, target; atol = atol, rtol = 0.0)
+        if isapprox(v, target; atol=atol, rtol=0.0)
             return i
         end
     end
@@ -174,7 +190,7 @@ function centers_to_edges(vals::Vector{Float64})
         delta = 1.0
         return [vals[1] - delta / 2, vals[1] + delta / 2]
     end
-    mids = (vals[1:end-1] .+ vals[2:end]) ./ 2
+    mids = (vals[1:(end - 1)] .+ vals[2:end]) ./ 2
     left = vals[1] - (mids[1] - vals[1])
     right = vals[end] + (vals[end] - mids[end])
     return vcat(left, mids, right)
@@ -247,15 +263,27 @@ function load_existing_results(summary_path)
             shearv = parse(Float64, vals[7])
             diss = parse(Float64, vals[8])
             res = parse(Float64, vals[9])
-            push!(results, (Lx = Lx, Lz = Lz, alpha = alpha, gamma = gamma, id = id,
-                norm = normv, shear = shearv, dissipation = diss, res = res))
+            push!(
+                results,
+                (
+                    Lx=Lx,
+                    Lz=Lz,
+                    alpha=alpha,
+                    gamma=gamma,
+                    id=id,
+                    norm=normv,
+                    shear=shearv,
+                    dissipation=diss,
+                    res=res,
+                ),
+            )
         end
     end
     return results
 end
 
 function load_completed_grid(completed_path)
-    done = Set{Tuple{Float64, Float64}}()
+    done = Set{Tuple{Float64,Float64}}()
     if !isfile(completed_path)
         return done
     end
@@ -278,7 +306,7 @@ function load_completed_grid(completed_path)
 end
 
 function bootstrap_completed_from_filenames(out_dir, group_prefix)
-    done = Set{Tuple{Float64, Float64}}()
+    done = Set{Tuple{Float64,Float64}}()
     if !isdir(out_dir)
         return done
     end
@@ -291,9 +319,9 @@ function bootstrap_completed_from_filenames(out_dir, group_prefix)
     return done
 end
 
-function is_completed(Lx, Lz, done_grid; atol = 1e-3)
+function is_completed(Lx, Lz, done_grid; atol=1e-3)
     for (Lx_d, Lz_d) in done_grid
-        if isapprox(Lx, Lx_d; atol = atol) && isapprox(Lz, Lz_d; atol = atol)
+        if isapprox(Lx, Lx_d; atol=atol) && isapprox(Lz, Lz_d; atol=atol)
             return true
         end
     end
@@ -313,7 +341,7 @@ function summarize_solution(model, Dmat, x, Re)
     res = norm(model.f(x, Re)) / max(norm(x), eps(eltype(x)))
     I = power_input(model, x)
     D = dissipation_rate(Dmat, x)
-    return (norm = norm(x), shear = I, dissipation = D, res = res)
+    return (norm=norm(x), shear=I, dissipation=D, res=res)
 end
 
 # -------------------------
@@ -321,7 +349,7 @@ end
 # -------------------------
 function write_eqb_count_heatmap(out_dir, group_title, results)
     count_mat = fill(0, length(Lz_vals), length(Lx_vals))
-    seen = Set{Tuple{Float64, Float64, Int}}()
+    seen = Set{Tuple{Float64,Float64,Int}}()
     for r in results
         key = (r.Lx, r.Lz, r.id)
         key in seen && continue
@@ -332,21 +360,20 @@ function write_eqb_count_heatmap(out_dir, group_title, results)
         count_mat[i, j] += 1
     end
 
-    fig = Figure(size = (900, 700))
-    ax = Axis(fig[1, 1]; xlabel = "Lz", ylabel = "Lx",
-        title = "$(group_title) - # equilibria")
+    fig = Figure(; size=(900, 700))
+    ax = Axis(fig[1, 1]; xlabel="Lz", ylabel="Lx", title="$(group_title) - # equilibria")
     Lz_edges = centers_to_edges(collect(Lz_vals))
     Lx_edges = centers_to_edges(collect(Lx_vals))
-    hm = CairoMakie.heatmap!(ax, Lz_edges, Lx_edges, count_mat; colormap = :viridis)
-    Colorbar(fig[1, 2], hm; label = "count")
-    CairoMakie.save(joinpath(out_dir, "heatmap_eqb_count.png"), fig)
+    hm = CairoMakie.heatmap!(ax, Lz_edges, Lx_edges, count_mat; colormap=:viridis)
+    Colorbar(fig[1, 2], hm; label="count")
+    return CairoMakie.save(joinpath(out_dir, "heatmap_eqb_count.png"), fig)
 end
 
 function write_min_re_heatmap(out_dir, group_title, min_re_path)
     if !isfile(min_re_path)
-        return
+        return nothing
     end
-    min_re_map = Dict{Tuple{Float64, Float64}, Float64}()
+    min_re_map = Dict{Tuple{Float64,Float64},Float64}()
     open(min_re_path, "r") do io
         first = true
         for line in eachline(io)
@@ -373,34 +400,36 @@ function write_min_re_heatmap(out_dir, group_title, min_re_path)
         min_re_mat[i, j] = min_re_map[(Lx, Lz)]
     end
 
-    fig = Figure(size = (900, 700))
-    ax = Axis(fig[1, 1]; xlabel = "Lz", ylabel = "Lx",
-        title = "$(group_title) - min Re")
+    fig = Figure(; size=(900, 700))
+    ax = Axis(fig[1, 1]; xlabel="Lz", ylabel="Lx", title="$(group_title) - min Re")
     Lz_edges = centers_to_edges(collect(Lz_vals))
     Lx_edges = centers_to_edges(collect(Lx_vals))
-    hm = CairoMakie.heatmap!(ax, Lz_edges, Lx_edges, min_re_mat; colormap = :viridis)
-    Colorbar(fig[1, 2], hm; label = "min Re")
-    CairoMakie.save(joinpath(out_dir, "heatmap_min_re.png"), fig)
+    hm = CairoMakie.heatmap!(ax, Lz_edges, Lx_edges, min_re_mat; colormap=:viridis)
+    Colorbar(fig[1, 2], hm; label="min Re")
+    return CairoMakie.save(joinpath(out_dir, "heatmap_min_re.png"), fig)
 end
 
 # -------------------------
 # Bifurcation continuation
 # -------------------------
-function myreaddlm(filename; cc = '#')
-    X = readdlm(filename, comments = true, comment_char = cc)
+function myreaddlm(filename; cc='#')
+    X = readdlm(filename; comments=true, comment_char=cc)
     if size(X, 2) == 1
         X = X[:, 1]
     end
     return X
 end
 
-function continue_eqb(model, x0, Re0;
-    Re_min = cont_Re_min,
-    Re_max = cont_Re_max,
-    max_steps = cont_max_steps,
-    dsmin = cont_dsmin,
-    dsmax = cont_dsmax)
-
+function continue_eqb(
+    model,
+    x0,
+    Re0;
+    Re_min=cont_Re_min,
+    Re_max=cont_Re_max,
+    max_steps=cont_max_steps,
+    dsmin=cont_dsmin,
+    dsmax=cont_dsmax,
+)
     fp(x, p) = model.f(x, p[1])
 
     prob = BK.BifurcationProblem(
@@ -408,22 +437,24 @@ function continue_eqb(model, x0, Re0;
         x0,
         [Float64(Re0)],
         1;
-        record_from_solution = (x, p; k...) -> shear(x, model),
-        plot_solution = (x, p; k...) -> shear(x, model),
+        record_from_solution=(x, p; k...) -> shear(x, model),
+        plot_solution=(x, p; k...) -> shear(x, model),
     )
 
-    newton_opts = BK.NewtonPar(1e-10, 25, false, BK.DefaultLS(), BK.DefaultEig(), false, 1.0, 0.01)
-    cont_opts = BK.ContinuationPar(
-        p_min = Re_min,
-        p_max = Re_max,
-        n_inversion = 20,
-        dsmin = dsmin,
-        dsmax = dsmax,
-        max_steps = max_steps,
-        newton_options = newton_opts
+    newton_opts = BK.NewtonPar(
+        1e-10, 25, false, BK.DefaultLS(), BK.DefaultEig(), false, 1.0, 0.01
+    )
+    cont_opts = BK.ContinuationPar(;
+        p_min=Re_min,
+        p_max=Re_max,
+        n_inversion=20,
+        dsmin=dsmin,
+        dsmax=dsmax,
+        max_steps=max_steps,
+        newton_options=newton_opts,
     )
 
-    return BK.continuation(prob, BK.PALC(), cont_opts, bothside = true)
+    return BK.continuation(prob, BK.PALC(), cont_opts; bothside=true)
 end
 
 function get_state_vector(sol)
@@ -476,7 +507,8 @@ function run_group(group)
 
     # Load existing results for resume
     results = load_existing_results(summary_path)
-    done_grid = resume_enabled ? load_completed_grid(completed_path) : Set{Tuple{Float64, Float64}}()
+    done_grid =
+        resume_enabled ? load_completed_grid(completed_path) : Set{Tuple{Float64,Float64}}()
 
     # Bootstrap completed grid from filenames if needed
     if resume_enabled && !isfile(completed_path)
@@ -507,18 +539,29 @@ function run_group(group)
     print_lock = ReentrantLock()
 
     pairs = [(Lx, Lz) for Lx in Lx_vals for Lz in Lz_vals]
-    progress = make_progress("$(group_name) grid", length(pairs); initial_done = length(done_grid), min_interval = 5.0)
-    progress_print(progress; force = true)
+    progress = make_progress(
+        "$(group_name) grid",
+        length(pairs);
+        initial_done=length(done_grid),
+        min_interval=5.0,
+    )
+    progress_print(progress; force=true)
 
     function process_grid_point(Lx, Lz)
-        if resume_enabled && is_completed(Lx, Lz, done_grid; atol = 1e-2)
-            return
+        if resume_enabled && is_completed(Lx, Lz, done_grid; atol=1e-2)
+            return nothing
         end
         alpha = 2 * pi / Lx
         gamma = 2 * pi / Lz
         lock(print_lock) do
-            @printf("\n=== Group %s :: Lx=%.16g, Lz=%.16g (alpha=%.16f, gamma=%.16f) ===\n",
-                group_name, Lx, Lz, alpha, gamma)
+            @printf(
+                "\n=== Group %s :: Lx=%.16g, Lz=%.16g (alpha=%.16f, gamma=%.16f) ===\n",
+                group_name,
+                Lx,
+                Lz,
+                alpha,
+                gamma
+            )
         end
 
         model = ODEModel(alpha, gamma, J, K, L, group.H)
@@ -527,17 +570,20 @@ function run_group(group)
         sols = Vector{Vector{Float64}}()
         fps = Vector{SolutionFingerprint}()
 
-        rng = MersenneTwister(0xC0FFEE + threadid() + Int(round(Lx * 1000)) + Int(round(Lz * 1000)))
+        rng = MersenneTwister(
+            0xC0FFEE + threadid() + Int(round(Lx * 1000)) + Int(round(Lz * 1000))
+        )
 
         for attempt in 1:N
             xi_guess = build_guess(
-                model, rng;
-                strategy = guess_strategy,
-                shear_min = shear_min,
-                shear_max = shear_max,
-                rest_scale = rest_scale,
-                frac = frac,
-                top_k = top_k,
+                model,
+                rng;
+                strategy=guess_strategy,
+                shear_min=shear_min,
+                shear_max=shear_max,
+                rest_scale=rest_scale,
+                frac=frac,
+                top_k=top_k,
             )
             x_guess, _, _ = extract_components(xi_guess, model)
 
@@ -547,11 +593,13 @@ function run_group(group)
                     continue
                 end
                 fp = fingerprint(model, x_sol)
-                if is_distinct(fp, fps; tol = fp_tol)
+                if is_distinct(fp, fps; tol=fp_tol)
                     push!(fps, fp)
                     push!(sols, x_sol)
                     lock(print_lock) do
-                        println("  + unique eqb: ||x||=$(round(norm(x_sol), digits = 4)), shear=$(round(fp.shear, digits = 4))")
+                        println(
+                            "  + unique eqb: ||x||=$(round(norm(x_sol), digits = 4)), shear=$(round(fp.shear, digits = 4))",
+                        )
                     end
                 end
             end
@@ -564,15 +612,25 @@ function run_group(group)
 
             summ = summarize_solution(model, Dmat, x_sol, Re)
             row = (
-                Lx = Lx, Lz = Lz, alpha = alpha, gamma = gamma, id = i,
-                norm = summ.norm, shear = summ.shear, dissipation = summ.dissipation, res = summ.res
+                Lx=Lx,
+                Lz=Lz,
+                alpha=alpha,
+                gamma=gamma,
+                id=i,
+                norm=summ.norm,
+                shear=summ.shear,
+                dissipation=summ.dissipation,
+                res=summ.res,
             )
             lock(results_lock) do
                 push!(results, row)
             end
             lock(file_lock) do
                 open(summary_path, "a") do io
-                    println(io, "$(row.Lx),$(row.Lz),$(row.alpha),$(row.gamma),$(row.id),$(row.norm),$(row.shear),$(row.dissipation),$(row.res)")
+                    println(
+                        io,
+                        "$(row.Lx),$(row.Lz),$(row.alpha),$(row.gamma),$(row.id),$(row.norm),$(row.shear),$(row.dissipation),$(row.res)",
+                    )
                 end
             end
         end
@@ -588,7 +646,7 @@ function run_group(group)
             end
         end
 
-        progress_update!(progress)
+        return progress_update!(progress)
     end
 
     if use_threads_grid
@@ -603,14 +661,17 @@ function run_group(group)
     end
 
     # Rewrite summary.csv from in-memory results (dedup by Lx,Lz,id)
-    seen = Set{Tuple{Float64, Float64, Int}}()
+    seen = Set{Tuple{Float64,Float64,Int}}()
     open(summary_path, "w") do io
         println(io, "Lx,Lz,alpha,gamma,id,norm,shear,dissipation,residual")
         for r in results
             key = (r.Lx, r.Lz, r.id)
             key in seen && continue
             push!(seen, key)
-            println(io, "$(r.Lx),$(r.Lz),$(r.alpha),$(r.gamma),$(r.id),$(r.norm),$(r.shear),$(r.dissipation),$(r.res)")
+            println(
+                io,
+                "$(r.Lx),$(r.Lz),$(r.alpha),$(r.gamma),$(r.id),$(r.norm),$(r.shear),$(r.dissipation),$(r.res)",
+            )
         end
     end
 
@@ -619,7 +680,7 @@ function run_group(group)
     end
 
     if !run_bifurcations
-        return
+        return nothing
     end
 
     # Bifurcations
@@ -632,7 +693,9 @@ function run_group(group)
         end
     end
 
-    bif_progress = make_progress("$(group_name) bif", length(results); initial_done = 0, min_interval = 10.0)
+    bif_progress = make_progress(
+        "$(group_name) bif", length(results); initial_done=0, min_interval=10.0
+    )
 
     function process_bifurcation(r)
         alpha = r.alpha
@@ -658,10 +721,12 @@ function run_group(group)
         end
 
         # Plot and save PNG
-        plt = Plots.plot(Re_vals, shear_vals;
-            title = "$(group_title): Lx=$(Lx), Lz=$(Lz), id=$(r.id)",
-            xlabel = "Re",
-            ylabel = "I (shear)"
+        plt = Plots.plot(
+            Re_vals,
+            shear_vals;
+            title="$(group_title): Lx=$(Lx), Lz=$(Lz), id=$(r.id)",
+            xlabel="Re",
+            ylabel="I (shear)",
         )
         out_png = joinpath(bif_dir, plot_filename(group_prefix, Lx, Lz, r.id))
         Plots.savefig(plt, out_png)
@@ -672,7 +737,7 @@ function run_group(group)
             println(io, "$(Lx),$(Lz),$(r.id),$(min_Re)")
         end
 
-        progress_update!(bif_progress)
+        return progress_update!(bif_progress)
     end
 
     if use_threads_bifurcation

@@ -23,6 +23,15 @@ import plotly.colors as pc
 BASE_DIR = Path(__file__).resolve().parent / "eqb_alpha_gamma_grid"
 SHEAR_SCRIPT = Path(__file__).resolve().parent / "compute_eqb_shear.jl"
 GROUPS = ["A", "B", "C", "D", "E", "F", "G"]
+GROUP_DESC = {
+    "A": "<sxyz, txz>",
+    "B": "<sxy, sz>",
+    "C": "<sxytz, sz>",
+    "D": "<sxy, sztx>",
+    "E": "<sxyz, sztxz>",
+    "F": "<sxy, sz, txz>",
+    "G": "<sxyz>",
+}
 BIF_PATTERN = re.compile(r"^bif_(?:(?P<group>[A-G])_)?Lx(?P<Lx>[0-9.]+)_Lz(?P<Lz>[0-9.]+)_id(?P<id>\d+)\.csv$")
 
 DEFAULT_COLORSCALE = "Turbo"
@@ -110,6 +119,22 @@ def load_branches(group_dir: Path) -> Dict[Tuple[float, float], List[Branch]]:
     return out
 
 
+def load_eqb_counts(group_dir: Path) -> Dict[Tuple[float, float], int]:
+    out: Dict[Tuple[float, float], int] = {}
+    if not group_dir.is_dir():
+        return out
+    pat = re.compile(r"^eqb_(?:(?P<group>[A-G])_)?Lx(?P<Lx>[0-9.]+)_Lz(?P<Lz>[0-9.]+)_id(?P<id>\d+)\.asc$")
+    for path in group_dir.iterdir():
+        m = pat.match(path.name)
+        if not m:
+            continue
+        Lx = round_key(float(m.group("Lx")))
+        Lz = round_key(float(m.group("Lz")))
+        key = (Lx, Lz)
+        out[key] = out.get(key, 0) + 1
+    return out
+
+
 def build_heatmap_figure(Lx_vals: np.ndarray, Lz_vals: np.ndarray, min_re_mat: np.ndarray, title: str) -> go.Figure:
     fig = go.Figure(
         data=go.Heatmap(
@@ -127,6 +152,29 @@ def build_heatmap_figure(Lx_vals: np.ndarray, Lz_vals: np.ndarray, min_re_mat: n
         yaxis_title="Lx",
         height=650,
         margin=dict(l=60, r=20, t=50, b=50),
+        clickmode="event+select",
+    )
+    return fig
+
+
+def build_eqb_count_figure(Lx_vals: np.ndarray, Lz_vals: np.ndarray, count_mat: np.ndarray, title: str) -> go.Figure:
+    fig = go.Figure(
+        data=go.Heatmap(
+            z=count_mat,
+            x=Lz_vals,
+            y=Lx_vals,
+            colorscale=DEFAULT_COLORSCALE,
+            colorbar=dict(title="eqb count"),
+            hovertemplate="Lx=%{y:.4f}<br>Lz=%{x:.4f}<br>count=%{z:.0f}<extra></extra>",
+        )
+    )
+    fig.update_layout(
+        title=title,
+        xaxis_title="Lz",
+        yaxis_title="Lx",
+        height=350,
+        margin=dict(l=60, r=20, t=50, b=50),
+        clickmode="event+select",
     )
     return fig
 
@@ -169,13 +217,15 @@ def build_branch_figure(
                         y=[sh],
                         mode="markers",
                         name=f"EQB {eqb_id}",
-                        marker=dict(color=color, size=9, symbol="circle-open"),
+                        marker=dict(color=color, size=13, symbol="circle"),
                     )
                 )
     fig.update_layout(
         title=f"Bifurcation curves at Lx={Lx:.4f}, Lz={Lz:.4f}",
         xaxis_title="Re",
         yaxis_title="shear",
+        xaxis=dict(range=[100, 500]),
+        yaxis=dict(range=[1, 5]),
         height=650,
         margin=dict(l=60, r=20, t=50, b=50),
         legend=dict(orientation="v", yanchor="top", y=1.0, xanchor="left", x=1.02),
@@ -244,12 +294,23 @@ def get_group_data(group: str) -> dict:
     Lx_vals, Lz_vals = infer_grid_vals(completed, min_re)
     min_re_mat = build_min_re_matrix(Lx_vals, Lz_vals, min_re)
     branches = load_branches(group_dir)
+    eqb_counts = load_eqb_counts(group_dir)
+    eqb_count_mat = np.zeros((len(Lx_vals), len(Lz_vals)), dtype=float)
+    idx_Lx = {v: i for i, v in enumerate(Lx_vals)}
+    idx_Lz = {v: i for i, v in enumerate(Lz_vals)}
+    for (Lx, Lz), count in eqb_counts.items():
+        i = idx_Lx.get(Lx)
+        j = idx_Lz.get(Lz)
+        if i is None or j is None:
+            continue
+        eqb_count_mat[i, j] = float(count)
 
     data = {
         "Lx_vals": Lx_vals,
         "Lz_vals": Lz_vals,
         "min_re_mat": min_re_mat,
         "branches": branches,
+        "eqb_count_mat": eqb_count_mat,
     }
     CACHE[group] = data
     return data
@@ -268,6 +329,7 @@ app.layout = html.Div(
                     value="D",
                     clearable=False,
                 ),
+                html.Div(id="group-desc", style={"marginTop": "6px", "fontSize": "24px", "color": "#444"}),
                 dcc.Checklist(
                     id="render-eqb",
                     options=[{"label": "Render EQB points (slow)", "value": "on"}],
@@ -279,7 +341,13 @@ app.layout = html.Div(
         ),
         html.Div(
             [
-                dcc.Graph(id="heatmap", style={"width": "50%", "display": "inline-block"}),
+                html.Div(
+                    [
+                        dcc.Graph(id="heatmap"),
+                        dcc.Graph(id="eqb-count-heatmap"),
+                    ],
+                    style={"width": "50%", "display": "inline-block", "verticalAlign": "top"},
+                ),
                 dcc.Graph(id="branch-plot", style={"width": "50%", "display": "inline-block"}),
             ]
         ),
@@ -290,31 +358,45 @@ app.layout = html.Div(
 
 @app.callback(
     Output("heatmap", "figure"),
+    Output("eqb-count-heatmap", "figure"),
+    Output("group-desc", "children"),
     Input("group-dropdown", "value"),
 )
-def update_heatmap(group: str) -> go.Figure:
+def update_heatmap(group: str) -> Tuple[go.Figure, go.Figure, str]:
     data = get_group_data(group)
     if data["Lx_vals"].size == 0:
-        return go.Figure()
+        return go.Figure(), go.Figure(), ""
     title = f"Group {group} - min Re"
-    return build_heatmap_figure(data["Lx_vals"], data["Lz_vals"], data["min_re_mat"], title)
+    count_title = f"Group {group} - eqb count"
+    return (
+        build_heatmap_figure(data["Lx_vals"], data["Lz_vals"], data["min_re_mat"], title),
+        build_eqb_count_figure(data["Lx_vals"], data["Lz_vals"], data["eqb_count_mat"], count_title),
+        f"{group} = {GROUP_DESC.get(group, '')}",
+    )
 
 
 @app.callback(
     Output("branch-plot", "figure"),
     Input("group-dropdown", "value"),
     Input("heatmap", "clickData"),
+    Input("eqb-count-heatmap", "clickData"),
     Input("render-eqb", "value"),
 )
-def update_right_panel(group: str, click_data, render_eqb) -> go.Figure:
+def update_right_panel(group: str, click_data, count_click_data, render_eqb) -> go.Figure:
     data = get_group_data(group)
     Lx_vals = data["Lx_vals"]
     Lz_vals = data["Lz_vals"]
     if Lx_vals.size == 0 or Lz_vals.size == 0:
         return go.Figure()
 
+    active_click = None
     if click_data and "points" in click_data and click_data["points"]:
-        pt = click_data["points"][0]
+        active_click = click_data
+    elif count_click_data and "points" in count_click_data and count_click_data["points"]:
+        active_click = count_click_data
+
+    if active_click is not None:
+        pt = active_click["points"][0]
         Lz = nearest_val(Lz_vals, float(pt["x"]))
         Lx = nearest_val(Lx_vals, float(pt["y"]))
     else:
