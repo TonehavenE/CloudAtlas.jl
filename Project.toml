@@ -5,6 +5,7 @@ authors = ["John F. Gibson <johnfgibson@gmail.com>"]
 
 [deps]
 BifurcationKit = "0f109fa4-8a5d-4b75-95aa-f515264e7665"
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 ChannelflowWrapper = "96086318-f2c4-4a08-8036-25bfacd5eac3"
 Channelflow_jll = "3f71b17c-0b5c-5f71-8ab7-7b799a58f30d"
@@ -34,6 +35,7 @@ CloudAtlasVisualizationExt = "CairoMakie"
 
 [compat]
 BifurcationKit = "0.5.3"
+CSV = "0.10.15"
 CairoMakie = "0.15.7"
 ChannelflowWrapper = "1.0.0"
 Channelflow_jll = "1.0.3"
