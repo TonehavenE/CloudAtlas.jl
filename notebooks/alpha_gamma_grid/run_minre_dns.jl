@@ -6,6 +6,7 @@ using ChannelflowWrapper
 using DelimitedFiles
 using Printf
 using Dates
+using Random
 
 const J = 1
 const K = 3
@@ -13,8 +14,11 @@ const L = 5
 const Re = 300.0
 
 const legacy_groups = Set(["D"])
-const DELTA_LX = 0.25
-const DELTA_LZ = 0.25
+const LADDER_DISCRETIZATIONS = [(2, 3, 5), (2, 4, 5), (2, 4, 7), (2, 5, 7), (3, 5, 9), (3, 5, 11)]
+const FIND_SOLN_DISCRETIZATION = (3, 5, 9)
+const N_TRIALS = 1000
+const NOISE_AMPLITUDE = 0.01
+const HOOKPARAMS = SearchParams(; ftol = 1e-8, xtol = 1e-10, Nnewton = 25, Nhook = 6, verbosity = 0)
 
 function symmetry_groups()
     sx, sy, sz, tx, tz = halfbox_symmetries()
@@ -79,24 +83,6 @@ function load_eqb_vector(path)
     return vec(X[:, 1])
 end
 
-function load_completed_grid(path)
-    if !isfile(path)
-        return Set{Tuple{Float64, Float64}}()
-    end
-    X = readdlm(path, ',', Float64; skipstart = 1)
-    if isempty(X)
-        return Set{Tuple{Float64, Float64}}()
-    end
-    if ndims(X) == 1
-        X = reshape(X, 1, length(X))
-    end
-    done = Set{Tuple{Float64, Float64}}()
-    for i in 1:size(X, 1)
-        push!(done, (round_key(X[i, 1]), round_key(X[i, 2])))
-    end
-    return done
-end
-
 function write_symm_file(path::AbstractString, lines::Vector{String})
     open(path, "w") do io
         println(io, "% $(length(lines))")
@@ -141,8 +127,6 @@ function run_group(group, group_dir, out_root, reference_path)
         println("[skip] missing min Re file: $min_re_path")
         return
     end
-    completed_path = joinpath(group_dir, "completed_grid_$(group).csv")
-    completed = load_completed_grid(completed_path)
 
     min_row = read_min_re(min_re_path)
     min_row === nothing && return
@@ -157,48 +141,93 @@ function run_group(group, group_dir, out_root, reference_path)
     H = first(filter(g -> g.name == group, symmetry_groups())).H
 
     stamp = Dates.format(now(), "yyyy-mm-dd_HHMMSS")
-    offsets = [-DELTA_LX, 0.0, DELTA_LX]
-    for dLx in offsets
-        for dLz in [-DELTA_LZ, 0.0, DELTA_LZ]
-            Lx = round_key(Lx0 + dLx)
-            Lz = round_key(Lz0 + dLz)
-            if !isempty(completed) && !((Lx, Lz) in completed)
-                println("[skip] not in completed grid: Lx=$(Lx) Lz=$(Lz)")
-                continue
+    Lx = Lx0
+    Lz = Lz0
+
+    group_prefix = group in legacy_groups ? "" : group
+    eqb_path = joinpath(group_dir, eqb_filename(group_prefix, Lx, Lz, id))
+    if !isfile(eqb_path)
+        println("[skip] missing eqb file: $eqb_path")
+        return
+    end
+
+    alpha = 2pi / Lx
+    gamma = 2pi / Lz
+    model_from = ODEModel(alpha, gamma, J, K, L, H)
+
+    sol_root = joinpath(out_root, "$(group)_Lx$(round(Lx, digits=4))_Lz$(round(Lz, digits=4))_id$(lpad(id,3,'0'))_$(stamp)")
+    mkpath(sol_root)
+
+    ref_converted = joinpath(out_root, @sprintf("reference_field_%.10f_%.10f.nc", alpha, gamma))
+    if !isfile(ref_converted)
+        changegrid(reference_path, ref_converted; al = alpha, ga = gamma)
+    end
+
+    x = load_eqb_vector(eqb_path)
+    if length(x) != size(model_from.ijkl, 1)
+        error("EQB vector length $(length(x)) does not match model size $(size(model_from.ijkl, 1)) for JKL=($J,$K,$L)")
+    end
+
+    base_dir = joinpath(sol_root, @sprintf("J%dK%dL%d", J, K, L))
+    mkpath(base_dir)
+    save(x, joinpath(base_dir, "x_base.asc"))
+
+    prev_model = model_from
+    prev_x = x
+
+    for (Jt, Kt, Lt) in LADDER_DISCRETIZATIONS
+        model_to = ODEModel(alpha, gamma, Jt, Kt, Lt, H)
+        x_proj = changebasis(prev_x, prev_model.ijkl, model_to.ijkl)
+        target_dir = joinpath(sol_root, @sprintf("J%dK%dL%d", Jt, Kt, Lt))
+        mkpath(target_dir)
+        save(x_proj, joinpath(target_dir, "x_proj.asc"))
+
+        println("[run] group=$group Lx=$(Lx) Lz=$(Lz) id=$(id) -> JKL=($Jt,$Kt,$Lt)")
+
+        f = x -> model_to.f(x, Re)
+        Df = x -> model_to.Df(x, Re)
+        converged = false
+        last_percent = 0
+        for trial in 1:N_TRIALS
+            percent = Int(floor(100 * trial / N_TRIALS))
+            if percent >= last_percent + 1
+                println("[progress] JKL=($Jt,$Kt,$Lt) $(percent)% ($(trial)/$(N_TRIALS))")
+                last_percent = percent
             end
 
-            group_prefix = group in legacy_groups ? "" : group
-            eqb_path = joinpath(group_dir, eqb_filename(group_prefix, Lx, Lz, id))
-            if !isfile(eqb_path)
-                println("[skip] missing eqb file: $eqb_path")
-                continue
+            noise = (rand(length(x_proj)) .- 0.5) .* (2 * NOISE_AMPLITUDE)
+            x_guess = x_proj .+ noise
+
+            x_star, solved = hookstepsolve(f, Df, x_guess, HOOKPARAMS)
+            if solved
+                save(x_star, joinpath(target_dir, @sprintf("x_star_trial_%04d.asc", trial)))
+
+                if (Jt, Kt, Lt) == FIND_SOLN_DISCRETIZATION
+                    trial_dir = joinpath(target_dir, @sprintf("trial_%04d", trial))
+                    mkpath(trial_dir)
+
+                    guess_path = joinpath(trial_dir, "u_guess.nc")
+                    coeff2field(x_star, model_to.ijkl, ref_converted, guess_path; workdir = trial_dir)
+
+                    findsoln(guess_path;
+                        workdir = trial_dir,
+                        R = Re,
+                        eqb = true,
+                        symms = abspath(symm_path),
+                        od = trial_dir,
+                        T = 10.0,
+                    )
+                end
+
+                prev_model = model_to
+                prev_x = x_star
+                converged = true
+                break
             end
-
-            alpha = 2pi / Lx
-            gamma = 2pi / Lz
-            model = ODEModel(alpha, gamma, J, K, L, H)
-
-            sol_dir = joinpath(out_root, "$(group)_Lx$(round(Lx, digits=4))_Lz$(round(Lz, digits=4))_id$(lpad(id,3,'0'))_$(stamp)")
-            mkpath(sol_dir)
-
-            ref_converted = joinpath(out_root, @sprintf("reference_field_%.10f_%.10f.nc", alpha, gamma))
-            if !isfile(ref_converted)
-                changegrid(reference_path, ref_converted; al = alpha, ga = gamma)
-            end
-
-            x = load_eqb_vector(eqb_path)
-            guess_path = joinpath(sol_dir, "u_guess.nc")
-            coeff2field(x, model.ijkl, ref_converted, guess_path; workdir = sol_dir)
-
-            println("[run] group=$group Lx=$(Lx) Lz=$(Lz) id=$(id)")
-            findsoln(guess_path;
-                workdir = sol_dir,
-                R = Re,
-                eqb = true,
-                symms = abspath(symm_path),
-                od = sol_dir,
-                T = 10.0,
-            )
+        end
+        if !converged
+            println("[warn] no hookstep convergence after $(N_TRIALS) trials for JKL=($Jt,$Kt,$Lt); stopping ladder")
+            break
         end
     end
 end

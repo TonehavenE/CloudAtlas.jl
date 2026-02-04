@@ -59,10 +59,16 @@ Re = 300.0
 # Discretizations: (J, K, L)
 # Use a ladder: start coarse, then project/refine to finer discretizations.
 discretization_ladder = [
-    (1, 2, 3),
+    (1, 3, 5),
     (2, 4, 7),
+    (2, 4, 9),
+    # (2, 4, 7),
     (3, 5, 9),
 ]
+
+# Ladder projection perturbations
+ladder_perturb_trials = 1000
+ladder_perturb_scale = 0.1
 
 # Symmetry groups to explore
 sx, sy, sz, tx, tz = CloudAtlas.halfbox_symmetries()
@@ -94,7 +100,7 @@ symmetry_groups = [
         symm_file = joinpath(@__DIR__, "txtz.asc"),
     ),
     (
-        name = "sx_tx",
+        name = "sxtx",
         H = [sx * tx],
         symm_file = joinpath(@__DIR__, "sxtx.asc"),
     ),
@@ -119,7 +125,7 @@ symmetry_groups = [
 attempts_per_level = 10_000
 
 # Only run promotion at the highest ladder level
-promote_each_level = false
+promote_each_level = true
 
 # Hookstep parameters
 hookparams = SearchParams(
@@ -151,7 +157,7 @@ fp_tol = (
 # Accept/reject thresholds
 norm_threshold = 1e-3
 speed_threshold = 1e-5
-promote_norm_threshold = 1e-2
+promote_norm_threshold = 0.1
 promote_residual_tol = 1e-6
 
 # Channelflow promotion settings
@@ -199,24 +205,42 @@ function refine_projected_solutions(model_from::ODEModel, model_to::ODEModel, Re
     hookparams,
     norm_threshold = 1e-3,
     speed_threshold = 1e-5,
+    perturb_trials = 1,
+    perturb_scale = 0.0,
 )
     refined = Vector{Vector{Float64}}()
     fingerprints = Vector{SolutionFingerprint}()
     io_lock = ReentrantLock()
+    rngs = [MersenneTwister(0xBEEF + i) for i in 1:Threads.maxthreadid()]
 
     @threads for i in eachindex(solutions_from)
-        ξ_guess = project_solution(solutions_from[i], model_from, model_to)
-        ξ_star, converged = CloudAtlas.hookstepsolve(model_to, Re, ξ_guess, hookparams)
-        if converged
-            x, cx, cz = extract_components(ξ_star, model_to)
-            if norm(x) > norm_threshold && (abs(cx) > speed_threshold || abs(cz) > speed_threshold)
-                fp = fingerprint(model_to, ξ_star)
-                lock(io_lock) do
-                    if is_distinct(fp, fingerprints; tol = fp_tol)
-                        push!(fingerprints, fp)
-                        push!(refined, ξ_star)
+        tid = threadid()
+        rng = tid <= length(rngs) ? rngs[tid] : Random.default_rng()
+        ξ_base = project_solution(solutions_from[i], model_from, model_to)
+
+        for attempt in 1:perturb_trials
+            if attempt == 1 || perturb_scale == 0.0
+                ξ_guess = ξ_base
+            else
+                x, cx, cz = extract_components(ξ_base, model_to)
+                noise = (rand(rng, length(x)) .- 0.5) .* (2 * perturb_scale)
+                x_guess = x .+ noise
+                ξ_guess = state_to_xi(model_to, ODEState(x_guess, cx, cz))
+            end
+
+            ξ_star, converged = CloudAtlas.hookstepsolve(model_to, Re, ξ_guess, hookparams)
+            if converged
+                x, cx, cz = extract_components(ξ_star, model_to)
+                if norm(x) > norm_threshold && (abs(cx) > speed_threshold || abs(cz) > speed_threshold)
+                    fp = fingerprint(model_to, ξ_star)
+                    lock(io_lock) do
+                        if is_distinct(fp, fingerprints; tol = fp_tol)
+                            push!(fingerprints, fp)
+                            push!(refined, ξ_star)
+                        end
                     end
                 end
+                break
             end
         end
     end
@@ -432,6 +456,8 @@ for symm in symmetry_groups
                 hookparams = hookparams,
                 norm_threshold = norm_threshold,
                 speed_threshold = speed_threshold,
+                perturb_trials = ladder_perturb_trials,
+                perturb_scale = ladder_perturb_scale,
             )
             prev_solutions = solutions
         end
@@ -444,6 +470,11 @@ for symm in symmetry_groups
         serialized_path = joinpath(level_dir, "solutions.bin")
         open(serialized_path, "w") do io
             serialize(io, prev_solutions)
+        end
+
+        if isempty(prev_solutions)
+            println("[warn] no solutions at level $(level_idx); stopping ladder for $(symm_name)")
+            break
         end
 
         if promote_each_level || level_idx == length(discretization_ladder)
