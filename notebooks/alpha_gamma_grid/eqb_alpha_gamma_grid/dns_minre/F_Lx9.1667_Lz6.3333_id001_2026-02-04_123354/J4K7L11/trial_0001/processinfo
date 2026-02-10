@@ -1,0 +1,9 @@
+Command:  /home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/findsoln -R 300.0 -eqb -symms /home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/alpha_gamma_grid/eqb_alpha_gamma_grid/dns_minre/symm_F.asc -od /home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/alpha_gamma_grid/eqb_alpha_gamma_grid/dns_minre/F_Lx9.1667_Lz6.3333_id001_2026-02-04_123354/J4K7L11/trial_0001 -T 10.0 /home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/alpha_gamma_grid/eqb_alpha_gamma_grid/dns_minre/F_Lx9.1667_Lz6.3333_id001_2026-02-04_123354/J4K7L11/trial_0001/u_guess.nc 
+PWD:      /home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/alpha_gamma_grid/eqb_alpha_gamma_grid/dns_minre/F_Lx9.1667_Lz6.3333_id001_2026-02-04_123354/J4K7L11/trial_0001
+Host:     ebenq-ideapad, PID: 1593518
+Time:     2026-02-04 12:35:45
+Version:  2.0.2
+Git rev:  91ba77f93bba73af4ef25e3d3cecf35521badbfd
+Compiler: GNU 14.2.0
+
+

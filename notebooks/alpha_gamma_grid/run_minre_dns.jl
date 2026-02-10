@@ -14,8 +14,18 @@ const L = 5
 const Re = 300.0
 
 const legacy_groups = Set(["D"])
-const LADDER_DISCRETIZATIONS = [(2, 3, 5), (2, 4, 5), (2, 4, 7), (2, 5, 7), (3, 5, 9), (3, 5, 11)]
-const FIND_SOLN_DISCRETIZATION = (3, 5, 9)
+const LADDER_DISCRETIZATIONS = [
+    (2, 3, 5),
+    (2, 4, 5),
+    (2, 4, 7),
+    (2, 5, 7),
+    (3, 5, 9),
+    (3, 5, 11),
+    (3, 6, 11),
+    (4, 6, 11),
+    (4, 7, 11),
+]
+const FIND_SOLN_DISCRETIZATION = LADDER_DISCRETIZATIONS[end]
 const N_TRIALS = 1000
 const NOISE_AMPLITUDE = 0.01
 const HOOKPARAMS = SearchParams(; ftol = 1e-8, xtol = 1e-10, Nnewton = 25, Nhook = 6, verbosity = 0)
