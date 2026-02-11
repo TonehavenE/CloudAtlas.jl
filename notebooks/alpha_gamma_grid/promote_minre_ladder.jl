@@ -19,11 +19,15 @@ const LADDER_DISCRETIZATIONS = [
     (2, 4, 7),
     (2, 5, 7),
     (3, 5, 9),
+    (3, 5, 11),
+    (3, 6, 11),
+    (4, 6, 11),
+    (4, 7, 11),
 ]
-const FIND_SOLN_DISCRETIZATION = (3, 5, 9)
+const FIND_SOLN_DISCRETIZATION = (4, 7, 11)
 const N_TRIALS = 200
 const NOISE_AMPLITUDE = 0.01
-const HOOKPARAMS = SearchParams(; ftol = 1e-8, xtol = 1e-10, Nnewton = 25, Nhook = 6, verbosity = 0)
+const HOOKPARAMS = SearchParams(; ftol=1e-8, xtol=1e-10, Nnewton=25, Nhook=6, verbosity=0)
 
 const legacy_groups = Set(["D"])
 const default_groups = ["A", "B", "C", "E", "F", "G"]
@@ -31,13 +35,13 @@ const default_groups = ["A", "B", "C", "E", "F", "G"]
 function symmetry_groups()
     sx, sy, sz, tx, tz = halfbox_symmetries()
     return [
-        (name = "A", desc = "<sxyz, txz>", H = [sx * sy * sz, tx * tz]),
-        (name = "B", desc = "<sxy, sz>", H = [sx * sy, sz]),
-        (name = "C", desc = "<sxytz, sz>", H = [sx * sy * tz, sz]),
-        (name = "D", desc = "<sxy, sztx>", H = [sx * sy, sz * tx]),
-        (name = "E", desc = "<sxyz, sztxz>", H = [sx * sy * sz, sz * tx * tz]),
-        (name = "F", desc = "<sxy, sz, txz>", H = [sx * sy, sz, tx * tz]),
-        (name = "G", desc = "<sxyz>", H = [sx * sy * sz]),
+        (name="A", desc="<sxyz, txz>", H=[sx * sy * sz, tx * tz]),
+        (name="B", desc="<sxy, sz>", H=[sx * sy, sz]),
+        (name="C", desc="<sxytz, sz>", H=[sx * sy * tz, sz]),
+        (name="D", desc="<sxy, sztx>", H=[sx * sy, sz * tx]),
+        (name="E", desc="<sxyz, sztxz>", H=[sx * sy * sz, sz * tx * tz]),
+        (name="F", desc="<sxy, sz, txz>", H=[sx * sy, sz, tx * tz]),
+        (name="G", desc="<sxyz>", H=[sx * sy * sz]),
     ]
 end
 
@@ -49,7 +53,7 @@ function eqb_filename(group_prefix, Lx, Lz, id)
 end
 
 function parse_args(args)
-    out = Dict{String, String}()
+    out = Dict{String,String}()
     i = 1
     while i <= length(args)
         if startswith(args[i], "--")
@@ -68,7 +72,7 @@ function parse_args(args)
     return out
 end
 
-function parse_group_args(args::Dict{String, String}, groups)
+function parse_group_args(args::Dict{String,String}, groups)
     names = [g.name for g in groups]
     if get(args, "all", "false") == "true"
         return names
@@ -84,7 +88,7 @@ function parse_group_args(args::Dict{String, String}, groups)
 end
 
 function load_eqb_vector(path)
-    X = readdlm(path, comments = true, comment_char = '#')
+    X = readdlm(path; comments=true, comment_char='#')
     if ndims(X) == 1
         return vec(X)
     end
@@ -133,17 +137,25 @@ function parse_eqb_filename(fname)
     if m === nothing
         return nothing
     end
-    return (Lx = parse(Float64, m.captures[1]), Lz = parse(Float64, m.captures[2]), id = parse(Int, m.captures[3]))
+    return (
+        Lx=parse(Float64, m.captures[1]),
+        Lz=parse(Float64, m.captures[2]),
+        id=parse(Int, m.captures[3]),
+    )
 end
 
-function promote_eqb(group_name, H, eqb_path, Lx, Lz, id, out_root, reference_path, trials, noise_amp)
+function promote_eqb(
+    group_name, H, eqb_path, Lx, Lz, id, out_root, reference_path, trials, noise_amp
+)
     alpha = 2pi / Lx
     gamma = 2pi / Lz
     model_from = ODEModel(alpha, gamma, J, K, L, H)
 
     x = load_eqb_vector(eqb_path)
     if length(x) != size(model_from.ijkl, 1)
-        error("EQB vector length $(length(x)) does not match model size $(size(model_from.ijkl, 1)) for JKL=($J,$K,$L)")
+        error(
+            "EQB vector length $(length(x)) does not match model size $(size(model_from.ijkl, 1)) for JKL=($J,$K,$L)",
+        )
     end
 
     symm_path = joinpath(out_root, "symm_$(group_name).asc")
@@ -158,9 +170,11 @@ function promote_eqb(group_name, H, eqb_path, Lx, Lz, id, out_root, reference_pa
     )
     mkpath(sol_root)
 
-    ref_converted = joinpath(out_root, @sprintf("reference_field_%.10f_%.10f.nc", alpha, gamma))
+    ref_converted = joinpath(
+        out_root, @sprintf("reference_field_%.10f_%.10f.nc", alpha, gamma)
+    )
     if !isfile(ref_converted)
-        changegrid(reference_path, ref_converted; al = alpha, ga = gamma)
+        changegrid(reference_path, ref_converted; al=alpha, ga=gamma)
     end
 
     base_dir = joinpath(sol_root, @sprintf("J%dK%dL%d", J, K, L))
@@ -200,14 +214,17 @@ function promote_eqb(group_name, H, eqb_path, Lx, Lz, id, out_root, reference_pa
                     trial_dir = joinpath(target_dir, @sprintf("trial_%04d", trial))
                     mkpath(trial_dir)
                     guess_path = joinpath(trial_dir, "u_guess.nc")
-                    coeff2field(x_star, model_to.ijkl, ref_converted, guess_path; workdir = trial_dir)
-                    findsoln(guess_path;
-                        workdir = trial_dir,
-                        R = Re,
-                        eqb = true,
-                        symms = abspath(symm_path),
-                        od = trial_dir,
-                        T = 10.0,
+                    coeff2field(
+                        x_star, model_to.ijkl, ref_converted, guess_path; workdir=trial_dir
+                    )
+                    findsoln(
+                        guess_path;
+                        workdir=trial_dir,
+                        R=Re,
+                        eqb=true,
+                        symms=abspath(symm_path),
+                        od=trial_dir,
+                        T=10.0,
                     )
                 end
 
@@ -218,7 +235,9 @@ function promote_eqb(group_name, H, eqb_path, Lx, Lz, id, out_root, reference_pa
             end
         end
         if !converged
-            println("[warn] no hookstep convergence after $(trials) trials for JKL=($Jt,$Kt,$Lt); stopping ladder")
+            println(
+                "[warn] no hookstep convergence after $(trials) trials for JKL=($Jt,$Kt,$Lt); stopping ladder",
+            )
             break
         end
     end
@@ -228,9 +247,11 @@ function run_group(group, root_dir, out_root, reference_path, args, trials, nois
     group_name = group.name
     group_prefix = group_name in legacy_groups ? "" : group_name
     group_dir = joinpath(root_dir, group_name)
-    if !isdir(group_dir)
-        println("[skip] missing group dir: $group_dir")
-        return
+    source_group_dir = joinpath(dirname(root_dir), group_name)
+    search_dirs = filter(isdir, [group_dir, source_group_dir])
+    if isempty(search_dirs)
+        println("[skip] missing group dirs: $group_dir and $source_group_dir")
+        return nothing
     end
 
     Lx_filter = haskey(args, "Lx") ? parse(Float64, args["Lx"]) : nothing
@@ -238,26 +259,34 @@ function run_group(group, root_dir, out_root, reference_path, args, trials, nois
     max_count = parse(Int, get(args, "max", "0"))
 
     eqb_files = String[]
-    for fname in readdir(group_dir)
-        startswith(fname, "eqb_") || continue
-        endswith(fname, ".asc") || continue
-        info = parse_eqb_filename(fname)
-        info === nothing && continue
-        if !isempty(group_prefix) && !startswith(fname, "eqb_$(group_prefix)_")
-            continue
+    seen = Set{String}()
+    for dir in search_dirs
+        for fname in readdir(dir)
+            startswith(fname, "eqb_") || continue
+            endswith(fname, ".asc") || continue
+            info = parse_eqb_filename(fname)
+            info === nothing && continue
+            if !isempty(group_prefix) && !startswith(fname, "eqb_$(group_prefix)_")
+                continue
+            end
+            if Lx_filter !== nothing && !isapprox(info.Lx, Lx_filter; atol=5e-4, rtol=0.0)
+                continue
+            end
+            if Lz_filter !== nothing && !isapprox(info.Lz, Lz_filter; atol=5e-4, rtol=0.0)
+                continue
+            end
+            if fname in seen
+                continue
+            end
+            push!(seen, fname)
+            push!(eqb_files, joinpath(dir, fname))
         end
-        if Lx_filter !== nothing && !isapprox(info.Lx, Lx_filter; atol = 1e-6, rtol = 0.0)
-            continue
-        end
-        if Lz_filter !== nothing && !isapprox(info.Lz, Lz_filter; atol = 1e-6, rtol = 0.0)
-            continue
-        end
-        push!(eqb_files, joinpath(group_dir, fname))
     end
+    sort!(eqb_files)
 
     if isempty(eqb_files)
         println("[skip] no eqb files found for group $(group_name)")
-        return
+        return nothing
     end
 
     if max_count > 0
@@ -267,14 +296,27 @@ function run_group(group, root_dir, out_root, reference_path, args, trials, nois
     for eqb_path in eqb_files
         info = parse_eqb_filename(basename(eqb_path))
         info === nothing && continue
-        promote_eqb(group_name, group.H, eqb_path, info.Lx, info.Lz, info.id, out_root, reference_path, trials, noise_amp)
+        promote_eqb(
+            group_name,
+            group.H,
+            eqb_path,
+            info.Lx,
+            info.Lz,
+            info.id,
+            out_root,
+            reference_path,
+            trials,
+            noise_amp,
+        )
     end
 end
 
 function main()
     args = parse_args(ARGS)
     base_dir = @__DIR__
-    root_dir = get(args, "root", joinpath(base_dir, "eqb_alpha_gamma_grid", "minre_continuation"))
+    root_dir = get(
+        args, "root", joinpath(base_dir, "eqb_alpha_gamma_grid", "minre_continuation")
+    )
     out_root = get(args, "out", joinpath(root_dir, "dns_minre"))
     reference_path = get(
         args,
