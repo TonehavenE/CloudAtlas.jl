@@ -342,7 +342,7 @@ function run_group(group, group_root, out_root, args)
     open(unsolved_path, "w") do io
         println(io, "Lx,Lz")
         for i in eachindex(Lx_vals), j in eachindex(Lz_vals)
-            (i, j) in solved || println(io, "$(Lx_vals[i]),$(Lz_vals[j])")
+            haskey(solved, (i, j)) || println(io, "$(Lx_vals[i]),$(Lz_vals[j])")
         end
     end
 end

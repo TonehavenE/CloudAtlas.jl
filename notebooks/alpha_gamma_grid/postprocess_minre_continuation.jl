@@ -121,16 +121,32 @@ function centers_to_edges(vals::Vector{Float64})
     return vcat(left, mids, right)
 end
 
-function read_grid_points(path::AbstractString)
+function read_csv_float_matrix(path::AbstractString; skipstart::Int = 0)
     if !isfile(path)
-        return Float64[], Float64[]
+        return Array{Float64}(undef, 0, 0)
     end
-    X = readdlm(path, ',', Float64; skipstart = 1)
+    X = try
+        readdlm(path, ',', Float64; skipstart = skipstart)
+    catch err
+        msg = sprint(showerror, err)
+        if err isa ArgumentError && occursin("number of rows in dims must be > 0", msg)
+            return Array{Float64}(undef, 0, 0)
+        end
+        rethrow()
+    end
     if isempty(X)
-        return Float64[], Float64[]
+        return Array{Float64}(undef, 0, 0)
     end
     if ndims(X) == 1
-        X = reshape(X, 1, length(X))
+        return reshape(X, 1, length(X))
+    end
+    return X
+end
+
+function read_grid_points(path::AbstractString)
+    X = read_csv_float_matrix(path; skipstart = 1)
+    if isempty(X) || size(X, 2) < 2
+        return Float64[], Float64[]
     end
     return vec(X[:, 1]), vec(X[:, 2])
 end
@@ -152,15 +168,9 @@ function load_grid_values(group_dir, summary_suffix, summary_path)
 end
 
 function load_summary(summary_path)
-    if !isfile(summary_path)
-        return NamedTuple[]
-    end
-    X = readdlm(summary_path, ',', Float64; skipstart = 1)
+    X = read_csv_float_matrix(summary_path; skipstart = 1)
     if isempty(X)
         return NamedTuple[]
-    end
-    if ndims(X) == 1
-        X = reshape(X, 1, length(X))
     end
     results = NamedTuple[]
     for i in 1:size(X, 1)
@@ -184,6 +194,40 @@ function load_summary(summary_path)
     return results
 end
 
+function read_bif_min_re(path::AbstractString)
+    X = read_csv_float_matrix(path; skipstart = 1)
+    if isempty(X) || size(X, 2) < 1
+        return nothing
+    end
+    return minimum(vec(X[:, 1]))
+end
+
+function load_min_re_entries(min_re_path::AbstractString)
+    out = Dict{Tuple{Float64, Float64, Int}, Float64}()
+    if !isfile(min_re_path)
+        return out
+    end
+    open(min_re_path, "r") do io
+        first = true
+        for line in eachline(io)
+            if first
+                first = false
+                continue
+            end
+            isempty(strip(line)) && continue
+            vals = split(line, ',')
+            length(vals) < 4 && continue
+            Lx = parse(Float64, vals[1])
+            Lz = parse(Float64, vals[2])
+            id = parse(Int, vals[3])
+            min_Re = parse(Float64, vals[4])
+            key = (Lx, Lz, id)
+            out[key] = min(get(out, key, Inf), min_Re)
+        end
+    end
+    return out
+end
+
 function write_eqb_count_heatmap(out_dir, group_title, results, Lx_vals, Lz_vals)
     count_mat = fill(0, length(Lz_vals), length(Lx_vals))
     seen = Set{Tuple{Float64, Float64, Int}}()
@@ -201,12 +245,12 @@ function write_eqb_count_heatmap(out_dir, group_title, results, Lx_vals, Lz_vals
     ax = Axis(fig[1, 1]; xlabel = "Lz", ylabel = "Lx", title = "$(group_title) - # equilibria")
     Lz_edges = centers_to_edges(Lz_vals)
     Lx_edges = centers_to_edges(Lx_vals)
-    hm = CairoMakie.heatmap!(ax, Lz_edges, Lx_edges, count_mat; colormap = :viridis)
+    hm = CairoMakie.heatmap!(ax, Lz_edges, Lx_edges, count_mat; colormap = :balance)
     Colorbar(fig[1, 2], hm; label = "count")
     return CairoMakie.save(joinpath(out_dir, "heatmap_eqb_count.png"), fig)
 end
 
-function write_min_re_heatmap(out_dir, group_title, min_re_path, Lx_vals, Lz_vals)
+function write_min_re_heatmap(out_dir, group_title, bif_dir, group_prefix, min_re_path, Lx_vals, Lz_vals, results)
     if !isfile(min_re_path)
         return nothing
     end
@@ -229,6 +273,18 @@ function write_min_re_heatmap(out_dir, group_title, min_re_path, Lx_vals, Lz_val
         end
     end
 
+    # Backfill missing min-Re points from existing bifurcation traces.
+    for r in results
+        key = (r.Lx, r.Lz)
+        if haskey(min_re_map, key)
+            continue
+        end
+        bif_path = joinpath(bif_dir, bif_filename(group_prefix, r.Lx, r.Lz, r.id))
+        min_Re = read_bif_min_re(bif_path)
+        min_Re === nothing && continue
+        min_re_map[key] = min(get(min_re_map, key, Inf), min_Re)
+    end
+
     min_re_mat = fill(NaN, length(Lz_vals), length(Lx_vals))
     for (Lx, Lz) in keys(min_re_map)
         i = find_index(Lz_vals, Lz)
@@ -236,12 +292,22 @@ function write_min_re_heatmap(out_dir, group_title, min_re_path, Lx_vals, Lz_val
         (i === nothing || j === nothing) && continue
         min_re_mat[i, j] = min_re_map[(Lx, Lz)]
     end
+    valid = filter(!isnan, vec(min_re_mat))
+    isempty(valid) && return nothing
 
     fig = Figure(; size = (900, 700))
     ax = Axis(fig[1, 1]; xlabel = "Lz", ylabel = "Lx", title = "$(group_title) - min Re")
     Lz_edges = centers_to_edges(Lz_vals)
     Lx_edges = centers_to_edges(Lx_vals)
-    hm = CairoMakie.heatmap!(ax, Lz_edges, Lx_edges, min_re_mat; colormap = :viridis)
+    hm = CairoMakie.heatmap!(
+        ax,
+        Lz_edges,
+        Lx_edges,
+        min_re_mat;
+        colormap = :balance,
+        colorrange = (minimum(valid), maximum(valid)),
+        nan_color = :lightgray,
+    )
     Colorbar(fig[1, 2], hm; label = "min Re")
     return CairoMakie.save(joinpath(out_dir, "heatmap_min_re.png"), fig)
 end
@@ -354,43 +420,75 @@ function run_group(group, group_root, args)
 
     run_bifurcations = parse_bool(args, "bif"; default = true)
     write_heatmaps = parse_bool(args, "heatmaps"; default = true)
+    bif_dir = joinpath(group_dir, "bifurcations")
+    min_re_path = joinpath(bif_dir, "min_re$(summary_suffix).csv")
+    source_group_dir = joinpath(dirname(group_root), group_name)
 
     if write_heatmaps
         write_eqb_count_heatmap(group_dir, group_title, results, Lx_vals, Lz_vals)
+        if isfile(min_re_path)
+            write_min_re_heatmap(
+                group_dir,
+                group_title,
+                bif_dir,
+                group_prefix,
+                min_re_path,
+                Lx_vals,
+                Lz_vals,
+                results,
+            )
+        end
     end
 
     if !run_bifurcations
         return
     end
 
-    bif_dir = joinpath(group_dir, "bifurcations")
     mkpath(bif_dir)
-    min_re_path = joinpath(bif_dir, "min_re$(summary_suffix).csv")
     if !isfile(min_re_path)
         open(min_re_path, "w") do io
             println(io, "Lx,Lz,id,min_Re")
         end
     end
+    min_re_entries = load_min_re_entries(min_re_path)
 
     for r in results
         Lx = r.Lx
         Lz = r.Lz
         alpha = r.alpha
         gamma = r.gamma
+        entry_key = (Lx, Lz, r.id)
+        haskey(min_re_entries, entry_key) && continue
+
+        csv_path = joinpath(bif_dir, bif_filename(group_prefix, Lx, Lz, r.id))
+        if isfile(csv_path)
+            min_Re = read_bif_min_re(csv_path)
+            if min_Re !== nothing
+                open(min_re_path, "a") do io
+                    println(io, "$(Lx),$(Lz),$(r.id),$(min_Re)")
+                end
+                min_re_entries[entry_key] = min_Re
+                continue
+            end
+        end
 
         eqb_file = eqb_filename(group_prefix, Lx, Lz, r.id)
-        eqb_path = joinpath(group_dir, eqb_file)
-        if !isfile(eqb_path)
-            println("[skip] missing eqb file: $eqb_path")
+        eqb_candidates = [
+            joinpath(group_dir, eqb_file),
+            joinpath(source_group_dir, eqb_file),
+        ]
+        eqb_path = findfirst(isfile, eqb_candidates)
+        if eqb_path === nothing
+            println("[skip] missing eqb file: $(eqb_candidates[1]) (and source fallback)")
             continue
         end
+        eqb_path = eqb_candidates[eqb_path]
 
         model = ODEModel(alpha, gamma, J, K, L, group.H)
         x0 = myreaddlm(eqb_path)
         br = continue_eqb(model, x0, Re)
 
         Re_vals, shear_vals = extract_re_shear(br, model)
-        csv_path = joinpath(bif_dir, bif_filename(group_prefix, Lx, Lz, r.id))
         open(csv_path, "w") do io
             println(io, "Re,shear")
             for i in eachindex(Re_vals)
@@ -412,10 +510,11 @@ function run_group(group, group_root, args)
         open(min_re_path, "a") do io
             println(io, "$(Lx),$(Lz),$(r.id),$(min_Re)")
         end
+        min_re_entries[entry_key] = min_Re
     end
 
     if write_heatmaps
-        write_min_re_heatmap(group_dir, group_title, min_re_path, Lx_vals, Lz_vals)
+        write_min_re_heatmap(group_dir, group_title, bif_dir, group_prefix, min_re_path, Lx_vals, Lz_vals, results)
     end
 end
 

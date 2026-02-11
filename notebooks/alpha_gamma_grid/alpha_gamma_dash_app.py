@@ -20,7 +20,7 @@ from dash import Dash, dcc, html, Input, Output
 import plotly.graph_objects as go
 import plotly.colors as pc
 
-BASE_DIR = Path(__file__).resolve().parent / "eqb_alpha_gamma_grid"
+BASE_DIR = Path(__file__).resolve().parent / "eqb_alpha_gamma_grid/high-res"
 SHEAR_SCRIPT = Path(__file__).resolve().parent / "compute_eqb_shear.jl"
 GROUPS = ["A", "B", "C", "D", "E", "F", "G"]
 GROUP_DESC = {
