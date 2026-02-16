@@ -19,12 +19,8 @@ const LADDER_DISCRETIZATIONS = [
     (2, 4, 7),
     (2, 5, 7),
     (3, 5, 9),
-    (3, 5, 11),
-    (3, 6, 11),
-    (4, 6, 11),
-    (4, 7, 11),
 ]
-const FIND_SOLN_DISCRETIZATION = (4, 7, 11)
+const FIND_SOLN_DISCRETIZATION = (3, 5, 9)
 const N_TRIALS = 200
 const NOISE_AMPLITUDE = 0.01
 const HOOKPARAMS = SearchParams(; ftol=1e-8, xtol=1e-10, Nnewton=25, Nhook=6, verbosity=0)
@@ -144,6 +140,41 @@ function parse_eqb_filename(fname)
     )
 end
 
+function round_key(value::Real; ndigits::Int=4)
+    return round(Float64(value); digits=ndigits)
+end
+
+function load_min_re_map(search_dirs, group_name)
+    out = Dict{Tuple{Float64,Float64,Int},Float64}()
+    for dir in search_dirs
+        min_re_path = joinpath(dir, "bifurcations", "min_re_$(group_name).csv")
+        isfile(min_re_path) || continue
+
+        X = try
+            readdlm(min_re_path, ',', Float64; skipstart=1)
+        catch err
+            msg = sprint(showerror, err)
+            if err isa ArgumentError && occursin("number of rows in dims must be > 0", msg)
+                continue
+            end
+            rethrow()
+        end
+
+        isempty(X) && continue
+        if ndims(X) == 1
+            X = reshape(X, 1, length(X))
+        end
+        size(X, 2) < 4 && continue
+
+        for i in 1:size(X, 1)
+            key = (round_key(X[i, 1]), round_key(X[i, 2]), Int(round(X[i, 3])))
+            min_Re = X[i, 4]
+            out[key] = min(get(out, key, Inf), min_Re)
+        end
+    end
+    return out
+end
+
 function promote_eqb(
     group_name, H, eqb_path, Lx, Lz, id, out_root, reference_path, trials, noise_amp
 )
@@ -183,6 +214,9 @@ function promote_eqb(
 
     prev_model = model_from
     prev_x = x
+    last_success_dir = base_dir
+    last_success_jkl = (J, K, L)
+    reached_top_rung = false
 
     rng = MersenneTwister(0xD00D + hash((group_name, Lx, Lz, id)))
 
@@ -226,10 +260,13 @@ function promote_eqb(
                         od=trial_dir,
                         T=10.0,
                     )
+                    reached_top_rung = true
                 end
 
                 prev_model = model_to
                 prev_x = x_star
+                last_success_dir = target_dir
+                last_success_jkl = (Jt, Kt, Lt)
                 converged = true
                 break
             end
@@ -240,6 +277,26 @@ function promote_eqb(
             )
             break
         end
+    end
+
+    if !reached_top_rung
+        Jr, Kr, Lr = last_success_jkl
+        println(
+            "[fallback] top rung $(FIND_SOLN_DISCRETIZATION) not reached; running findsoln from last successful rung JKL=($Jr,$Kr,$Lr)",
+        )
+        trial_dir = joinpath(last_success_dir, "trial_last_success")
+        mkpath(trial_dir)
+        guess_path = joinpath(trial_dir, "u_guess.nc")
+        coeff2field(prev_x, prev_model.ijkl, ref_converted, guess_path; workdir=trial_dir)
+        findsoln(
+            guess_path;
+            workdir=trial_dir,
+            R=Re,
+            eqb=true,
+            symms=abspath(symm_path),
+            od=trial_dir,
+            T=10.0,
+        )
     end
 end
 
@@ -257,8 +314,9 @@ function run_group(group, root_dir, out_root, reference_path, args, trials, nois
     Lx_filter = haskey(args, "Lx") ? parse(Float64, args["Lx"]) : nothing
     Lz_filter = haskey(args, "Lz") ? parse(Float64, args["Lz"]) : nothing
     max_count = parse(Int, get(args, "max", "0"))
+    min_re_map = load_min_re_map(search_dirs, group_name)
 
-    eqb_files = String[]
+    eqb_entries = NamedTuple[]
     seen = Set{String}()
     for dir in search_dirs
         for fname in readdir(dir)
@@ -279,23 +337,47 @@ function run_group(group, root_dir, out_root, reference_path, args, trials, nois
                 continue
             end
             push!(seen, fname)
-            push!(eqb_files, joinpath(dir, fname))
+            key = (round_key(info.Lx), round_key(info.Lz), info.id)
+            min_Re = get(min_re_map, key, Inf)
+            push!(eqb_entries, (path=joinpath(dir, fname), info=info, min_Re=min_Re))
         end
     end
-    sort!(eqb_files)
+    sort!(eqb_entries; by=e -> (e.min_Re, e.path))
 
-    if isempty(eqb_files)
+    if isempty(eqb_entries)
         println("[skip] no eqb files found for group $(group_name)")
         return nothing
     end
 
     if max_count > 0
-        eqb_files = eqb_files[1:min(max_count, length(eqb_files))]
+        eqb_entries = eqb_entries[1:min(max_count, length(eqb_entries))]
     end
 
-    for eqb_path in eqb_files
-        info = parse_eqb_filename(basename(eqb_path))
-        info === nothing && continue
+    for entry in eqb_entries
+        eqb_path = entry.path
+        info = entry.info
+        if isfinite(entry.min_Re)
+            println(
+                @sprintf(
+                    "[pick] group=%s Lx=%.4f Lz=%.4f id=%03d min_Re=%.6f",
+                    group_name,
+                    info.Lx,
+                    info.Lz,
+                    info.id,
+                    entry.min_Re,
+                ),
+            )
+        else
+            println(
+                @sprintf(
+                    "[pick] group=%s Lx=%.4f Lz=%.4f id=%03d min_Re=missing",
+                    group_name,
+                    info.Lx,
+                    info.Lz,
+                    info.id,
+                ),
+            )
+        end
         promote_eqb(
             group_name,
             group.H,

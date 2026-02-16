@@ -1,5 +1,5 @@
-# import Pkg
-# Pkg.activate("../../.")
+import Pkg
+Pkg.activate("../../.")
 
 using CloudAtlas
 using LinearAlgebra
@@ -16,16 +16,16 @@ using Plots
 # Configuration
 # -------------------------
 # Discretization
-const J = 1
-const K = 3
-const L = 5
+const J = 3
+const K = 5
+const L = 9
 
 # Reynolds number
 const Re = 300.0
 
 # Grid in physical box sizes
-const Lx_vals = range(8, 12; length=30)
-const Lz_vals = range(5, 8; length=30)
+const Lx_vals = range(5, 15; length=20)
+const Lz_vals = range(2, 10; length=20)
 
 # Number of guesses per grid point
 const N = 1000
@@ -63,12 +63,13 @@ const run_bifurcations = true
 const write_heatmaps = true
 
 # Default group list (override with --groups=A,B or --all)
-const default_groups = ["A", "B", "C", "E", "F", "G"]
+# const default_groups = ["A", "B", "C", "E", "F", "G"]
+const default_groups = ["E", "F"]
 # Groups that use legacy naming (no group prefix in filenames)
 const legacy_groups = Set(["D"])
 
 # Output root
-const group_root = joinpath(@__DIR__, "eqb_alpha_gamma_grid", "high-res")
+const group_root = joinpath(@__DIR__, "eqb_alpha_gamma_grid", "3-5-9")
 
 # -------------------------
 # Symmetry groups
@@ -190,7 +191,7 @@ function centers_to_edges(vals::Vector{Float64})
         delta = 1.0
         return [vals[1] - delta / 2, vals[1] + delta / 2]
     end
-    mids = (vals[1:(end - 1)] .+ vals[2:end]) ./ 2
+    mids = (vals[1:(end-1)] .+ vals[2:end]) ./ 2
     left = vals[1] - (mids[1] - vals[1])
     right = vals[end] + (vals[end] - mids[end])
     return vcat(left, mids, right)
