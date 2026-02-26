@@ -1,5 +1,7 @@
-import Pkg
-Pkg.activate("../../.")
+if get(ENV, "CLOUDATLAS_SKIP_ACTIVATE", "false") != "true"
+    import Pkg
+    Pkg.activate(joinpath(@__DIR__, "..", ".."))
+end
 
 using CloudAtlas
 using LinearAlgebra
@@ -9,10 +11,10 @@ using CairoMakie
 import BifurcationKit as BK
 using Plots
 
-const J = 1
-const K = 3
-const L = 5
-const Re = 300.0
+const DEFAULT_J = 1
+const DEFAULT_K = 3
+const DEFAULT_L = 5
+const DEFAULT_RE = 300.0
 
 const cont_Re_min = 100.0
 const cont_Re_max = 500.0
@@ -33,6 +35,7 @@ function symmetry_groups()
         (name = "E", desc = "<sxyz, sztxz>", H = [sx * sy * sz, sz * tx * tz]),
         (name = "F", desc = "<sxy, sz, txz>", H = [sx * sy, sz, tx * tz]),
         (name = "G", desc = "<sxyz>", H = [sx * sy * sz]),
+        (name = "sztx", desc = "<sztx>", H = [sz * tx]),
     ]
 end
 
@@ -396,6 +399,10 @@ function run_group(group, group_root, args)
     group_name = group.name
     group_title = "Group $(group_name) $(group.desc)"
     group_prefix = group_name in legacy_groups ? "" : group_name
+    J = parse(Int, get(args, "J", string(DEFAULT_J)))
+    K = parse(Int, get(args, "K", string(DEFAULT_K)))
+    L = parse(Int, get(args, "L", string(DEFAULT_L)))
+    Re = parse(Float64, get(args, "Re", string(DEFAULT_RE)))
     summary_suffix = isempty(group_prefix) ? "" : "_$(group_prefix)"
 
     group_dir = joinpath(group_root, group_name)
