@@ -227,6 +227,37 @@ def parse_mud_file(path: Path) -> Optional[pd.DataFrame]:
     return df
 
 
+def resolve_dns_re_dir(re_dir_raw: str) -> Optional[Path]:
+    s = re_dir_raw.strip()
+    if not s:
+        return None
+
+    p = Path(s)
+    if p.is_dir():
+        return p
+
+    # If a relative path was stored, try relative to this script directory.
+    p_rel = (HERE / s).resolve()
+    if p_rel.is_dir():
+        return p_rel
+
+    # CSVs often store absolute paths from another machine. Re-root them to this repo.
+    normalized = s.replace("\\", "/")
+    marker1 = "/notebooks/alpha_gamma_grid/"
+    if marker1 in normalized:
+        suffix = normalized.split(marker1, 1)[1]
+        cand = (HERE / suffix).resolve()
+        if cand.is_dir():
+            return cand
+    marker2 = "/eqb_alpha_gamma_grid/"
+    if marker2 in normalized:
+        suffix = "eqb_alpha_gamma_grid/" + normalized.split(marker2, 1)[1]
+        cand = (HERE / suffix).resolve()
+        if cand.is_dir():
+            return cand
+    return None
+
+
 def load_dns_branches(dns_df: pd.DataFrame) -> Dict[Tuple[float, float], List[Branch]]:
     out: Dict[Tuple[float, float], List[Branch]] = {}
     if dns_df.empty or "re_out_dir" not in dns_df.columns:
@@ -235,7 +266,10 @@ def load_dns_branches(dns_df: pd.DataFrame) -> Dict[Tuple[float, float], List[Br
         re_dir = str(row.get("re_out_dir", "")).strip()
         if not re_dir:
             continue
-        mud = Path(re_dir) / "MuD.asc"
+        resolved_re_dir = resolve_dns_re_dir(re_dir)
+        if resolved_re_dir is None:
+            continue
+        mud = resolved_re_dir / "MuD.asc"
         df = parse_mud_file(mud)
         if df is None or df.empty:
             continue
