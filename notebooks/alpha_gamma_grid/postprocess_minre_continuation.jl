@@ -1,7 +1,5 @@
-if get(ENV, "CLOUDATLAS_SKIP_ACTIVATE", "false") != "true"
-    import Pkg
-    Pkg.activate(joinpath(@__DIR__, "..", ".."))
-end
+import Pkg
+Pkg.activate(joinpath(@__DIR__, "..", ".."))
 
 using CloudAtlas
 using LinearAlgebra
@@ -178,19 +176,25 @@ function load_summary(summary_path)
     results = NamedTuple[]
     for i in 1:size(X, 1)
         row = X[i, :]
-        length(row) < 9 && continue
+        length(row) < 5 && continue
+        alpha = length(row) >= 3 ? row[3] : (2pi / row[1])
+        gamma = length(row) >= 4 ? row[4] : (2pi / row[2])
+        normv = length(row) >= 6 ? row[6] : NaN
+        shearv = length(row) >= 7 ? row[7] : NaN
+        dissv = length(row) >= 8 ? row[8] : NaN
+        resv = length(row) >= 9 ? row[9] : NaN
         push!(
             results,
             (
                 Lx = row[1],
                 Lz = row[2],
-                alpha = row[3],
-                gamma = row[4],
+                alpha = alpha,
+                gamma = gamma,
                 id = Int(round(row[5])),
-                norm = row[6],
-                shear = row[7],
-                dissipation = row[8],
-                res = row[9],
+                norm = normv,
+                shear = shearv,
+                dissipation = dissv,
+                res = resv,
             ),
         )
     end
@@ -395,7 +399,7 @@ function extract_re_shear(br, model)
     return Re_vals, shear_vals
 end
 
-function run_group(group, group_root, args)
+function run_group(group, group_root, args, jkl)
     group_name = group.name
     group_title = "Group $(group_name) $(group.desc)"
     group_prefix = group_name in legacy_groups ? "" : group_name
@@ -405,7 +409,8 @@ function run_group(group, group_root, args)
     Re = parse(Float64, get(args, "Re", string(DEFAULT_RE)))
     summary_suffix = isempty(group_prefix) ? "" : "_$(group_prefix)"
 
-    group_dir = joinpath(group_root, group_name)
+    group_subdir = get(args, "group-subdir", "")
+    group_dir = isempty(group_subdir) ? joinpath(group_root, group_name) : joinpath(group_root, group_name, group_subdir)
     if !isdir(group_dir)
         println("[skip] missing group dir: $group_dir")
         return
@@ -491,7 +496,7 @@ function run_group(group, group_root, args)
         end
         eqb_path = eqb_candidates[eqb_path]
 
-        model = ODEModel(alpha, gamma, J, K, L, group.H)
+        model = ODEModel(alpha, gamma, jkl[1], jkl[2], jkl[3], group.H)
         x0 = myreaddlm(eqb_path)
         br = continue_eqb(model, x0, Re)
 
@@ -529,6 +534,10 @@ function main()
     args = parse_args(ARGS)
     base_dir = @__DIR__
     group_root = get(args, "root", joinpath(base_dir, "eqb_alpha_gamma_grid", "minre_continuation"))
+    j = parse(Int, get(args, "J", string(J)))
+    k = parse(Int, get(args, "K", string(K)))
+    l = parse(Int, get(args, "L", string(L)))
+    jkl = (j, k, l)
 
     groups = symmetry_groups()
     requested = parse_group_args(args, groups)
@@ -538,8 +547,12 @@ function main()
             println("\n=============================")
             println("Postprocessing group $(g.name) $(g.desc)")
             println("Input/output dir: $(joinpath(group_root, g.name))")
+            if haskey(args, "group-subdir")
+                println("Group subdir: ", args["group-subdir"])
+            end
+            println("Discretization JKL=$(jkl)")
             println("=============================")
-            run_group(g, group_root, args)
+            run_group(g, group_root, args, jkl)
         end
     end
 end
