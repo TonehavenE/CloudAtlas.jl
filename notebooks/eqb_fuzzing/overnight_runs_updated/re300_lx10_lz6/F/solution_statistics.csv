@@ -1,0 +1,12 @@
+timestamp,level_idx,J,K,L,source,attempted_seeds,hookstep_converged,accepted_postfilter,unique_solutions,promotions_reconverged
+2026-03-06T12:14:28,1,1,3,5,fuzz,100000,51052,3807,1,0
+2026-03-06T12:14:28,2,1,4,5,promotion,1,1,1,1,1
+2026-03-06T12:14:28,3,2,4,5,promotion,1,1,1,1,1
+2026-03-06T12:14:28,4,2,4,6,promotion,1,1,1,1,1
+2026-03-06T12:14:29,5,2,4,7,promotion,1,1,1,1,1
+2026-03-06T12:14:30,6,2,4,8,promotion,1,1,1,1,1
+2026-03-06T12:14:31,7,2,4,9,promotion,1,1,1,1,1
+2026-03-06T12:14:33,8,3,4,9,promotion,1,1,1,1,1
+2026-03-06T12:14:36,9,3,5,9,promotion,1,1,1,1,1
+2026-03-06T12:14:40,10,3,5,9,resume,1,0,0,1,0
+2026-03-06T12:14:55,11,3,5,10,promotion,1,1,0,0,0

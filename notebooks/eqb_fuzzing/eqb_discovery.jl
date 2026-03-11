@@ -27,6 +27,24 @@ using Dates
 using Serialization
 using Base.Threads
 
+# Top-level defaults (override via ENV vars below)
+const DEFAULT_RE = 400.0
+const DEFAULT_LX = 10.0
+const DEFAULT_LZ = 6.0
+const DEFAULT_ATTEMPTS_LEVEL1 = 100_000
+const DEFAULT_APPEND_ATTEMPTS_LEVEL1 = 0
+const DEFAULT_RESUME_FROM_SAVED = true
+const DEFAULT_LADDER_PERTURB_TRIALS_EARLY = 10_000
+const DEFAULT_LADDER_PERTURB_TRIALS_LATE = 500
+const DEFAULT_LADDER_PERTURB_SWITCH_JKL = (2, 4, 5)
+const DEFAULT_LADDER_PERTURB_SCALE = 0.05
+const DEFAULT_XNORM = 0.4
+const DEFAULT_SHEAR_TARGET = 5.0
+const DEFAULT_SHEAR_TOL = 0.1
+const DEFAULT_SHEAR_MIN = 3.0
+const DEFAULT_SHEAR_MAX = 7.0
+const DEFAULT_NORM_THRESHOLD = 1e-3
+
 # %% [markdown]
 # # Equilibrium Discovery (Parallel Fuzzing + Ladder Promotion)
 #
@@ -78,18 +96,27 @@ function parse_ladder_env(raw::AbstractString, default)
     return vals
 end
 
+function parse_jkl_env(name::AbstractString, default::NTuple{3, Int})
+    raw = get(ENV, name, "")
+    s = strip(raw)
+    isempty(s) && return default
+    parts = split(lowercase(s), "x")
+    length(parts) == 3 || error("Invalid JxKxL tuple for ENV[$name]='$raw'")
+    return (parse(Int, parts[1]), parse(Int, parts[2]), parse(Int, parts[3]))
+end
+
 # %% [markdown]
 # ## Configuration
 
 # %%
 # Domain
-Lx = parse_float_env("EQB_LX", 10.0)
-Lz = parse_float_env("EQB_LZ", 6.0)
+Lx = parse_float_env("EQB_LX", DEFAULT_LX)
+Lz = parse_float_env("EQB_LZ", DEFAULT_LZ)
 α = parse_float_env("EQB_ALPHA", 2π / Lx)
 γ = parse_float_env("EQB_GAMMA", 2π / Lz)
 
 # Reynolds number parameter (set this before runs)
-Re = parse_float_env("EQB_RE", 400.0)
+Re = parse_float_env("EQB_RE", DEFAULT_RE)
 
 # Discretization ladder
 # NOTE: duplicate entries are preserved as requested.
@@ -110,13 +137,25 @@ discretization_ladder_default = [
 discretization_ladder = parse_ladder_env(get(ENV, "EQB_LADDER", ""), discretization_ladder_default)
 
 # Coarsest-level fuzzing attempts
-attempts_level1 = parse_int_env("EQB_ATTEMPTS", 10_000)
-append_attempts_level1 = parse_int_env("EQB_APPEND_ATTEMPTS", 0)
-resume_from_saved = parse_bool_env("EQB_RESUME", true)
+attempts_level1 = parse_int_env("EQB_ATTEMPTS", DEFAULT_ATTEMPTS_LEVEL1)
+append_attempts_level1 = parse_int_env("EQB_APPEND_ATTEMPTS", DEFAULT_APPEND_ATTEMPTS_LEVEL1)
+resume_from_saved = parse_bool_env("EQB_RESUME", DEFAULT_RESUME_FROM_SAVED)
 
 # Projection refinement settings
-ladder_perturb_trials = parse_int_env("EQB_LADDER_PERTURB_TRIALS", 1000)
-ladder_perturb_scale = parse_float_env("EQB_LADDER_PERTURB_SCALE", 0.1)
+ladder_perturb_trials_early = parse_int_env(
+    "EQB_LADDER_PERTURB_TRIALS_EARLY",
+    DEFAULT_LADDER_PERTURB_TRIALS_EARLY,
+)
+ladder_perturb_trials_late = parse_int_env(
+    "EQB_LADDER_PERTURB_TRIALS_LATE",
+    DEFAULT_LADDER_PERTURB_TRIALS_LATE,
+)
+ladder_perturb_switch_jkl = parse_jkl_env(
+    "EQB_LADDER_PERTURB_SWITCH_JKL",
+    DEFAULT_LADDER_PERTURB_SWITCH_JKL,
+)
+ladder_perturb_scale = parse_float_env("EQB_LADDER_PERTURB_SCALE", DEFAULT_LADDER_PERTURB_SCALE)
+ladder_perturb_switch_idx = something(findfirst(==(ladder_perturb_switch_jkl), discretization_ladder), length(discretization_ladder))
 
 # Hookstep parameters
 hookparams = SearchParams(
@@ -131,11 +170,11 @@ hookparams = SearchParams(
 
 # Guessing strategy (shear band, high target shear)
 guess_strategy = :shear_band
-xnorm = parse_float_env("EQB_XNORM", 0.4)
-shear_target = parse_float_env("EQB_SHEAR_TARGET", 5.0)
-shear_tol = parse_float_env("EQB_SHEAR_TOL", 0.1)
-shear_min = parse_float_env("EQB_SHEAR_MIN", 3.0)
-shear_max = parse_float_env("EQB_SHEAR_MAX", 7.0)
+xnorm = parse_float_env("EQB_XNORM", DEFAULT_XNORM)
+shear_target = parse_float_env("EQB_SHEAR_TARGET", DEFAULT_SHEAR_TARGET)
+shear_tol = parse_float_env("EQB_SHEAR_TOL", DEFAULT_SHEAR_TOL)
+shear_min = parse_float_env("EQB_SHEAR_MIN", DEFAULT_SHEAR_MIN)
+shear_max = parse_float_env("EQB_SHEAR_MAX", DEFAULT_SHEAR_MAX)
 
 # Dedup tolerances
 fp_tol = (
@@ -146,7 +185,7 @@ fp_tol = (
 )
 
 # Acceptance thresholds
-norm_threshold = parse_float_env("EQB_NORM_THRESHOLD", 1e-3)
+norm_threshold = parse_float_env("EQB_NORM_THRESHOLD", DEFAULT_NORM_THRESHOLD)
 
 # Output root
 default_out = joinpath(@__DIR__, "eqb_discovery_re$(round(Int, Re))")
@@ -438,6 +477,13 @@ println("  α=$(α), γ=$(γ), Lx=$(Lx), Lz=$(Lz), Re=$(Re)")
 println("  symmetries=$(join([s.name for s in symmetry_groups], ","))")
 println("  ladder=$(join(["$(j)x$(k)x$(l)" for (j, k, l) in discretization_ladder], ","))")
 println("  attempts_level1=$(attempts_level1), append_attempts_level1=$(append_attempts_level1), resume=$(resume_from_saved)")
+println(
+    "  ladder_perturb_trials_early=$(ladder_perturb_trials_early), " *
+    "ladder_perturb_trials_late=$(ladder_perturb_trials_late), " *
+    "ladder_perturb_switch_jkl=$(ladder_perturb_switch_jkl), " *
+    "ladder_perturb_switch_idx=$(ladder_perturb_switch_idx), " *
+    "ladder_perturb_scale=$(ladder_perturb_scale)",
+)
 println("  shear_band=[$(shear_min), $(shear_max)]")
 println("  julia_threads=$(Threads.nthreads())")
 println("  blas_threads=$(LinearAlgebra.BLAS.get_num_threads())")
@@ -560,6 +606,13 @@ for symm in symmetry_groups
                 )
             else
                 seeds = prev_solutions
+                level_perturb_trials =
+                    level_idx <= ladder_perturb_switch_idx ?
+                    ladder_perturb_trials_early : ladder_perturb_trials_late
+                println(
+                    "[promotion config] level=$(level_idx) JKL=($(J),$(K),$(L)) " *
+                    "perturb_trials=$(level_perturb_trials), perturb_scale=$(ladder_perturb_scale)",
+                )
                 promoted, _, stats_promote = refine_projected_solutions(
                     prev_model,
                     model,
@@ -567,7 +620,7 @@ for symm in symmetry_groups
                     solutions_from = seeds,
                     hookparams = hookparams,
                     norm_threshold = norm_threshold,
-                    perturb_trials = ladder_perturb_trials,
+                    perturb_trials = level_perturb_trials,
                     perturb_scale = ladder_perturb_scale,
                 )
                 prev_solutions = promoted

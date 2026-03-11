@@ -1,0 +1,65 @@
+# Unique converged DNS solutions for re300_lx10_lz6
+# Box: Lx=10, Lz=6, Re=300
+# dedupe tolerances: shear_tol=1.0e-6, l2_tol=1.0e-6
+# generated: 2026-03-10 20:20:46
+
+## Group A
+u001: shear=0.327932, L2=0.132183, multiplicity=1
+  members: sol001@J2K4L7
+u002: shear=1.75755, L2=0.337678, multiplicity=1
+  members: sol002@J2K4L5
+
+## Group B
+u001: shear=0.327932, L2=0.132183, multiplicity=1
+  members: sol002@J2K4L9
+u002: shear=0.368928, L2=0.132685, multiplicity=1
+  members: sol001@J2K4L9
+
+## Group C
+u001: shear=0.327932, L2=0.132183, multiplicity=2
+  members: sol001@J3K5L9, sol002@J2K4L9
+u002: shear=0.332424, L2=0.114986, multiplicity=1
+  members: sol004@J2K4L8
+u003: shear=0.368928, L2=0.132685, multiplicity=1
+  members: sol005@J1K4L5
+u004: shear=0.504836, L2=0.155965, multiplicity=1
+  members: sol006@J1K3L5
+u005: shear=1.50822, L2=0.307106, multiplicity=1
+  members: sol003@J2K4L6
+
+## Group D
+u001: shear=0.191403, L2=0.093204, multiplicity=1
+  members: sol004@J1K3L5
+u002: shear=0.562706, L2=0.180224, multiplicity=1
+  members: sol003@J1K3L5
+u003: shear=0.580333, L2=0.155926, multiplicity=1
+  members: sol002@J2K4L9
+u004: shear=1.12265, L2=0.249595, multiplicity=1
+  members: sol001@J2K4L8
+
+## Group E
+u001: shear=0.5755, L2=0.33369, multiplicity=3
+  members: sol001@J3K5L11, sol002@J2K4L9, sol005@J1K3L5
+u002: shear=0.69859, L2=0.23608, multiplicity=1
+  members: sol004@J2K4L5
+u003: shear=0.978733, L2=0.24704, multiplicity=1
+  members: sol003@J2K4L9
+
+## Group F
+u001: shear=0.327932, L2=0.132183, multiplicity=1
+  members: sol001@J3K5L9
+
+## Group G
+u001: shear=0.130007, L2=0.0787033, multiplicity=1
+  members: sol004@J2K4L5
+u002: shear=0.191403, L2=0.093204, multiplicity=2
+  members: sol002@J1K3L5, sol011@J1K3L5
+u003: shear=0.211102, L2=0.102108, multiplicity=2
+  members: sol001@J2K4L5, sol006@J1K3L5
+u004: shear=0.260169, L2=0.118291, multiplicity=1
+  members: sol008@J1K4L5
+u005: shear=0.269275, L2=0.11686, multiplicity=1
+  members: sol007@J1K3L5
+u006: shear=0.871758, L2=0.231991, multiplicity=1
+  members: sol003@J1K4L5
+

@@ -1,0 +1,5 @@
+timestamp,level_idx,J,K,L,source,attempted_seeds,hookstep_converged,accepted_postfilter,unique_solutions,promotions_reconverged
+2026-03-06T15:26:14,1,1,3,5,fuzz,100000,11899,2867,3,0
+2026-03-06T15:26:44,2,1,4,5,promotion,3,3,3,3,3
+2026-03-06T15:26:54,3,2,4,5,promotion,3,3,2,1,1
+2026-03-06T15:28:17,4,2,4,6,promotion,1,0,0,0,0
