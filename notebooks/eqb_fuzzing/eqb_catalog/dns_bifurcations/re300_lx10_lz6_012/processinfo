@@ -1,0 +1,9 @@
+Command:  /home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/continuesoln -cont Re -eqb -R 300.0 -T 10.0 -symms /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/eqb_catalog/dns_bifurcations/symm_files/symm_D.asc -od /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/eqb_catalog/dns_bifurcations/re300_lx10_lz6_012 -dmu -0.02 -ns 50 -targ -targMu 100.0 /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/overnight_runs_updated/re300_lx10_lz6/D/jkl_1_3_5/dns_findsoln/sol003/ubest.nc 
+PWD:      /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/eqb_catalog/dns_bifurcations/re300_lx10_lz6_012
+Host:     EbenDesktop, PID: 60683
+Time:     2026-03-24 09:19:08
+Version:  2.0.2
+Git rev:  91ba77f93bba73af4ef25e3d3cecf35521badbfd
+Compiler: GNU 14.2.0
+
+

@@ -1,0 +1,22 @@
+# Large DNS compute run directories
+overnight_runs_updated/
+low_shear/
+
+# Per-step DNS fields inside continuation runs (ubest.nc files are ~2MB each)
+eqb_catalog/dns_bifurcations/*/initial-*/
+eqb_catalog/dns_bifurcations/*/search-*/
+eqb_catalog/dns_bifurcations/*/failures/
+eqb_catalog/dns_bifurcations/*/Target/
+
+# Symmetry files (auto-generated from group name, tiny but regenerable)
+eqb_catalog/dns_bifurcations/symm_files/
+
+# Regenerable plots
+eqb_catalog/dns_bifurcations/plots/
+
+# ODE bifurcation results (large when populated)
+eqb_catalog/bifurcations/
+
+# Python cache
+__pycache__/
+*.pyc
