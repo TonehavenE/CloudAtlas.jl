@@ -1,6 +1,7 @@
 # Large DNS compute run directories
 overnight_runs_updated/
 low_shear/
+stress_tests/
 
 # Per-step DNS fields inside continuation runs (ubest.nc files are ~2MB each)
 eqb_catalog/dns_bifurcations/*/initial-*/

@@ -25,6 +25,7 @@ using LinearAlgebra
 using Random
 using Dates
 using Serialization
+using Statistics
 using Base.Threads
 
 # Top-level defaults (override via ENV vars below)
@@ -287,6 +288,8 @@ function fuzz_eqb_solutions(model::ODEModel, Re::Real;
     progress = Threads.Atomic{Int}(0)
     hookstep_converged = Threads.Atomic{Int}(0)
     accepted_postfilter = Threads.Atomic{Int}(0)
+    rejected_norms = Float64[]
+    rejected_shears = Float64[]
     progress_every = max(1, n_attempts ÷ 100)
 
     @threads for attempt in 1:n_attempts
@@ -321,6 +324,11 @@ function fuzz_eqb_solutions(model::ODEModel, Re::Real;
                         end
                     end
                 end
+            else
+                lock(data_lock) do
+                    push!(rejected_norms, Float64(norm(x)))
+                    push!(rejected_shears, Float64(shear(x, model)))
+                end
             end
         end
 
@@ -337,10 +345,18 @@ function fuzz_eqb_solutions(model::ODEModel, Re::Real;
     end
 
     println("Done. Hookstep converged=$(hookstep_converged[]), accepted=$(accepted_postfilter[]), unique=$(length(solutions))")
+    rejected_stats = summarize_rejected_convergences(rejected_norms, rejected_shears)
     stats = (
         attempted_seeds = n_attempts,
         hookstep_converged = hookstep_converged[],
         accepted_postfilter = accepted_postfilter[],
+        rejected_postfilter = rejected_stats.rejected_postfilter,
+        rejected_norm_min = rejected_stats.rejected_norm_min,
+        rejected_norm_median = rejected_stats.rejected_norm_median,
+        rejected_norm_max = rejected_stats.rejected_norm_max,
+        rejected_shear_min = rejected_stats.rejected_shear_min,
+        rejected_shear_median = rejected_stats.rejected_shear_median,
+        rejected_shear_max = rejected_stats.rejected_shear_max,
         unique_solutions = length(solutions),
         promotions_reconverged = 0,
     )
@@ -365,6 +381,8 @@ function refine_projected_solutions(model_from::ODEModel, model_to::ODEModel, Re
 
     rngs = [MersenneTwister(0xBEEF + i) for i in 1:Threads.maxthreadid()]
     progress = Threads.Atomic{Int}(0)
+    rejected_norms = Float64[]
+    rejected_shears = Float64[]
     progress_every = max(1, attempted ÷ 100)
 
     @threads for i in eachindex(solutions_from)
@@ -397,6 +415,11 @@ function refine_projected_solutions(model_from::ODEModel, model_to::ODEModel, Re
                             push!(refined, ξ_star)
                         end
                     end
+                else
+                    lock(data_lock) do
+                        push!(rejected_norms, Float64(norm(x)))
+                        push!(rejected_shears, Float64(shear(x, model_to)))
+                    end
                 end
                 break
             end
@@ -414,23 +437,90 @@ function refine_projected_solutions(model_from::ODEModel, model_to::ODEModel, Re
         end
     end
 
+    rejected_stats = summarize_rejected_convergences(rejected_norms, rejected_shears)
     stats = (
         attempted_seeds = attempted,
         hookstep_converged = hookstep_converged[],
         accepted_postfilter = accepted_postfilter[],
+        rejected_postfilter = rejected_stats.rejected_postfilter,
+        rejected_norm_min = rejected_stats.rejected_norm_min,
+        rejected_norm_median = rejected_stats.rejected_norm_median,
+        rejected_norm_max = rejected_stats.rejected_norm_max,
+        rejected_shear_min = rejected_stats.rejected_shear_min,
+        rejected_shear_median = rejected_stats.rejected_shear_median,
+        rejected_shear_max = rejected_stats.rejected_shear_max,
         unique_solutions = length(refined),
         promotions_reconverged = length(refined),
     )
     return refined, fingerprints, stats
 end
 
+function summarize_rejected_convergences(norms::Vector{Float64}, shears::Vector{Float64})
+    if isempty(norms)
+        return (
+            rejected_postfilter = 0,
+            rejected_norm_min = NaN,
+            rejected_norm_median = NaN,
+            rejected_norm_max = NaN,
+            rejected_shear_min = NaN,
+            rejected_shear_median = NaN,
+            rejected_shear_max = NaN,
+        )
+    end
+    return (
+        rejected_postfilter = length(norms),
+        rejected_norm_min = minimum(norms),
+        rejected_norm_median = median(norms),
+        rejected_norm_max = maximum(norms),
+        rejected_shear_min = minimum(shears),
+        rejected_shear_median = median(shears),
+        rejected_shear_max = maximum(shears),
+    )
+end
+
+function rejected_fields(stats)
+    has_rejected = hasproperty(stats, :rejected_postfilter)
+    return (
+        has_rejected ? stats.rejected_postfilter : 0,
+        has_rejected ? stats.rejected_norm_min : NaN,
+        has_rejected ? stats.rejected_norm_median : NaN,
+        has_rejected ? stats.rejected_norm_max : NaN,
+        has_rejected ? stats.rejected_shear_min : NaN,
+        has_rejected ? stats.rejected_shear_median : NaN,
+        has_rejected ? stats.rejected_shear_max : NaN,
+    )
+end
+
+function merge_rejected_fields(a, b)
+    af = rejected_fields(a)
+    bf = rejected_fields(b)
+    rejected = af[1] + bf[1]
+    rejected == 0 && return rejected_fields((;))
+    only_a = af[1] > 0 && bf[1] == 0
+    only_b = bf[1] > 0 && af[1] == 0
+    finite_min(x, y) = isfinite(x) && isfinite(y) ? min(x, y) : (isfinite(x) ? x : y)
+    finite_max(x, y) = isfinite(x) && isfinite(y) ? max(x, y) : (isfinite(x) ? x : y)
+    return (
+        rejected,
+        finite_min(af[2], bf[2]),
+        only_a ? af[3] : (only_b ? bf[3] : NaN),
+        finite_max(af[4], bf[4]),
+        finite_min(af[5], bf[5]),
+        only_a ? af[6] : (only_b ? bf[6] : NaN),
+        finite_max(af[7], bf[7]),
+    )
+end
+
 function write_group_statistics(path::AbstractString, rows)
     open(path, "w") do io
-        println(io, "timestamp,level_idx,J,K,L,source,attempted_seeds,hookstep_converged,accepted_postfilter,unique_solutions,promotions_reconverged")
+        println(io, "timestamp,level_idx,J,K,L,source,attempted_seeds,hookstep_converged,accepted_postfilter,rejected_postfilter,rejected_norm_min,rejected_norm_median,rejected_norm_max,rejected_shear_min,rejected_shear_median,rejected_shear_max,unique_solutions,promotions_reconverged")
         for r in rows
+            rejected = rejected_fields(r)
             println(io,
                 "$(r.timestamp),$(r.level_idx),$(r.J),$(r.K),$(r.L),$(r.source)," *
-                "$(r.attempted_seeds),$(r.hookstep_converged),$(r.accepted_postfilter),$(r.unique_solutions),$(r.promotions_reconverged)"
+                "$(r.attempted_seeds),$(r.hookstep_converged),$(r.accepted_postfilter)," *
+                "$(rejected[1]),$(rejected[2]),$(rejected[3]),$(rejected[4]),$(rejected[5]),$(rejected[6]),$(rejected[7])," *
+                "$(r.unique_solutions),$(r.promotions_reconverged)"
             )
         end
     end
@@ -585,10 +675,18 @@ for symm in symmetry_groups
             end
 
             prev_solutions = merged
+            rejected = merge_rejected_fields(stats_fuzz, stats_append)
             level_stats = (
                 attempted_seeds = stats_fuzz.attempted_seeds + stats_append.attempted_seeds,
                 hookstep_converged = stats_fuzz.hookstep_converged + stats_append.hookstep_converged,
                 accepted_postfilter = stats_fuzz.accepted_postfilter + stats_append.accepted_postfilter,
+                rejected_postfilter = rejected[1],
+                rejected_norm_min = rejected[2],
+                rejected_norm_median = rejected[3],
+                rejected_norm_max = rejected[4],
+                rejected_shear_min = rejected[5],
+                rejected_shear_median = rejected[6],
+                rejected_shear_max = rejected[7],
                 unique_solutions = length(prev_solutions),
                 promotions_reconverged = 0,
             )
@@ -629,6 +727,13 @@ for symm in symmetry_groups
                     attempted_seeds = stats_promote.attempted_seeds,
                     hookstep_converged = stats_promote.hookstep_converged,
                     accepted_postfilter = stats_promote.accepted_postfilter,
+                    rejected_postfilter = stats_promote.rejected_postfilter,
+                    rejected_norm_min = stats_promote.rejected_norm_min,
+                    rejected_norm_median = stats_promote.rejected_norm_median,
+                    rejected_norm_max = stats_promote.rejected_norm_max,
+                    rejected_shear_min = stats_promote.rejected_shear_min,
+                    rejected_shear_median = stats_promote.rejected_shear_median,
+                    rejected_shear_max = stats_promote.rejected_shear_max,
                     unique_solutions = stats_promote.unique_solutions,
                     promotions_reconverged = stats_promote.promotions_reconverged,
                 )
@@ -651,6 +756,13 @@ for symm in symmetry_groups
             attempted_seeds = level_stats.attempted_seeds,
             hookstep_converged = level_stats.hookstep_converged,
             accepted_postfilter = level_stats.accepted_postfilter,
+            rejected_postfilter = hasproperty(level_stats, :rejected_postfilter) ? level_stats.rejected_postfilter : 0,
+            rejected_norm_min = hasproperty(level_stats, :rejected_postfilter) ? level_stats.rejected_norm_min : NaN,
+            rejected_norm_median = hasproperty(level_stats, :rejected_postfilter) ? level_stats.rejected_norm_median : NaN,
+            rejected_norm_max = hasproperty(level_stats, :rejected_postfilter) ? level_stats.rejected_norm_max : NaN,
+            rejected_shear_min = hasproperty(level_stats, :rejected_postfilter) ? level_stats.rejected_shear_min : NaN,
+            rejected_shear_median = hasproperty(level_stats, :rejected_postfilter) ? level_stats.rejected_shear_median : NaN,
+            rejected_shear_max = hasproperty(level_stats, :rejected_postfilter) ? level_stats.rejected_shear_max : NaN,
             unique_solutions = level_stats.unique_solutions,
             promotions_reconverged = level_stats.promotions_reconverged,
         ))
