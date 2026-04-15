@@ -9,10 +9,10 @@ using LinearAlgebra
 using Printf
 using Random
 
-const BASE_J = 1
-const BASE_K = 3
-const BASE_L = 5
-const RE = 300.0
+const DEFAULT_SEED_J = 1
+const DEFAULT_SEED_K = 3
+const DEFAULT_SEED_L = 5
+const DEFAULT_RE = 300.0
 
 const DEFAULT_LADDER = [
     (2, 3, 5),
@@ -116,6 +116,22 @@ end
 
 function choose_seed(source_group_dir::String, group_name::String, args::Dict{String,String})
     group_prefix = group_name in legacy_groups ? "" : group_name
+    if haskey(args, "seed-path")
+        eqb_path = abspath(args["seed-path"])
+        isfile(eqb_path) || error("Seed eqb not found: $eqb_path")
+        haskey(args, "seed-Lx") || error("--seed-Lx is required with --seed-path")
+        haskey(args, "seed-Lz") || error("--seed-Lz is required with --seed-path")
+        haskey(args, "seed-id") || error("--seed-id is required with --seed-path")
+        return (
+            Lx = parse(Float64, args["seed-Lx"]),
+            Lz = parse(Float64, args["seed-Lz"]),
+            id = parse(Int, args["seed-id"]),
+            min_Re = haskey(args, "seed-min-Re") ? parse(Float64, args["seed-min-Re"]) : NaN,
+            eqb_path = eqb_path,
+            rank = 0,
+        )
+    end
+
     min_re_path = get(
         args,
         "min-re-csv",
@@ -213,7 +229,7 @@ function ladder_to_target(target_jkl::NTuple{3,Int}; ladder=DEFAULT_LADDER)
     error("Target rung $target_jkl is not in default ladder. Pass --ladder override (not yet implemented) or add it.")
 end
 
-function solve_eqb(model, xguess; Re=RE, hookparams=HOOKPARAMS)
+function solve_eqb(model, xguess; Re=DEFAULT_RE, hookparams=HOOKPARAMS)
     f = x -> model.f(x, Re)
     Df = x -> model.Df(x, Re)
     return hookstepsolve(f, Df, xguess, hookparams)
@@ -226,7 +242,7 @@ function try_hookstep_trials!(
     noise_amp::Float64,
     rng::AbstractRNG,
     hookparams=HOOKPARAMS,
-    Re=RE,
+    Re=DEFAULT_RE,
 )
     if length(x_base) != size(model.ijkl, 1)
         return (false, x_base, 0)
@@ -311,7 +327,9 @@ function promote_seed_to_target!(
     H,
     seed,
     run_root::String;
+    seed_jkl::NTuple{3,Int},
     target_jkl::NTuple{3,Int},
+    Re::Float64,
     promote_trials::Int,
     promote_noise::Float64,
     resume::Bool,
@@ -342,12 +360,14 @@ function promote_seed_to_target!(
         end
     end
 
-    x0 = load_eqb_vector(seed.eqb_path)
-    model0 = ODEModel(alpha, gamma, BASE_J, BASE_K, BASE_L, H)
-    length(x0) == size(model0.ijkl, 1) ||
-        error("Seed vector length $(length(x0)) != model size $(size(model0.ijkl, 1)) for base JKL")
+    seed_j, seed_k, seed_l = seed_jkl
 
-    base_dir = joinpath(rung_root, @sprintf("J%dK%dL%d", BASE_J, BASE_K, BASE_L))
+    x0 = load_eqb_vector(seed.eqb_path)
+    model0 = ODEModel(alpha, gamma, seed_j, seed_k, seed_l, H)
+    length(x0) == size(model0.ijkl, 1) ||
+        error("Seed vector length $(length(x0)) != model size $(size(model0.ijkl, 1)) for seed JKL=($(seed_j),$(seed_k),$(seed_l))")
+
+    base_dir = joinpath(rung_root, @sprintf("J%dK%dL%d", seed_j, seed_k, seed_l))
     mkpath(base_dir)
     base_state_path = joinpath(base_dir, "x_star.asc")
     if !isfile(base_state_path)
@@ -358,7 +378,14 @@ function promote_seed_to_target!(
 
     prev_model = model0
     prev_x = x0
-    ladder = ladder_to_target(target_jkl)
+    ladder = if target_jkl == seed_jkl
+        NTuple{3,Int}[]
+    elseif seed_jkl == (DEFAULT_SEED_J, DEFAULT_SEED_K, DEFAULT_SEED_L)
+        ladder_to_target(target_jkl)
+    else
+        # For arbitrary catalog seeds, project directly to the requested target rung.
+        [target_jkl]
+    end
     rng = MersenneTwister(0x51EED + hash((group_name, round_key(Lx), round_key(Lz), id, target_jkl)))
 
     for (Jt, Kt, Lt) in ladder
@@ -382,7 +409,7 @@ function promote_seed_to_target!(
             trials=promote_trials,
             noise_amp=promote_noise,
             rng=rng,
-            Re=RE,
+            Re=Re,
         )
         open(joinpath(target_dir, "attempt_info.txt"), "w") do io
             println(io, "promote_trials=$promote_trials")
@@ -477,6 +504,7 @@ function continue_geometry_grid!(
     Lx_vals::Vector{Float64},
     Lz_vals::Vector{Float64},
     target_jkl::NTuple{3,Int};
+    Re::Float64,
     geom_trials::Int,
     geom_noise::Float64,
     max_attempts::Int,
@@ -571,9 +599,9 @@ function continue_geometry_grid!(
                 trials=geom_trials,
                 noise_amp=geom_noise,
                 rng=rng,
-                Re=RE,
+                Re=Re,
             )
-            residual = ok ? norm(model.f(x_star, RE)) / max(norm(x_star), eps(Float64)) : NaN
+            residual = ok ? norm(model.f(x_star, Re)) / max(norm(x_star), eps(Float64)) : NaN
             return (c=c, ok=ok, x=x_star, trial=trial, residual=residual)
         end
 
@@ -677,6 +705,7 @@ function main()
     target_k = parse(Int, get(args, "target-K", "4"))
     target_l = parse(Int, get(args, "target-L", "7"))
     target_jkl = (target_j, target_k, target_l)
+    Re = parse(Float64, get(args, "Re", string(DEFAULT_RE)))
 
     run_tag = get(args, "tag", "")
     tag_suffix = isempty(run_tag) ? "" : "_$(run_tag)"
@@ -704,6 +733,7 @@ function main()
     println("source=$(source_group_dir)")
     println("out=$(out_root)")
     println("target_jkl=$(target_jkl)")
+    println("Re=$(Re)")
     println("seed rank=$(seed.rank) Lx=$(seed.Lx) Lz=$(seed.Lz) id=$(seed.id) min_Re=$(seed.min_Re)")
     println("grid size=$(length(Lx_vals))x$(length(Lz_vals))")
     println(
@@ -716,7 +746,13 @@ function main()
         group.H,
         seed,
         out_root;
+        seed_jkl=(
+            parse(Int, get(args, "seed-J", string(DEFAULT_SEED_J))),
+            parse(Int, get(args, "seed-K", string(DEFAULT_SEED_K))),
+            parse(Int, get(args, "seed-L", string(DEFAULT_SEED_L))),
+        ),
         target_jkl=target_jkl,
+        Re=Re,
         promote_trials=promote_trials,
         promote_noise=promote_noise,
         resume=resume,
@@ -733,6 +769,7 @@ function main()
         Lx_vals,
         Lz_vals,
         target_jkl;
+        Re=Re,
         geom_trials=geom_trials,
         geom_noise=geom_noise,
         max_attempts=max_attempts,
