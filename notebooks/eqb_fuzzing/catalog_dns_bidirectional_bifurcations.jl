@@ -303,19 +303,47 @@ function direct_command(seed, out_dir, symm_path, Re, T, dmu, ns, target; np0=0,
     return prefix * executable * " " * join(flags, " ") * " " * seed
 end
 
-function write_run_script(path, jobs; executable, mpi_prefix, np0, np1, symmpi)
+function write_run_scripts(path, jobs; executable, mpi_prefix, np0, np1, symmpi, shell_parallel)
+    out_dir = dirname(path)
+    commands_path = joinpath(out_dir, "run_continuesoln_commands.txt")
+    parallel_path = joinpath(out_dir, "run_continuesoln_parallel.sh")
+
+    commands = String[]
+    mkdirs = String[]
+    for j in jobs
+        push!(mkdirs, "mkdir -p $(j.minus_dir) $(j.plus_dir)")
+        push!(commands, direct_command(j.seed, j.minus_dir, j.symm_path, j.Re, j.T, -abs(j.dmu), j.ns, j.Re_min; np0=np0, np1=np1, symmpi=symmpi, executable=executable, mpi_prefix=mpi_prefix))
+        push!(commands, direct_command(j.seed, j.plus_dir, j.symm_path, j.Re, j.T, abs(j.dmu), j.ns, j.Re_max; np0=np0, np1=np1, symmpi=symmpi, executable=executable, mpi_prefix=mpi_prefix))
+    end
+
     open(path, "w") do io
         println(io, "#!/usr/bin/env bash")
         println(io, "set -euo pipefail")
-        for j in jobs
-            println(io)
-            println(io, "mkdir -p $(j.minus_dir) $(j.plus_dir)")
-            println(io, direct_command(j.seed, j.minus_dir, j.symm_path, j.Re, j.T, -abs(j.dmu), j.ns, j.Re_min; np0=np0, np1=np1, symmpi=symmpi, executable=executable, mpi_prefix=mpi_prefix))
-            println(io, direct_command(j.seed, j.plus_dir, j.symm_path, j.Re, j.T, abs(j.dmu), j.ns, j.Re_max; np0=np0, np1=np1, symmpi=symmpi, executable=executable, mpi_prefix=mpi_prefix))
+        for mk in mkdirs
+            println(io, mk)
+        end
+        for cmd in commands
+            println(io, cmd)
         end
     end
     chmod(path, 0o755)
-    return path
+
+    open(commands_path, "w") do io
+        for cmd in commands
+            println(io, cmd)
+        end
+    end
+
+    open(parallel_path, "w") do io
+        println(io, "#!/usr/bin/env bash")
+        println(io, "set -euo pipefail")
+        for mk in mkdirs
+            println(io, mk)
+        end
+        println(io, "xargs -P $(shell_parallel) -I{} bash -lc '{}' < $(commands_path)")
+    end
+    chmod(parallel_path, 0o755)
+    return (sequential = path, commands = commands_path, parallel = parallel_path)
 end
 
 function build_jobs(args)
@@ -444,9 +472,12 @@ function main()
     symmpi = safeparse(Int, get(args, "symmpi", "0"))
     executable = get(args, "continuesoln", "continuesoln")
     mpi_prefix = get(args, "mpi-prefix", "")
+    shell_parallel = max(1, safeparse(Int, get(args, "shell-parallel", "4")))
     if write_commands
-        script_path = write_run_script(joinpath(out_dir, "run_continuesoln_all.sh"), jobs; executable=executable, mpi_prefix=mpi_prefix, np0=np0, np1=np1, symmpi=symmpi)
-        println("command script: $script_path")
+        scripts = write_run_scripts(joinpath(out_dir, "run_continuesoln_all.sh"), jobs; executable=executable, mpi_prefix=mpi_prefix, np0=np0, np1=np1, symmpi=symmpi, shell_parallel=shell_parallel)
+        println("sequential command script: $(scripts.sequential)")
+        println("parallel command script  : $(scripts.parallel)")
+        println("command list             : $(scripts.commands)")
     end
 
     println("== Catalog DNS Bidirectional Continuation ==")
