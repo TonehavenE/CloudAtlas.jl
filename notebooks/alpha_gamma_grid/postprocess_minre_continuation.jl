@@ -249,10 +249,10 @@ function write_eqb_count_heatmap(out_dir, group_title, results, Lx_vals, Lz_vals
     end
 
     fig = Figure(; size = (900, 700))
-    ax = Axis(fig[1, 1]; xlabel = "Lz", ylabel = "Lx", title = "$(group_title) - # equilibria")
+    ax = Axis(fig[1, 1]; xlabel = "Lx", ylabel = "Lz", title = "$(group_title) - # equilibria")
     Lz_edges = centers_to_edges(Lz_vals)
     Lx_edges = centers_to_edges(Lx_vals)
-    hm = CairoMakie.heatmap!(ax, Lz_edges, Lx_edges, count_mat; colormap = :balance)
+    hm = CairoMakie.heatmap!(ax, Lx_edges, Lz_edges, count_mat'; colormap = :balance)
     Colorbar(fig[1, 2], hm; label = "count")
     return CairoMakie.save(joinpath(out_dir, "heatmap_eqb_count.png"), fig)
 end
@@ -303,14 +303,14 @@ function write_min_re_heatmap(out_dir, group_title, bif_dir, group_prefix, min_r
     isempty(valid) && return nothing
 
     fig = Figure(; size = (900, 700))
-    ax = Axis(fig[1, 1]; xlabel = "Lz", ylabel = "Lx", title = "$(group_title) - min Re")
+    ax = Axis(fig[1, 1]; xlabel = "Lx", ylabel = "Lz", title = "$(group_title) - min Re")
     Lz_edges = centers_to_edges(Lz_vals)
     Lx_edges = centers_to_edges(Lx_vals)
     hm = CairoMakie.heatmap!(
         ax,
-        Lz_edges,
         Lx_edges,
-        min_re_mat;
+        Lz_edges,
+        min_re_mat';
         colormap = :balance,
         colorrange = (minimum(valid), maximum(valid)),
         nan_color = :lightgray,
@@ -416,14 +416,25 @@ function run_group(group, group_root, args, jkl)
         return
     end
 
-    summary_path = joinpath(group_dir, "summary$(summary_suffix).csv")
+    data_subdir = get(args, "data-subdir", "geometry_grid")
+    data_dir = group_dir
+    summary_path = joinpath(data_dir, "summary$(summary_suffix).csv")
+    if !isfile(summary_path) && !isempty(data_subdir)
+        candidate_data_dir = joinpath(group_dir, data_subdir)
+        candidate_summary_path = joinpath(candidate_data_dir, "summary$(summary_suffix).csv")
+        if isfile(candidate_summary_path)
+            data_dir = candidate_data_dir
+            summary_path = candidate_summary_path
+        end
+    end
+
     results = load_summary(summary_path)
     if isempty(results)
         println("[skip] empty summary: $summary_path")
         return
     end
 
-    grid = load_grid_values(group_dir, summary_suffix, summary_path)
+    grid = load_grid_values(data_dir, summary_suffix, summary_path)
     if grid === nothing
         println("[skip] missing grid values for group $(group_name)")
         return
@@ -487,6 +498,7 @@ function run_group(group, group_root, args, jkl)
         eqb_file = eqb_filename(group_prefix, Lx, Lz, r.id)
         eqb_candidates = [
             joinpath(group_dir, eqb_file),
+            joinpath(data_dir, eqb_file),
             joinpath(source_group_dir, eqb_file),
         ]
         eqb_path = findfirst(isfile, eqb_candidates)
@@ -534,9 +546,9 @@ function main()
     args = parse_args(ARGS)
     base_dir = @__DIR__
     group_root = get(args, "root", joinpath(base_dir, "eqb_alpha_gamma_grid", "minre_continuation"))
-    j = parse(Int, get(args, "J", string(J)))
-    k = parse(Int, get(args, "K", string(K)))
-    l = parse(Int, get(args, "L", string(L)))
+    j = parse(Int, get(args, "J", string(DEFAULT_J)))
+    k = parse(Int, get(args, "K", string(DEFAULT_K)))
+    l = parse(Int, get(args, "L", string(DEFAULT_L)))
     jkl = (j, k, l)
 
     groups = symmetry_groups()
