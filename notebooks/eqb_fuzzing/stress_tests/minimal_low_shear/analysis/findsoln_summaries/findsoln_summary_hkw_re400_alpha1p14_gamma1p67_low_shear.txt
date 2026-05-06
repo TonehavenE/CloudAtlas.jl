@@ -1,0 +1,620 @@
+# 5.5115666 x 3.7623864 at Re=400 findsoln results
+
+Generated: 2026-04-15 10:20:08
+
+## Group A (sxyz, txz)
+
+sol001:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 1.68971e-15
+- shear: 6.77947e-13
+- dissipation: 3.02519e-25
+- L2Norm: 1.42951e-13
+- components (u2,v2,w2): (2.01637e-13, 8.74133e-15, 1.16604e-14)
+- energies (e3d,ecf): (1.39085e-14, 2.12376e-28)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (3.48189e-13, -3.29758e-13)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/A/jkl_1_3_5/dns_findsoln/sol001
+
+sol002:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 3.24623e-05
+- shear: 1.36467
+- dissipation: 1.36393
+- L2Norm: 0.293593
+- components (u2,v2,w2): (0.410576, 0.0472866, 0.0398018)
+- energies (e3d,ecf): (0.0691185, 0.00382021)
+- bulks (ubulk,wbulk): (1.11977e-11, -8.8492e-13)
+- wall shear split (a,b): (0.682336, -0.682336)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/A/jkl_1_3_5/dns_findsoln/sol002
+
+sol003:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 0.000742478
+- shear: 1.42007
+- dissipation: 1.53909
+- L2Norm: 0.318967
+- components (u2,v2,w2): (0.447213, 0.0455985, 0.0374366)
+- energies (e3d,ecf): (0.0692518, 0.00348072)
+- bulks (ubulk,wbulk): (-7.88303e-12, -9.97673e-13)
+- wall shear split (a,b): (0.710035, -0.710035)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/A/jkl_1_3_5/dns_findsoln/sol003
+
+sol004:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 7.07703e-16
+- shear: 1.47553
+- dissipation: 1.47548
+- L2Norm: 0.288577
+- components (u2,v2,w2): (0.394782, 0.0591806, 0.08484)
+- energies (e3d,ecf): (0.0957699, 0.0107002)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (0.737764, -0.737764)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/A/jkl_1_3_5/dns_findsoln/sol004
+
+sol005:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 3.10734e-12
+- shear: 1.66994
+- dissipation: 1.66958
+- L2Norm: 0.311244
+- components (u2,v2,w2): (0.419869, 0.0731417, 0.110029)
+- energies (e3d,ecf): (0.113237, 0.0174561)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (0.834971, -0.834971)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/A/jkl_1_3_5/dns_findsoln/sol005
+
+sol006:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 3.72411e-15
+- shear: 1.12484
+- dissipation: 1.12484
+- L2Norm: 0.237463
+- components (u2,v2,w2): (0.329601, 0.0393802, 0.0508916)
+- energies (e3d,ecf): (0.0729475, 0.00414076)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (0.562421, -0.562421)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/A/jkl_1_3_5/dns_findsoln/sol006
+
+## Group B (sxy, sz)
+
+sol001:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 4.70215e-05
+- shear: 1.0653
+- dissipation: 1.06736
+- L2Norm: 0.227246
+- components (u2,v2,w2): (0.314932, 0.0385756, 0.0510994)
+- energies (e3d,ecf): (0.0710275, 0.00409923)
+- bulks (ubulk,wbulk): (-1.06679e-11, 4.56449e-15)
+- wall shear split (a,b): (0.53265, -0.53265)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/B/jkl_1_3_5/dns_findsoln/sol001
+
+sol002:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 0.000363012
+- shear: 0.377644
+- dissipation: 0.39647
+- L2Norm: 0.129595
+- components (u2,v2,w2): (0.178601, 0.0202915, 0.0357731)
+- energies (e3d,ecf): (0.0564797, 0.00169146)
+- bulks (ubulk,wbulk): (-1.45027e-10, -7.36196e-14)
+- wall shear split (a,b): (0.188822, -0.188822)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/B/jkl_1_3_5/dns_findsoln/sol002
+
+sol003:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 4.37343e-16
+- shear: 0.482404
+- dissipation: 0.482403
+- L2Norm: 0.150856
+- components (u2,v2,w2): (0.208375, 0.0236574, 0.0391811)
+- energies (e3d,ecf): (0.0597876, 0.00209483)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (0.241202, -0.241202)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/B/jkl_1_3_5/dns_findsoln/sol003
+
+sol004:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 5.42886e-16
+- shear: 0.735398
+- dissipation: 0.735397
+- L2Norm: 0.190023
+- components (u2,v2,w2): (0.261864, 0.0344128, 0.0496047)
+- energies (e3d,ecf): (0.0696988, 0.00364486)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (0.367699, -0.367699)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/B/jkl_1_3_5/dns_findsoln/sol004
+
+sol005:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 3.30406e-15
+- shear: 0.482404
+- dissipation: 0.482403
+- L2Norm: 0.150856
+- components (u2,v2,w2): (0.208375, 0.0236574, 0.0391811)
+- energies (e3d,ecf): (0.0597876, 0.00209483)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (0.241202, -0.241202)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/B/jkl_1_3_5/dns_findsoln/sol005
+
+sol006:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 1.93669e-14
+- shear: 1.12484
+- dissipation: 1.12484
+- L2Norm: 0.237463
+- components (u2,v2,w2): (0.329601, 0.0393802, 0.0508916)
+- energies (e3d,ecf): (0.0729475, 0.00414076)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (0.562421, -0.562421)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/B/jkl_1_3_5/dns_findsoln/sol006
+
+sol007:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 7.68526e-16
+- shear: 0.735398
+- dissipation: 0.735397
+- L2Norm: 0.190023
+- components (u2,v2,w2): (0.261864, 0.0344128, 0.0496047)
+- energies (e3d,ecf): (0.0696988, 0.00364486)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (0.367699, -0.367699)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/B/jkl_1_3_5/dns_findsoln/sol007
+
+sol008:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 7.51293e-16
+- shear: 3.23941
+- dissipation: 3.23941
+- L2Norm: 0.399869
+- components (u2,v2,w2): (0.540294, 0.108201, 0.127145)
+- energies (e3d,ecf): (0.131473, 0.0278733)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (1.6197, -1.6197)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/B/jkl_1_3_5/dns_findsoln/sol008
+
+## Group C (sxytz, sz)
+
+sol001:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 0.000178371
+- shear: 2.01484
+- dissipation: 2.02867
+- L2Norm: 0.313791
+- components (u2,v2,w2): (0.436864, 0.0690599, 0.0361984)
+- energies (e3d,ecf): (0.0836078, 0.0060796)
+- bulks (ubulk,wbulk): (8.28671e-12, -1.00293e-14)
+- wall shear split (a,b): (1.00742, -1.00742)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/C/jkl_1_3_5/dns_findsoln/sol001
+
+sol002:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 6.9601e-16
+- shear: 1.12484
+- dissipation: 1.12484
+- L2Norm: 0.237463
+- components (u2,v2,w2): (0.329601, 0.0393802, 0.0508916)
+- energies (e3d,ecf): (0.0729475, 0.00414076)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (0.562421, -0.562421)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/C/jkl_1_3_5/dns_findsoln/sol002
+
+sol003:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 0.000178123
+- shear: 2.0161
+- dissipation: 2.02945
+- L2Norm: 0.313853
+- components (u2,v2,w2): (0.436946, 0.0690982, 0.0362116)
+- energies (e3d,ecf): (0.0836191, 0.00608584)
+- bulks (ubulk,wbulk): (1.21834e-11, 1.50479e-14)
+- wall shear split (a,b): (1.00805, -1.00805)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/C/jkl_1_3_5/dns_findsoln/sol003
+
+sol004:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 2.43565e-05
+- shear: 0.843321
+- dissipation: 0.842932
+- L2Norm: 0.208504
+- components (u2,v2,w2): (0.289823, 0.0314888, 0.0442578)
+- energies (e3d,ecf): (0.065824, 0.00295029)
+- bulks (ubulk,wbulk): (2.66215e-12, -3.0614e-15)
+- wall shear split (a,b): (0.42166, -0.42166)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/C/jkl_1_3_5/dns_findsoln/sol004
+
+sol005:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 0.000252939
+- shear: 0.992289
+- dissipation: 1.01575
+- L2Norm: 0.296051
+- components (u2,v2,w2): (0.415714, 0.0380093, 0.0320782)
+- energies (e3d,ecf): (0.0503182, 0.00247372)
+- bulks (ubulk,wbulk): (-1.70704e-12, 3.7428e-14)
+- wall shear split (a,b): (0.496144, -0.496144)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/C/jkl_1_3_5/dns_findsoln/sol005
+
+## Group D (sxy, sztx)
+
+sol001:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 4.0979e-05
+- shear: 0.926316
+- dissipation: 0.926662
+- L2Norm: 0.215157
+- components (u2,v2,w2): (0.298999, 0.033643, 0.0453104)
+- energies (e3d,ecf): (0.0672498, 0.00318489)
+- bulks (ubulk,wbulk): (-2.62875e-12, 5.27411e-14)
+- wall shear split (a,b): (0.463158, -0.463158)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/D/jkl_1_3_5/dns_findsoln/sol001
+
+sol002:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 0.00011781
+- shear: 0.954005
+- dissipation: 0.967383
+- L2Norm: 0.21406
+- components (u2,v2,w2): (0.295419, 0.0406206, 0.0521612)
+- energies (e3d,ecf): (0.0739697, 0.00437082)
+- bulks (ubulk,wbulk): (1.01741e-11, -1.52524e-13)
+- wall shear split (a,b): (0.477002, -0.477002)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/D/jkl_1_3_5/dns_findsoln/sol002
+
+sol003:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 3.12933e-07
+- shear: 1.30047
+- dissipation: 1.30048
+- L2Norm: 0.25785
+- components (u2,v2,w2): (0.346636, 0.0632725, 0.0938815)
+- energies (e3d,ecf): (0.10918, 0.0128171)
+- bulks (ubulk,wbulk): (1.13261e-13, -7.33536e-15)
+- wall shear split (a,b): (0.650235, -0.650235)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/D/jkl_1_3_5/dns_findsoln/sol003
+
+sol004:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 5.59765e-16
+- shear: 1.12484
+- dissipation: 1.12484
+- L2Norm: 0.237463
+- components (u2,v2,w2): (0.329601, 0.0393802, 0.0508916)
+- energies (e3d,ecf): (0.0729475, 0.00414076)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (0.562421, -0.562421)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/D/jkl_1_3_5/dns_findsoln/sol004
+
+sol005:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 0.000111904
+- shear: 0.943951
+- dissipation: 0.957565
+- L2Norm: 0.212754
+- components (u2,v2,w2): (0.293635, 0.0402762, 0.0518109)
+- energies (e3d,ecf): (0.0735691, 0.00430654)
+- bulks (ubulk,wbulk): (1.96402e-12, -3.48469e-15)
+- wall shear split (a,b): (0.471976, -0.471976)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/D/jkl_1_3_5/dns_findsoln/sol005
+
+sol006:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 1.29937e-05
+- shear: 0.338203
+- dissipation: 0.338662
+- L2Norm: 0.124569
+- components (u2,v2,w2): (0.171725, 0.0188075, 0.0345219)
+- energies (e3d,ecf): (0.0509435, 0.00154548)
+- bulks (ubulk,wbulk): (8.15226e-12, -2.65267e-14)
+- wall shear split (a,b): (0.169101, -0.169101)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/D/jkl_1_3_5/dns_findsoln/sol006
+
+sol007:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 0.000117339
+- shear: 0.797923
+- dissipation: 0.812246
+- L2Norm: 0.182095
+- components (u2,v2,w2): (0.250863, 0.0329413, 0.047953)
+- energies (e3d,ecf): (0.0700092, 0.00338462)
+- bulks (ubulk,wbulk): (-3.54232e-12, 7.5034e-14)
+- wall shear split (a,b): (0.398961, -0.398961)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/D/jkl_1_3_5/dns_findsoln/sol007
+
+sol008:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 0.000480021
+- shear: 1.60778
+- dissipation: 1.65461
+- L2Norm: 0.281962
+- components (u2,v2,w2): (0.383805, 0.0654927, 0.0860822)
+- energies (e3d,ecf): (0.0918347, 0.0116994)
+- bulks (ubulk,wbulk): (1.26241e-11, 2.28874e-13)
+- wall shear split (a,b): (0.80389, -0.80389)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/D/jkl_1_3_5/dns_findsoln/sol008
+
+## Group E (sxyz, sztxz)
+
+sol001:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 7.70017e-05
+- shear: 0.742772
+- dissipation: 0.751674
+- L2Norm: 0.324557
+- components (u2,v2,w2): (0.458228, 0.0123677, 0.0234202)
+- energies (e3d,ecf): (0.0195946, 0.000701468)
+- bulks (ubulk,wbulk): (5.53032e-11, 4.52856e-13)
+- wall shear split (a,b): (0.371386, -0.371386)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/E/jkl_1_3_5/dns_findsoln/sol001
+
+sol002:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 2.82185e-15
+- shear: 1.42478
+- dissipation: 1.42478
+- L2Norm: 0.290936
+- components (u2,v2,w2): (0.398504, 0.0597982, 0.0831053)
+- energies (e3d,ecf): (0.0920756, 0.0104823)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (0.712392, -0.712392)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/E/jkl_1_3_5/dns_findsoln/sol002
+
+sol003:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 4.11172e-15
+- shear: 5.59377e-13
+- dissipation: 1.82785e-24
+- L2Norm: 3.20049e-13
+- components (u2,v2,w2): (4.50675e-13, 2.68456e-14, 3.21573e-14)
+- energies (e3d,ecf): (1.59269e-14, 1.75478e-27)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (2.76292e-13, -2.83085e-13)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/E/jkl_1_3_5/dns_findsoln/sol003
+
+sol004:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 0.000164098
+- shear: 1.43993
+- dissipation: 1.46447
+- L2Norm: 0.272039
+- components (u2,v2,w2): (0.377264, 0.0506058, 0.055866)
+- energies (e3d,ecf): (0.0815766, 0.00568196)
+- bulks (ubulk,wbulk): (-2.20475e-11, 1.87967e-13)
+- wall shear split (a,b): (0.719963, -0.719963)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/E/jkl_1_3_5/dns_findsoln/sol004
+
+sol005:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 9.53651e-05
+- shear: 1.17439
+- dissipation: 1.19291
+- L2Norm: 0.284928
+- components (u2,v2,w2): (0.398577, 0.0394467, 0.0441394)
+- energies (e3d,ecf): (0.0739057, 0.00350433)
+- bulks (ubulk,wbulk): (-1.21984e-11, -1.25814e-13)
+- wall shear split (a,b): (0.587193, -0.587193)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/E/jkl_1_3_5/dns_findsoln/sol005
+
+## Group F (sxy, sz, txz)
+
+sol001:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 1.55594e-14
+- shear: 1.12484
+- dissipation: 1.12484
+- L2Norm: 0.237463
+- components (u2,v2,w2): (0.329601, 0.0393802, 0.0508916)
+- energies (e3d,ecf): (0.0729475, 0.00414076)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (0.562421, -0.562421)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/F/jkl_1_3_5/dns_findsoln/sol001
+
+sol002:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 1.44365e-15
+- shear: 3.23941
+- dissipation: 3.23941
+- L2Norm: 0.399869
+- components (u2,v2,w2): (0.540294, 0.108201, 0.127145)
+- energies (e3d,ecf): (0.131473, 0.0278733)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (1.6197, -1.6197)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/F/jkl_1_3_5/dns_findsoln/sol002
+
+## Group G (sxyz)
+
+sol001:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 4.77165e-16
+- shear: 0.344935
+- dissipation: 0.344931
+- L2Norm: 0.111936
+- components (u2,v2,w2): (0.153837, 0.017581, 0.0329329)
+- energies (e3d,ecf): (0.0480621, 0.00139367)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (0.172467, -0.172467)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/G/jkl_1_3_5/dns_findsoln/sol001
+
+sol002:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 1.24292e-14
+- shear: 4.61977e-13
+- dissipation: 1.26034e-21
+- L2Norm: 9.66742e-12
+- components (u2,v2,w2): (1.36567e-11, 5.71264e-13, 2.96098e-13)
+- energies (e3d,ecf): (6.79906e-14, 4.14017e-25)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (2.30496e-13, -2.31481e-13)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/G/jkl_1_3_5/dns_findsoln/sol002
+
+sol003:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 0.000181009
+- shear: 2.03134
+- dissipation: 2.04647
+- L2Norm: 0.315075
+- components (u2,v2,w2): (0.438609, 0.0695767, 0.036407)
+- energies (e3d,ecf): (0.0840864, 0.00616639)
+- bulks (ubulk,wbulk): (6.6244e-12, -7.61467e-14)
+- wall shear split (a,b): (1.01567, -1.01567)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/G/jkl_1_3_5/dns_findsoln/sol003
+
+sol004:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 3.11069e-15
+- shear: 0.351998
+- dissipation: 0.351998
+- L2Norm: 0.123974
+- components (u2,v2,w2): (0.172829, 0.0145924, 0.02562)
+- energies (e3d,ecf): (0.0395973, 0.000869323)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (0.175999, -0.175999)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/G/jkl_1_3_5/dns_findsoln/sol004
+
+sol005:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 9.42768e-15
+- shear: 0.36718
+- dissipation: 0.36718
+- L2Norm: 0.126947
+- components (u2,v2,w2): (0.176991, 0.0150157, 0.0260725)
+- energies (e3d,ecf): (0.0406223, 0.000905245)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (0.18359, -0.18359)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/G/jkl_1_3_5/dns_findsoln/sol005
+
+sol006:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 1.46934e-05
+- shear: 0.338038
+- dissipation: 0.338521
+- L2Norm: 0.124647
+- components (u2,v2,w2): (0.171851, 0.0187629, 0.0344804)
+- energies (e3d,ecf): (0.050879, 0.00154095)
+- bulks (ubulk,wbulk): (1.44983e-11, -4.73701e-15)
+- wall shear split (a,b): (0.169019, -0.169019)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/G/jkl_1_3_5/dns_findsoln/sol006
+
+sol007:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 6.56805e-15
+- shear: 2.59616e-13
+- dissipation: 2.24011e-23
+- L2Norm: 1.74645e-12
+- components (u2,v2,w2): (2.46856e-12, 5.80418e-14, 5.49865e-14)
+- energies (e3d,ecf): (3.95613e-14, 6.39236e-27)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (1.34117e-13, -1.25499e-13)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/G/jkl_1_3_5/dns_findsoln/sol007
+
+sol008:
+- representative JKL: (1, 3, 5)
+- status: converged
+- converged variants: 1 / 1
+- final residual: 3.38263e-15
+- shear: 5.51183e-13
+- dissipation: 1.34213e-24
+- L2Norm: 4.79604e-13
+- components (u2,v2,w2): (6.78133e-13, 6.57538e-15, 1.14942e-14)
+- energies (e3d,ecf): (1.72714e-14, 1.75353e-28)
+- bulks (ubulk,wbulk): (0, 0)
+- wall shear split (a,b): (2.60845e-13, -2.90338e-13)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/G/jkl_1_3_5/dns_findsoln/sol008
+
+sol009:
+- representative JKL: (1, 3, 5)
+- status: not_converged
+- converged variants: 0 / 1
+- final residual: 0.00082392
+- shear: 0.794889
+- dissipation: 0.866764
+- L2Norm: 0.183973
+- components (u2,v2,w2): (0.255247, 0.0405993, 0.029883)
+- energies (e3d,ecf): (0.0638261, 0.0025413)
+- bulks (ubulk,wbulk): (1.38958e-10, -4.43971e-13)
+- wall shear split (a,b): (0.397445, -0.397444)
+- source dir: /home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/stress_tests/minimal_low_shear/hkw_re400_alpha1p14_gamma1p67_low_shear/G/jkl_1_3_5/dns_findsoln/sol009
+

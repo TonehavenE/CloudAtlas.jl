@@ -1,0 +1,51 @@
+# Unique converged DNS solutions for ghc_re400_alpha1p14_gamma2p5_low_shear
+# Box: Lx=5.5115666, Lz=2.5132741, Re=400
+# dedupe tolerances: shear_tol=1.0e-6, l2_tol=1.0e-6
+# generated: 2026-04-15 10:20:08
+
+## Group A
+u001: shear=0.252105, L2=0.0935552, multiplicity=1
+  members: sol001@J1K3L5
+
+## Group B
+u001: shear=0.252105, L2=0.0935552, multiplicity=2
+  members: sol001@J1K3L5, sol002@J1K3L5
+u002: shear=2.50069, L2=0.333628, multiplicity=1
+  members: sol003@J1K3L5
+
+## Group C
+u001: shear=6.96834e-13, L2=7.22402e-13, multiplicity=1
+  members: sol002@J1K3L5
+u002: shear=0.252105, L2=0.0935552, multiplicity=1
+  members: sol001@J1K3L5
+
+## Group D
+u001: shear=0.252105, L2=0.0935552, multiplicity=1
+  members: sol001@J1K3L5
+
+## Group E
+u001: shear=0.252105, L2=0.0935552, multiplicity=1
+  members: sol001@J1K3L5
+u002: shear=0.317713, L2=0.12589, multiplicity=1
+  members: sol002@J1K3L5
+u003: shear=0.429258, L2=0.209125, multiplicity=1
+  members: sol004@J1K3L5
+u004: shear=0.453688, L2=0.168118, multiplicity=1
+  members: sol005@J1K3L5
+u005: shear=1.01997, L2=0.218634, multiplicity=1
+  members: sol003@J1K3L5
+
+## Group F
+u001: shear=0.252105, L2=0.0935552, multiplicity=1
+  members: sol001@J1K3L5
+
+## Group G
+u001: shear=8.57189e-13, L2=7.26374e-13, multiplicity=1
+  members: sol001@J1K3L5
+u002: shear=0.252105, L2=0.0935552, multiplicity=2
+  members: sol003@J1K3L5, sol007@J1K3L5
+u003: shear=0.317713, L2=0.12589, multiplicity=1
+  members: sol005@J1K3L5
+u004: shear=0.429258, L2=0.209125, multiplicity=1
+  members: sol006@J1K3L5
+

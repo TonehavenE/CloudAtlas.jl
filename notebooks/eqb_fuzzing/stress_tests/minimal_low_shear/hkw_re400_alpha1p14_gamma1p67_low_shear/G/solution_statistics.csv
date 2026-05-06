@@ -1,0 +1,2 @@
+timestamp,level_idx,J,K,L,source,attempted_seeds,hookstep_converged,accepted_postfilter,rejected_postfilter,rejected_norm_min,rejected_norm_median,rejected_norm_max,rejected_shear_min,rejected_shear_median,rejected_shear_max,unique_solutions,promotions_reconverged
+2026-04-14T02:58:44,1,1,3,5,fuzz,100000,932,273,659,1.555226223164773e-13,3.788270803229587e-9,7.40543729664679e-7,0.9999996495836099,0.9999999983132043,0.9999999999999267,9,0
