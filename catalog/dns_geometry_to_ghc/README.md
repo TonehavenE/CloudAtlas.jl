@@ -27,3 +27,13 @@ julia --startup-file=no --project=. notebooks/eqb_fuzzing/catalog_dns_geometry_t
 
 Progress is printed as `[job i/n]`, and completed attempts are appended to
 `status.csv`.
+
+To run multiple independent solution paths at once, pass `--parallel N`. Segments
+within each solution still run serially because later segments use the previous
+segment's `ubest.nc`.
+
+```bash
+LD_LIBRARY_PATH=/run/opengl-driver/lib:${LD_LIBRARY_PATH:-} \
+CLOUDATLAS_SKIP_ACTIVATE=true \
+julia --startup-file=no --project=. notebooks/eqb_fuzzing/catalog_dns_geometry_to_ghc.jl --run true --parallel 2
+```

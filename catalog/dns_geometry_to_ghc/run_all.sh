@@ -3,7 +3,7 @@ set -euo pipefail
 export LD_LIBRARY_PATH="/run/opengl-driver/lib:${LD_LIBRARY_PATH:-}"
 export CLOUDATLAS_SKIP_ACTIVATE="${CLOUDATLAS_SKIP_ACTIVATE:-true}"
 
-julia --startup-file=no --project=. notebooks/eqb_fuzzing/catalog_dns_geometry_to_ghc.jl --run true
+julia --startup-file=no --project=. notebooks/eqb_fuzzing/catalog_dns_geometry_to_ghc.jl --run true "$@"
 
 # Direct continuesoln commands for inspection/recovery:
 # mkdir -p '/home/ebenq/Dev/julia/CloudAtlas.jl/catalog/dns_geometry_to_ghc/re300_lx10_lz6_006/to_ghc/01_diag'

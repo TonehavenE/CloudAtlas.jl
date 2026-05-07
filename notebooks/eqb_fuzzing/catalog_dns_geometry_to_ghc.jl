@@ -334,7 +334,7 @@ function write_run_script(path, jobs; julia_cmd="julia")
         println(io, "export LD_LIBRARY_PATH=\"/run/opengl-driver/lib:\${LD_LIBRARY_PATH:-}\"")
         println(io, "export CLOUDATLAS_SKIP_ACTIVATE=\"\${CLOUDATLAS_SKIP_ACTIVATE:-true}\"")
         println(io)
-        println(io, "$(julia_cmd) --startup-file=no --project=. notebooks/eqb_fuzzing/catalog_dns_geometry_to_ghc.jl --run true")
+        println(io, "$(julia_cmd) --startup-file=no --project=. notebooks/eqb_fuzzing/catalog_dns_geometry_to_ghc.jl --run true \"\$@\"")
         println(io)
         println(io, "# Direct continuesoln commands for inspection/recovery:")
         for j in jobs
@@ -391,6 +391,66 @@ function append_status(path, row)
     end
 end
 
+function run_solution_path(solution_idx, solution_total, solution_segments, counters, locks, status_path, start; resume=true)
+    current_seed = solution_segments[1].seed
+    for job0 in solution_segments
+        job_number = lock(locks.counter) do
+            counters[:completed_segments] += 1
+            counters[:completed_segments]
+        end
+        job = merge(job0, (seed = current_seed,))
+        elapsed = time() - start
+        rate = job_number == 1 ? NaN : elapsed / (job_number - 1)
+        eta = isnan(rate) ? "unknown" : format_duration(rate * (counters[:total_segments] - job_number + 1))
+        lock(locks.io) do
+            println(
+                "[job $(job_number)/$(counters[:total_segments])] solution=$(solution_idx)/$(solution_total) id=$(job.physical_id) seg=$(job.segment_index):$(job.cont) Re=$(job.Re) " *
+                @sprintf("Lx %.6g -> %.6g Lz %.6g -> %.6g", job.from_Lx, job.to_Lx, job.from_Lz, job.to_Lz) *
+                " eta=$(eta)"
+            )
+        end
+
+        t0 = time()
+        status = "ok"
+        message = ""
+        try
+            result = run_job(job; resume=resume)
+            status = result.status
+            message = result.message
+        catch err
+            status = "failed"
+            message = sprint(showerror, err)
+            lock(locks.io) do
+                @warn "DNS geometry continuation failed" id=job.physical_id segment=job.segment_index error=message
+            end
+        end
+
+        elapsed_job = time() - t0
+        lock(locks.status) do
+            append_status(status_path, (
+                physical_id = job.physical_id,
+                status = "$(status):$(job.cont)",
+                message = message,
+                elapsed_seconds = @sprintf("%.3f", elapsed_job),
+                out_dir = job.out_dir,
+            ))
+        end
+        lock(locks.io) do
+            println("[job $(job_number)/$(counters[:total_segments])] status=$(status) elapsed=$(format_duration(elapsed_job))")
+        end
+
+        status == "failed" && break
+        latest = latest_ubest(job.out_dir)
+        if latest === nothing
+            lock(locks.io) do
+                @warn "No ubest.nc found after segment" id=job.physical_id segment=job.segment_index out_dir=job.out_dir
+            end
+            break
+        end
+        current_seed = latest
+    end
+end
+
 function main(argv=ARGS)
     args = parse_args(argv)
     catalog_root = abspath(get(args, "catalog-root", "catalog"))
@@ -404,6 +464,7 @@ function main(argv=ARGS)
     resume = parse_bool(args, "resume"; default=true)
     only_id = get(args, "only-id", "")
     max_solutions = parse_int(args, "max-solutions", parse_int(args, "max-jobs", typemax(Int)))
+    parallel = max(1, parse_int(args, "parallel", parse_int(args, "jobs", 1)))
 
     isfile(manifest) || error("Catalog manifest not found: $manifest")
     _, rows = read_csv_dicts(manifest)
@@ -426,6 +487,7 @@ function main(argv=ARGS)
     println("[plan] manifest=$(manifest)")
     println("[plan] target $(target_label): Lx=$(target_Lx) Lz=$(target_Lz)")
     println("[plan] solutions=$(solution_count) segments=$(length(jobs)) runnable_segments=$(length(runnable)) already_target=$(skipped_target) missing_seed=$(missing_seed)")
+    println("[plan] parallel_solution_paths=$(parallel)")
     println("[plan] wrote $(plan_path)")
     println("[plan] wrote $(script_path)")
 
@@ -437,53 +499,27 @@ function main(argv=ARGS)
     status_path = joinpath(out_root, "status.csv")
     start = time()
     solution_ids = unique(j.physical_id for j in runnable)
-    completed_segments = 0
-    total_segments = length(runnable)
-    for (solution_idx, id) in enumerate(solution_ids)
-        solution_segments = [j for j in runnable if j.physical_id == id]
-        sort!(solution_segments; by = j -> j.segment_index)
-        current_seed = solution_segments[1].seed
-        for job0 in solution_segments
-            completed_segments += 1
-            job = merge(job0, (seed = current_seed,))
-            elapsed = time() - start
-            rate = completed_segments == 1 ? NaN : elapsed / (completed_segments - 1)
-            eta = isnan(rate) ? "unknown" : format_duration(rate * (total_segments - completed_segments + 1))
-            println(
-                "[job $(completed_segments)/$(total_segments)] solution=$(solution_idx)/$(length(solution_ids)) id=$(job.physical_id) seg=$(job.segment_index):$(job.cont) Re=$(job.Re) " *
-                @sprintf("Lx %.6g -> %.6g Lz %.6g -> %.6g", job.from_Lx, job.to_Lx, job.from_Lz, job.to_Lz) *
-                " eta=$(eta)"
-            )
-            t0 = time()
-            status = "ok"
-            message = ""
-            try
-                result = run_job(job; resume=resume)
-                status = result.status
-                message = result.message
-            catch err
-                status = "failed"
-                message = sprint(showerror, err)
-                @warn "DNS geometry continuation failed" id=job.physical_id segment=job.segment_index error=message
-            end
-            elapsed_job = time() - t0
-            append_status(status_path, (
-                physical_id = job.physical_id,
-                status = "$(status):$(job.cont)",
-                message = message,
-                elapsed_seconds = @sprintf("%.3f", elapsed_job),
-                out_dir = job.out_dir,
-            ))
-            println("[job $(completed_segments)/$(total_segments)] status=$(status) elapsed=$(format_duration(elapsed_job))")
-            status == "failed" && break
-            latest = latest_ubest(job.out_dir)
-            if latest === nothing
-                @warn "No ubest.nc found after segment" id=job.physical_id segment=job.segment_index out_dir=job.out_dir
-                break
-            end
-            current_seed = latest
-        end
+    solution_work = Channel{Tuple{Int,String}}(length(solution_ids))
+    for item in enumerate(solution_ids)
+        put!(solution_work, item)
     end
+    close(solution_work)
+
+    counter_state = Dict(:completed_segments => 0, :total_segments => length(runnable))
+    locks = (counter = ReentrantLock(), io = ReentrantLock(), status = ReentrantLock())
+
+    workers = Task[]
+    for _ in 1:min(parallel, length(solution_ids))
+        task = @async begin
+            for (solution_idx, id) in solution_work
+                solution_segments = [j for j in runnable if j.physical_id == id]
+                sort!(solution_segments; by = j -> j.segment_index)
+                run_solution_path(solution_idx, length(solution_ids), solution_segments, counter_state, locks, status_path, start; resume=resume)
+            end
+        end
+        push!(workers, task)
+    end
+    foreach(wait, workers)
     println("[done] wrote $(status_path)")
 end
 
