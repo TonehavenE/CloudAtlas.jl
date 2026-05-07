@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Equilibrium Catalog</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="sidebar" aria-label="Catalog filters">
+        <div class="brand">
+          <h1>Equilibrium Catalog</h1>
+          <p id="catalog-stats"></p>
+        </div>
+
+        <label class="field">
+          <span>Search</span>
+          <input id="search-input" type="search" placeholder="physical id, case, group" />
+        </label>
+
+        <div class="filter-grid">
+          <label class="field">
+            <span>Case</span>
+            <select id="case-filter"></select>
+          </label>
+
+          <label class="field">
+            <span>Group</span>
+            <select id="group-filter"></select>
+          </label>
+
+          <label class="field">
+            <span>Bifurcation</span>
+            <select id="bif-filter">
+              <option value="all">All</option>
+              <option value="yes">Available</option>
+              <option value="no">Missing</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Sort</span>
+            <select id="sort-filter">
+              <option value="shear">Shear</option>
+              <option value="case">Case</option>
+              <option value="id">Physical ID</option>
+              <option value="groups">Group count</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="solution-list" class="solution-list" aria-label="Solutions"></div>
+      </aside>
+
+      <section class="detail" aria-live="polite">
+        <header class="detail-header">
+          <div>
+            <p class="eyebrow" id="detail-case"></p>
+            <h2 id="detail-title"></h2>
+          </div>
+          <div class="asset-links" id="asset-links"></div>
+        </header>
+
+        <section class="media-grid single">
+          <figure>
+            <img id="comparison-image" alt="DNS and ODE comparison plot" />
+            <figcaption>DNS/ODE comparison</figcaption>
+          </figure>
+        </section>
+
+        <section class="metrics" id="metric-grid"></section>
+
+        <section class="panel">
+          <div class="section-heading">
+            <h3>Possible Same Branch</h3>
+            <p id="dedup-summary"></p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Candidate</th>
+                  <th>Status</th>
+                  <th>Distance</th>
+                  <th>Path</th>
+                </tr>
+              </thead>
+              <tbody id="dedup-table"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="section-heading">
+            <h3>Literature</h3>
+            <p id="literature-summary"></p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Appearance</th>
+                  <th>Paper</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody id="literature-table"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="section-heading">
+            <h3>Eigenvalue Analysis</h3>
+            <p id="eigen-summary"></p>
+          </div>
+          <div class="eigen-body">
+            <div class="eigen-grid" id="eigen-grid"></div>
+            <div class="asset-links eigen-links" id="eigen-links"></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="section-heading">
+            <h3>DNS Bifurcation</h3>
+            <p id="bif-summary"></p>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="bif-chart" width="960" height="360"></canvas>
+            <p id="empty-chart" class="empty-state"></p>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="section-heading">
+            <h3>Group Representatives</h3>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Group</th>
+                  <th>Symmetry</th>
+                  <th>Members</th>
+                </tr>
+              </thead>
+              <tbody id="group-table"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="catalog-data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

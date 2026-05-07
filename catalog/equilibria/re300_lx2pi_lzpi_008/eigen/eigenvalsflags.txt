@@ -1,0 +1,8 @@
+0                         %isnormal
+32                        %Narnoldi
+6                         %Nstable
+0                         %fixedNs
+1e-10                     %EPS_kry
+0                         %centdiff
+0                         %orthochk
+1e-06                     %EPS_stab

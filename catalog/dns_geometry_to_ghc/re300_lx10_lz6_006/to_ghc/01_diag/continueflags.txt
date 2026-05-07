@@ -1,0 +1,14 @@
+0                         %arclength
+-0.01                     %dmu
+0                         %s0
+0                         %ds0
+1e-06                     %dsmin
+0.1                       %dsmax
+1e-05                     %errmin
+2e-05                     %errmax
+8                         %digits
+0                         %orbitOutput
+80                        %nSearch
+0                         %muReference
+1                         %target
+6.42753591421029          %targetMu

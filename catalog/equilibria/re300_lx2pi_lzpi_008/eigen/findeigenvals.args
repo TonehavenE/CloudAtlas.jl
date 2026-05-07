@@ -1,0 +1,1 @@
+Mon May  4 23:06:24 2026	927592	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/findeigenvals -R 300.0 -T 5.0 -N 32 -Ns 6 --outdir /home/ebenq/Dev/julia/CloudAtlas.jl/catalog/equilibria/re300_lx2pi_lzpi_008/eigen --variabledt false /home/ebenq/Dev/julia/CloudAtlas.jl/catalog/equilibria/re300_lx2pi_lzpi_008/ubest.nc 

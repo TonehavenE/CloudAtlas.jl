@@ -1,0 +1,844 @@
+{
+  "L2": 0.231991,
+  "Lx": 10.0,
+  "Lz": 6.0,
+  "Re": 300.0,
+  "assets": {
+    "dns": "equilibria/re300_lx10_lz6_020/ubest.nc",
+    "dns_ode_comparison": "equilibria/re300_lx10_lz6_020/images/dns_ode_comparison.png",
+    "ode": "equilibria/re300_lx10_lz6_020/representative.asc"
+  },
+  "bifurcation": {
+    "available": true,
+    "csv": "equilibria/re300_lx10_lz6_020/bifurcations/dns_combined_curve.csv",
+    "curve": [
+      {
+        "Re": 300.02,
+        "direction": "minus",
+        "input": 1.871934,
+        "step": 1
+      },
+      {
+        "Re": 300.0,
+        "direction": "minus",
+        "input": 1.8717549,
+        "step": 2
+      },
+      {
+        "Re": 299.98,
+        "direction": "minus",
+        "input": 1.8715755,
+        "step": 3
+      },
+      {
+        "Re": 296.82928,
+        "direction": "minus",
+        "input": 1.8344393,
+        "step": 4
+      },
+      {
+        "Re": 295.8995,
+        "direction": "minus",
+        "input": 1.8059895,
+        "step": 5
+      },
+      {
+        "Re": 295.81315,
+        "direction": "minus",
+        "input": 1.7931316,
+        "step": 6
+      },
+      {
+        "Re": 295.92686,
+        "direction": "minus",
+        "input": 1.8080113,
+        "step": 7
+      },
+      {
+        "Re": 296.00102,
+        "direction": "minus",
+        "input": 1.8122792,
+        "step": 8
+      },
+      {
+        "Re": 296.57209,
+        "direction": "minus",
+        "input": 1.8294503,
+        "step": 9
+      },
+      {
+        "Re": 297.574,
+        "direction": "minus",
+        "input": 1.8458455,
+        "step": 10
+      },
+      {
+        "Re": 299.00653,
+        "direction": "minus",
+        "input": 1.8623147,
+        "step": 11
+      },
+      {
+        "Re": 300.81356,
+        "direction": "minus",
+        "input": 1.8787527,
+        "step": 12
+      },
+      {
+        "Re": 302.9125,
+        "direction": "minus",
+        "input": 1.894655,
+        "step": 13
+      },
+      {
+        "Re": 305.65811,
+        "direction": "minus",
+        "input": 1.9121586,
+        "step": 14
+      },
+      {
+        "Re": 308.67558,
+        "direction": "minus",
+        "input": 1.9285544,
+        "step": 15
+      },
+      {
+        "Re": 312.50042,
+        "direction": "minus",
+        "input": 1.9467257,
+        "step": 16
+      },
+      {
+        "Re": 316.54299,
+        "direction": "minus",
+        "input": 1.9642388,
+        "step": 17
+      },
+      {
+        "Re": 321.41498,
+        "direction": "minus",
+        "input": 1.9850163,
+        "step": 18
+      },
+      {
+        "Re": 326.31376,
+        "direction": "minus",
+        "input": 2.0121491,
+        "step": 19
+      },
+      {
+        "Re": 326.87564,
+        "direction": "minus",
+        "input": 2.0209124,
+        "step": 20
+      },
+      {
+        "Re": 326.88285,
+        "direction": "minus",
+        "input": 2.0216233,
+        "step": 21
+      },
+      {
+        "Re": 326.88247,
+        "direction": "minus",
+        "input": 2.022468,
+        "step": 22
+      },
+      {
+        "Re": 326.8526,
+        "direction": "minus",
+        "input": 2.0240948,
+        "step": 23
+      },
+      {
+        "Re": 326.67759,
+        "direction": "minus",
+        "input": 2.0271875,
+        "step": 24
+      },
+      {
+        "Re": 325.86658,
+        "direction": "minus",
+        "input": 2.0327828,
+        "step": 25
+      },
+      {
+        "Re": 323.77449,
+        "direction": "minus",
+        "input": 2.0392024,
+        "step": 26
+      },
+      {
+        "Re": 320.98663,
+        "direction": "minus",
+        "input": 2.0437457,
+        "step": 27
+      },
+      {
+        "Re": 317.97517,
+        "direction": "minus",
+        "input": 2.0467244,
+        "step": 28
+      },
+      {
+        "Re": 314.02515,
+        "direction": "minus",
+        "input": 2.0493488,
+        "step": 29
+      },
+      {
+        "Re": 312.03882,
+        "direction": "minus",
+        "input": 2.0512853,
+        "step": 30
+      },
+      {
+        "Re": 311.79113,
+        "direction": "minus",
+        "input": 2.0519127,
+        "step": 31
+      },
+      {
+        "Re": 311.66874,
+        "direction": "minus",
+        "input": 2.0526253,
+        "step": 32
+      },
+      {
+        "Re": 311.66193,
+        "direction": "minus",
+        "input": 2.0527355,
+        "step": 33
+      },
+      {
+        "Re": 299.98,
+        "direction": "plus",
+        "input": 1.8715755,
+        "step": 1
+      },
+      {
+        "Re": 300.0,
+        "direction": "plus",
+        "input": 1.8717549,
+        "step": 2
+      },
+      {
+        "Re": 300.02,
+        "direction": "plus",
+        "input": 1.871934,
+        "step": 3
+      },
+      {
+        "Re": 304.22036,
+        "direction": "plus",
+        "input": 1.9033751,
+        "step": 4
+      },
+      {
+        "Re": 307.21567,
+        "direction": "plus",
+        "input": 1.9209156,
+        "step": 5
+      },
+      {
+        "Re": 310.49215,
+        "direction": "plus",
+        "input": 1.9374609,
+        "step": 6
+      },
+      {
+        "Re": 314.59073,
+        "direction": "plus",
+        "input": 1.9559147,
+        "step": 7
+      },
+      {
+        "Re": 318.87448,
+        "direction": "plus",
+        "input": 1.9740698,
+        "step": 8
+      },
+      {
+        "Re": 323.81618,
+        "direction": "plus",
+        "input": 1.9963001,
+        "step": 9
+      },
+      {
+        "Re": 325.86978,
+        "direction": "plus",
+        "input": 2.0084731,
+        "step": 10
+      },
+      {
+        "Re": 326.83991,
+        "direction": "plus",
+        "input": 2.0194379,
+        "step": 11
+      },
+      {
+        "Re": 326.86374,
+        "direction": "plus",
+        "input": 2.0202834,
+        "step": 12
+      },
+      {
+        "Re": 326.8821,
+        "direction": "plus",
+        "input": 2.0215013,
+        "step": 13
+      },
+      {
+        "Re": 326.8638,
+        "direction": "plus",
+        "input": 2.0236886,
+        "step": 14
+      },
+      {
+        "Re": 326.63021,
+        "direction": "plus",
+        "input": 2.0277181,
+        "step": 15
+      },
+      {
+        "Re": 325.37771,
+        "direction": "plus",
+        "input": 2.0347816,
+        "step": 16
+      },
+      {
+        "Re": 323.06699,
+        "direction": "plus",
+        "input": 2.0406099,
+        "step": 17
+      },
+      {
+        "Re": 320.20578,
+        "direction": "plus",
+        "input": 2.0446556,
+        "step": 18
+      },
+      {
+        "Re": 317.19177,
+        "direction": "plus",
+        "input": 2.0473111,
+        "step": 19
+      },
+      {
+        "Re": 312.51722,
+        "direction": "plus",
+        "input": 2.0505911,
+        "step": 20
+      },
+      {
+        "Re": 311.81041,
+        "direction": "plus",
+        "input": 2.0518463,
+        "step": 21
+      },
+      {
+        "Re": 311.70213,
+        "direction": "plus",
+        "input": 2.0523291,
+        "step": 22
+      },
+      {
+        "Re": 311.67601,
+        "direction": "plus",
+        "input": 2.0525403,
+        "step": 23
+      },
+      {
+        "Re": 311.66453,
+        "direction": "plus",
+        "input": 2.0526877,
+        "step": 24
+      },
+      {
+        "Re": 311.66009,
+        "direction": "plus",
+        "input": 2.0527774,
+        "step": 25
+      },
+      {
+        "Re": 311.65721,
+        "direction": "plus",
+        "input": 2.0528835,
+        "step": 26
+      },
+      {
+        "Re": 311.65853,
+        "direction": "plus",
+        "input": 2.0530886,
+        "step": 27
+      },
+      {
+        "Re": 311.68799,
+        "direction": "plus",
+        "input": 2.0535187,
+        "step": 28
+      },
+      {
+        "Re": 311.85716,
+        "direction": "plus",
+        "input": 2.054465,
+        "step": 29
+      },
+      {
+        "Re": 312.41323,
+        "direction": "plus",
+        "input": 2.056151,
+        "step": 30
+      },
+      {
+        "Re": 313.1916,
+        "direction": "plus",
+        "input": 2.0578403,
+        "step": 31
+      },
+      {
+        "Re": 314.28579,
+        "direction": "plus",
+        "input": 2.0597931,
+        "step": 32
+      }
+    ],
+    "max_Re": 326.88285,
+    "max_input": 2.0597931,
+    "min_Re": 295.81315,
+    "min_input": 1.7931316,
+    "n_points": 65
+  },
+  "case": "re300_lx10_lz6",
+  "catalog_path": "equilibria/re300_lx10_lz6_020",
+  "catalog_source": "eqb_catalog",
+  "deduplication": {
+    "component_id": "",
+    "component_size": 1,
+    "edges": [],
+    "members": [
+      "re300_lx10_lz6_020"
+    ],
+    "status": "single",
+    "strong_edges": 0,
+    "weak_edges": 0
+  },
+  "dns_diagnostics": {
+    "derived": {
+      "D_total": 1.8717549999999998,
+      "I_total": 1.871758
+    },
+    "method": "fieldconverge",
+    "source": "/home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/eqb_fuzzing/overnight_runs_updated/re300_lx10_lz6/G/jkl_1_4_5/dns_findsoln/sol003/fieldconverge.asc",
+    "values": {
+      "L2": 0.231991,
+      "dissipation": 0.871755,
+      "e3d": 0.109413,
+      "ecf": 0.0074763,
+      "u2": 0.316486,
+      "ubulk": 0.0,
+      "v2": 0.0509217,
+      "w2": 0.0698805,
+      "wallshear": 0.871758,
+      "wallshear_a": 0.435879,
+      "wallshear_b": -0.435879,
+      "wbulk": 0.0
+    }
+  },
+  "eigen_analysis": {
+    "available": true,
+    "eigenvectors": [
+      "equilibria/re300_lx10_lz6_020/eigen/ef1.nc",
+      "equilibria/re300_lx10_lz6_020/eigen/ef2.nc",
+      "equilibria/re300_lx10_lz6_020/eigen/ef3.nc",
+      "equilibria/re300_lx10_lz6_020/eigen/ef4.nc",
+      "equilibria/re300_lx10_lz6_020/eigen/ef5.nc",
+      "equilibria/re300_lx10_lz6_020/eigen/ef6.nc",
+      "equilibria/re300_lx10_lz6_020/eigen/ef7.nc",
+      "equilibria/re300_lx10_lz6_020/eigen/ef8.nc",
+      "equilibria/re300_lx10_lz6_020/eigen/ef9.nc",
+      "equilibria/re300_lx10_lz6_020/eigen/ef10.nc",
+      "equilibria/re300_lx10_lz6_020/eigen/ef11.nc",
+      "equilibria/re300_lx10_lz6_020/eigen/ef12.nc",
+      "equilibria/re300_lx10_lz6_020/eigen/ef13.nc",
+      "equilibria/re300_lx10_lz6_020/eigen/ef14.nc",
+      "equilibria/re300_lx10_lz6_020/eigen/ef15.nc"
+    ],
+    "error": null,
+    "files": {
+      "args": "equilibria/re300_lx10_lz6_020/eigen/findeigenvals.args",
+      "lambda": "equilibria/re300_lx10_lz6_020/eigen/lambda.asc",
+      "multipliers": "equilibria/re300_lx10_lz6_020/eigen/Lambda.asc",
+      "residuals": "equilibria/re300_lx10_lz6_020/eigen/Residu.asc"
+    },
+    "leading": {
+      "eigenvector": "equilibria/re300_lx10_lz6_020/eigen/ef1.nc",
+      "index": 1,
+      "lambda_im": 0.1132806404484062,
+      "lambda_re": 0.10809922875315503,
+      "multiplier_im": 0.9212669655368412,
+      "multiplier_re": 1.4487477862882945,
+      "residual": 0.0027309437417198114,
+      "unstable": true
+    },
+    "method": "findeigenvals",
+    "n_eigenvalues": 32,
+    "n_unstable": 9,
+    "parameters": {
+      "N": 32,
+      "Ns": 6,
+      "R": 300.0,
+      "T": 5.0,
+      "dt": null,
+      "variabledt": false
+    },
+    "spectrum": [
+      {
+        "eigenvector": "equilibria/re300_lx10_lz6_020/eigen/ef1.nc",
+        "index": 1,
+        "lambda_im": 0.1132806404484062,
+        "lambda_re": 0.10809922875315503,
+        "multiplier_im": 0.9212669655368412,
+        "multiplier_re": 1.4487477862882945,
+        "residual": 0.0027309437417198114,
+        "unstable": true
+      },
+      {
+        "eigenvector": "equilibria/re300_lx10_lz6_020/eigen/ef2.nc",
+        "index": 2,
+        "lambda_im": -0.1132806404484062,
+        "lambda_re": 0.10809922875315503,
+        "multiplier_im": -0.9212669655368412,
+        "multiplier_re": 1.4487477862882945,
+        "residual": 0.0027309437417198114,
+        "unstable": true
+      },
+      {
+        "eigenvector": "equilibria/re300_lx10_lz6_020/eigen/ef3.nc",
+        "index": 3,
+        "lambda_im": -0.11336519811302528,
+        "lambda_re": 0.10765115567079848,
+        "multiplier_im": -0.9198163619519351,
+        "multiplier_re": 1.4451169364998762,
+        "residual": 0.0005575342282979047,
+        "unstable": true
+      },
+      {
+        "eigenvector": "equilibria/re300_lx10_lz6_020/eigen/ef4.nc",
+        "index": 4,
+        "lambda_im": 0.11336519811302528,
+        "lambda_re": 0.10765115567079848,
+        "multiplier_im": 0.9198163619519351,
+        "multiplier_re": 1.4451169364998762,
+        "residual": 0.0005575342282979047,
+        "unstable": true
+      },
+      {
+        "eigenvector": "equilibria/re300_lx10_lz6_020/eigen/ef5.nc",
+        "index": 5,
+        "lambda_im": 0.0,
+        "lambda_re": 0.025766054020847917,
+        "multiplier_im": 0.0,
+        "multiplier_re": 1.1374970405260458,
+        "residual": 0.2176103052790424,
+        "unstable": true
+      },
+      {
+        "eigenvector": "equilibria/re300_lx10_lz6_020/eigen/ef6.nc",
+        "index": 6,
+        "lambda_im": 0.03337892174568728,
+        "lambda_re": 0.02050361423306364,
+        "multiplier_im": 0.18405488098083492,
+        "multiplier_re": 1.0925626902694503,
+        "residual": 0.22023187817440978,
+        "unstable": true
+      },
+      {
+        "eigenvector": "equilibria/re300_lx10_lz6_020/eigen/ef7.nc",
+        "index": 7,
+        "lambda_im": -0.03337892174568728,
+        "lambda_re": 0.02050361423306364,
+        "multiplier_im": -0.18405488098083492,
+        "multiplier_re": 1.0925626902694503,
+        "residual": 0.22023187817440978,
+        "unstable": true
+      },
+      {
+        "eigenvector": "equilibria/re300_lx10_lz6_020/eigen/ef8.nc",
+        "index": 8,
+        "lambda_im": 0.06217547298301762,
+        "lambda_re": 0.010013676198878536,
+        "multiplier_im": 0.3215995775167799,
+        "multiplier_re": 1.0009474439376536,
+        "residual": 0.20921815951468045,
+        "unstable": true
+      },
+      {
+        "eigenvector": "equilibria/re300_lx10_lz6_020/eigen/ef9.nc",
+        "index": 9,
+        "lambda_im": -0.06217547298301762,
+        "lambda_re": 0.010013676198878536,
+        "multiplier_im": -0.3215995775167799,
+        "multiplier_re": 1.0009474439376536,
+        "residual": 0.20921815951468045,
+        "unstable": true
+      },
+      {
+        "eigenvector": "equilibria/re300_lx10_lz6_020/eigen/ef10.nc",
+        "index": 10,
+        "lambda_im": -0.27413333529448874,
+        "lambda_re": -0.0003606523462080134,
+        "multiplier_im": -0.9782751344381023,
+        "multiplier_re": 0.19843823616548667,
+        "residual": 0.03937266287762566,
+        "unstable": false
+      },
+      {
+        "eigenvector": "equilibria/re300_lx10_lz6_020/eigen/ef11.nc",
+        "index": 11,
+        "lambda_im": 0.27413333529448874,
+        "lambda_re": -0.0003606523462080134,
+        "multiplier_im": 0.9782751344381023,
+        "multiplier_re": 0.19843823616548667,
+        "residual": 0.03937266287762566,
+        "unstable": false
+      },
+      {
+        "eigenvector": "equilibria/re300_lx10_lz6_020/eigen/ef12.nc",
+        "index": 12,
+        "lambda_im": -0.1369632562758681,
+        "lambda_re": -0.0022219702367370256,
+        "multiplier_im": -0.6255422955003178,
+        "multiplier_re": 0.7659779197232641,
+        "residual": 0.07828888252236091,
+        "unstable": false
+      },
+      {
+        "eigenvector": "equilibria/re300_lx10_lz6_020/eigen/ef13.nc",
+        "index": 13,
+        "lambda_im": 0.1369632562758681,
+        "lambda_re": -0.0022219702367370256,
+        "multiplier_im": 0.6255422955003178,
+        "multiplier_re": 0.7659779197232641,
+        "residual": 0.07828888252236091,
+        "unstable": false
+      },
+      {
+        "eigenvector": "equilibria/re300_lx10_lz6_020/eigen/ef14.nc",
+        "index": 14,
+        "lambda_im": -0.2896340931247009,
+        "lambda_re": -0.02678051029682618,
+        "multiplier_im": -0.8681072420784512,
+        "multiplier_re": 0.10698920570925985,
+        "residual": 0.1724526875687863,
+        "unstable": false
+      },
+      {
+        "eigenvector": "equilibria/re300_lx10_lz6_020/eigen/ef15.nc",
+        "index": 15,
+        "lambda_im": 0.2896340931247009,
+        "lambda_re": -0.02678051029682618,
+        "multiplier_im": 0.8681072420784512,
+        "multiplier_re": 0.10698920570925985,
+        "residual": 0.1724526875687863,
+        "unstable": false
+      },
+      {
+        "eigenvector": null,
+        "index": 16,
+        "lambda_im": -0.2472794833699787,
+        "lambda_re": -0.03108041538113676,
+        "multiplier_im": -0.8086512161264993,
+        "multiplier_re": 0.28096369836549767,
+        "residual": 0.27488588205748027,
+        "unstable": false
+      },
+      {
+        "eigenvector": null,
+        "index": 17,
+        "lambda_im": 0.2472794833699787,
+        "lambda_re": -0.03108041538113676,
+        "multiplier_im": 0.8086512161264993,
+        "multiplier_re": 0.28096369836549767,
+        "residual": 0.27488588205748027,
+        "unstable": false
+      },
+      {
+        "eigenvector": null,
+        "index": 18,
+        "lambda_im": 0.38927849612119375,
+        "lambda_re": -0.05140107706230288,
+        "multiplier_im": 0.7194521464680865,
+        "multiplier_re": -0.28369096063776733,
+        "residual": 0.05219521111554507,
+        "unstable": false
+      },
+      {
+        "eigenvector": null,
+        "index": 19,
+        "lambda_im": -0.38927849612119375,
+        "lambda_re": -0.05140107706230288,
+        "multiplier_im": -0.7194521464680865,
+        "multiplier_re": -0.28369096063776733,
+        "residual": 0.05219521111554507,
+        "unstable": false
+      },
+      {
+        "eigenvector": null,
+        "index": 20,
+        "lambda_im": -0.4729567969471975,
+        "lambda_re": -0.0679152313028445,
+        "multiplier_im": -0.49916756055548245,
+        "multiplier_re": -0.5078172639353798,
+        "residual": 0.03675284306165422,
+        "unstable": false
+      },
+      {
+        "eigenvector": null,
+        "index": 21,
+        "lambda_im": 0.4729567969471975,
+        "lambda_re": -0.0679152313028445,
+        "multiplier_im": 0.49916756055548245,
+        "multiplier_re": -0.5078172639353798,
+        "residual": 0.03675284306165422,
+        "unstable": false
+      },
+      {
+        "eigenvector": null,
+        "index": 22,
+        "lambda_im": 0.11540042390205825,
+        "lambda_re": -0.07473143157006591,
+        "multiplier_im": 0.3754296337761822,
+        "multiplier_re": 0.5767924022994952,
+        "residual": 0.55750071500851,
+        "unstable": false
+      },
+      {
+        "eigenvector": null,
+        "index": 23,
+        "lambda_im": -0.11540042390205825,
+        "lambda_re": -0.07473143157006591,
+        "multiplier_im": -0.3754296337761822,
+        "multiplier_re": 0.5767924022994952,
+        "residual": 0.55750071500851,
+        "unstable": false
+      },
+      {
+        "eigenvector": null,
+        "index": 24,
+        "lambda_im": -0.6081155245204655,
+        "lambda_re": -0.07883403456468852,
+        "multiplier_im": -0.06799253386348622,
+        "multiplier_re": -0.6708022521609629,
+        "residual": 0.07769203734932614,
+        "unstable": false
+      },
+      {
+        "eigenvector": null,
+        "index": 25,
+        "lambda_im": 0.6081155245204655,
+        "lambda_re": -0.07883403456468852,
+        "multiplier_im": 0.06799253386348622,
+        "multiplier_re": -0.6708022521609629,
+        "residual": 0.07769203734932614,
+        "unstable": false
+      },
+      {
+        "eigenvector": null,
+        "index": 26,
+        "lambda_im": 0.3082177081598827,
+        "lambda_re": -0.09538728630434948,
+        "multiplier_im": 0.6204081117582758,
+        "multiplier_re": 0.018436375423156084,
+        "residual": 0.43421387807357376,
+        "unstable": false
+      },
+      {
+        "eigenvector": null,
+        "index": 27,
+        "lambda_im": -0.3082177081598827,
+        "lambda_re": -0.09538728630434948,
+        "multiplier_im": -0.6204081117582758,
+        "multiplier_re": 0.018436375423156084,
+        "residual": 0.43421387807357376,
+        "unstable": false
+      },
+      {
+        "eigenvector": null,
+        "index": 28,
+        "lambda_im": 0.27637813739145634,
+        "lambda_re": -0.11206813975671509,
+        "multiplier_im": 0.5608563255893619,
+        "multiplier_re": 0.10722745049779306,
+        "residual": 0.5637976491230522,
+        "unstable": false
+      },
+      {
+        "eigenvector": null,
+        "index": 29,
+        "lambda_im": -0.27637813739145634,
+        "lambda_re": -0.11206813975671509,
+        "multiplier_im": -0.5608563255893619,
+        "multiplier_re": 0.10722745049779306,
+        "residual": 0.5637976491230522,
+        "unstable": false
+      },
+      {
+        "eigenvector": null,
+        "index": 30,
+        "lambda_im": 0.6283185307179586,
+        "lambda_re": -0.15181614114483113,
+        "multiplier_im": 0.0,
+        "multiplier_re": -0.4680965477527411,
+        "residual": 0.4504561861527927,
+        "unstable": false
+      },
+      {
+        "eigenvector": null,
+        "index": 31,
+        "lambda_im": 0.5008941532845401,
+        "lambda_re": -0.18271741892733492,
+        "multiplier_im": 0.2385979907687778,
+        "multiplier_re": -0.3223949534782051,
+        "residual": 0.5222542722501876,
+        "unstable": false
+      },
+      {
+        "eigenvector": null,
+        "index": 32,
+        "lambda_im": -0.5008941532845401,
+        "lambda_re": -0.18271741892733492,
+        "multiplier_im": -0.2385979907687778,
+        "multiplier_re": -0.3223949534782051,
+        "residual": 0.5222542722501876,
+        "unstable": false
+      }
+    ]
+  },
+  "group_representatives": [
+    {
+      "all_members": "on:sol003@J1K4L5",
+      "group": "G",
+      "representative_ubest": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/overnight_runs_updated/re300_lx10_lz6/G/jkl_1_4_5/dns_findsoln/sol003/ubest.nc",
+      "source": "overnight",
+      "symmetry": "<sxyz>"
+    }
+  ],
+  "groups": [
+    "G"
+  ],
+  "literature": [],
+  "markdown": "equilibria/re300_lx10_lz6_020/index.md",
+  "n_groups": 1,
+  "physical_id": "re300_lx10_lz6_020",
+  "representative": {
+    "J": 1,
+    "K": 4,
+    "L": 5,
+    "dns_source_path": "/home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/eqb_fuzzing/eqb_catalog/solutions/re300_lx10_lz6_020/G_J1K4L5_ubest.nc",
+    "group": "G",
+    "ode_source_path": "/home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/eqb_fuzzing/eqb_catalog/solutions/re300_lx10_lz6_020/on_G_J1K4L5.asc",
+    "source": "on"
+  },
+  "shear": 0.871758
+}

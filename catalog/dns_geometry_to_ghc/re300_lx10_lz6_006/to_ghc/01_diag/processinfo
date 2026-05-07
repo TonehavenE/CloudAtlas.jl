@@ -1,0 +1,9 @@
+Command:  /home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/continuesoln -cont Diag -eqb -R 300.0 -T 10.0 -symms /home/ebenq/Dev/julia/CloudAtlas.jl/catalog/dns_geometry_to_ghc/symm_files/symm_C.asc -od /home/ebenq/Dev/julia/CloudAtlas.jl/catalog/dns_geometry_to_ghc/re300_lx10_lz6_006/to_ghc/01_diag -dmu -0.01 -ns 80 -targ -targMu 6.42753591421029 /home/ebenq/Dev/julia/CloudAtlas.jl/catalog/equilibria/re300_lx10_lz6_006/ubest.nc 
+PWD:      /home/ebenq/Dev/julia/CloudAtlas.jl/catalog/dns_geometry_to_ghc/re300_lx10_lz6_006/to_ghc/01_diag
+Host:     ebenq-ideapad, PID: 1041466
+Time:     2026-05-06 03:36:31
+Version:  2.0.2
+Git rev:  91ba77f93bba73af4ef25e3d3cecf35521badbfd
+Compiler: GNU 14.2.0
+
+

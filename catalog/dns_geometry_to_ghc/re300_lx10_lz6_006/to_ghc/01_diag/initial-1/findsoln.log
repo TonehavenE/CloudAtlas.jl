@@ -1,0 +1,28 @@
+Computing G(x)
+f^T: ....10
+========================================================
+Newton iteration number 0
+Current state of Newton iteration:
+   fcount_newton   == 1
+   fcount_optimiza == 0
+   L2Norm(x)       == 0.0915445
+   L2Norm(dxN)     == 0
+   L2Norm(dxOpt)   == 0
+   L2Dist(x,x0)    == 0
+gx == L2Norm(G(x)) : 
+   initial  gx == 0.00293249
+   previous gx == 0.00293249
+   current  gx == 0.00293249
+rx == 1/2 L2Norm2(G(x)) : 
+   initial  rx == 4.29975e-06
+   previous rx == 4.29975e-06
+   current  rx == 4.29975e-06
+         delta == 0.01
+Newt,GMRES == 0,0, f^T: ....10 res == 0.629445
+Newt,GMRES == 0,1, f^T: ....10 res == 0.48245
+Newt,GMRES == 0,2, f^T: ....10 res == 0.187164
+Newt,GMRES == 0,3, f^T: ....10 res == 0.0597072
+Newt,GMRES == 0,4, f^T: ....10 res == 0.0268828
+Newt,GMRES == 0,5, f^T: ....10 res == 0.00683257
+Newt,GMRES == 0,6, f^T: ....10 res == 0.00173641
+Newt,GMRES == 0,7, f^T: ....
