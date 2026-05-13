@@ -1,0 +1,1 @@
+Mon Oct 20 17:51:51 2025	10150	findsoln -np0 4 -np1 1 -orb --Nshots 3 -R 200 -d 0.002 -eg 1e-04 -symms /home/gibson/symms/sxyz-sztxz.asc -T 161 ../origin/data-eq1+ef1/u1553.nc 

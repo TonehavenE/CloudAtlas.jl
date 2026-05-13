@@ -1,0 +1,2 @@
+Mon Oct 20 16:57:52 2025	7664	findsoln -np0 4 -np1 1 -orb -R 200 -d 0.002 -eg 1e-05 -symms /home/gibson/symms/sxyz-sztxz.asc -T ../findsoln-1350-113b/Tbest.asc ../findsoln-1350-113b/ubest.nc 
+Mon Oct 20 17:07:25 2025	8241	findsoln -np0 4 -np1 1 -orb --Nshots 2 -R 200 -d 0.002 -eg 1e-05 -symms /home/gibson/symms/sxyz-sztxz.asc -T ../findsoln-1350-113b/Tbest.asc ../findsoln-1350-113b/ubest.nc 

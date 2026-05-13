@@ -1,0 +1,1 @@
+Mon Oct 20 15:14:29 2025	1900	findsoln -np0 4 -np1 1 -orb -R 200 -symms /home/gibson/symms/sxyz-sztxz.asc -T 58 ../origin/data-eq1+ef1/u148 
