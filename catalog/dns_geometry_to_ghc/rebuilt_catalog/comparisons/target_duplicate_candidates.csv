@@ -1,0 +1,4 @@
+source_id,target_id,source_case,target_case,source_group,target_group,target_Lx,target_Lz,best_shift,best_distance,unshifted_distance,is_candidate
+re300_lx10_lz6_013,re300_lx10_lz6_022,re300_lx10_lz6,re300_lx10_lz6,E,E,5.511566576198634,2.5132741228718345,none,4.97672e-14,4.97672e-14,true
+re300_lx10_lz6_013,re300_lx2pi_lzpi_003,re300_lx10_lz6,re300_lx2pi_lzpi,E,E,5.511566576198634,2.5132741228718345,sz,6.69091e-13,1.54574,true
+re300_lx10_lz6_022,re300_lx2pi_lzpi_003,re300_lx10_lz6,re300_lx2pi_lzpi,E,E,5.511566576198634,2.5132741228718345,sz,6.89679e-13,1.54574,true
