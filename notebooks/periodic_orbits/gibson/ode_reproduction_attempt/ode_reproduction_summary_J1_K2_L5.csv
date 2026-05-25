@@ -1,0 +1,5 @@
+orbit_id,J,K,L,m,T_guess,norm_guess,shear_guess,residual_guess,po_found,T_refined,norm_refined,shear_refined,residual_refined,coeff_path
+1,1,2,5,42,59.36203605931488,0.3290119171779697,1.9450545842539588,0.15853783389747456,false,NaN,NaN,NaN,NaN,/home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/periodic_orbits/gibson/ode_reproduction_attempt/orbit1/x_projected_J1_K2_L5.asc
+2,1,2,5,42,112.08433034756798,0.2686293442808124,1.627294407505394,0.10188889066556392,false,NaN,NaN,NaN,NaN,/home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/periodic_orbits/gibson/ode_reproduction_attempt/orbit2/x_projected_J1_K2_L5.asc
+3,1,2,5,42,160.06397011891264,0.2934365123290032,1.8049788433111198,0.2596293894285062,false,NaN,NaN,NaN,NaN,/home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/periodic_orbits/gibson/ode_reproduction_attempt/orbit3/x_projected_J1_K2_L5.asc
+4,1,2,5,42,276.62958162911184,0.27126677173712,1.721505820164201,0.27043234003393285,false,NaN,NaN,NaN,NaN,/home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/periodic_orbits/gibson/ode_reproduction_attempt/orbit4/x_projected_J1_K2_L5.asc

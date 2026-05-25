@@ -1,0 +1,2 @@
+Mon Oct 20 22:57:18 2025	24288	simulateflow -np0 4 -np1 1 -R 200 -symms /home/gibson/symms/sxyz-sztxz.asc -T 277 -dT 1.0022810928605557 -o data ubest.nc 
+Mon Oct 20 22:57:27 2025	24301	simulateflow -np0 4 -np1 1 -R 200 -symms /home/gibson/symms/sxyz-sztxz.asc -T 277 -dT 1.0022810928605557 -o data ubest.nc 

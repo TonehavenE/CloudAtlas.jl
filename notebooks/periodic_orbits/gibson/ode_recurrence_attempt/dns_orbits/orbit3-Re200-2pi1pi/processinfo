@@ -1,0 +1,9 @@
+Command:  simulateflow -np0 4 -np1 1 -R 200 -symms /home/gibson/symms/sxyz-sztxz.asc -T 161 -dT 1.000399813243204 -o data ubest.nc 
+PWD:      /home/gibson/research/algebraic-eqbs/eq1timeseries/findsoln-1553-162
+Host:     sophist, PID: 14125
+Time:     2025-10-20 07:12:03
+Version:  2.0.2
+Git rev:  e9209c9e71db8561bac719244603e8d817e05fc5
+Compiler: GNU 7.5.0
+
+

@@ -1,0 +1,4 @@
+orbit_id,rank,anchor_weight,hook_success,residual_norm,closing_residual,T,I_span,D_span,coeff_path
+1,1,100.0,false,0.0011918946504894303,0.0011816919784385605,52.99999992852854,0.07622803199445816,0.059974810151003144,/home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/periodic_orbits/gibson/ode_recurrence_attempt/orbit1/x_anchor_rank1_w100p0_J2_K4_L7.asc
+1,1,10.0,false,0.0011638618221163405,0.0011493947905049668,52.99999956399308,0.07620149319122982,0.059982226252094595,/home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/periodic_orbits/gibson/ode_recurrence_attempt/orbit1/x_anchor_rank1_w10p0_J2_K4_L7.asc
+1,1,1.0,false,0.0011225204184292384,0.0010987533510935887,52.99999967644759,0.07614395165028531,0.060031353247304686,/home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/periodic_orbits/gibson/ode_recurrence_attempt/orbit1/x_anchor_rank1_w1p0_J2_K4_L7.asc

@@ -1,0 +1,2 @@
+orbit_id,J,K,L,m,dns_period,x0_norm,x0_shear,trajectory_retcode,trajectory_points,best_T,best_relative_distance,best_distance,candidates_path
+1,2,4,7,169,59.36203605931488,0.3296925068187565,2.136391850614743,Success,181,53.0,0.007518261848082166,0.0025067930829212755,/home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/periodic_orbits/gibson/ode_recurrence_attempt/orbit1/ode_recurrences_J2_K4_L7.csv

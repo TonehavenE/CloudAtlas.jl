@@ -1,0 +1,2 @@
+orbit_id,J,K,L,m,T_guess,norm_guess,shear_guess,residual_guess,po_found,T_refined,norm_refined,shear_refined,residual_refined,coeff_path
+1,1,1,3,17,59.36203605931488,0.3314307187243301,2.2209049560060787,0.24420885533134667,false,NaN,NaN,NaN,NaN,/home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/periodic_orbits/gibson/ode_reproduction_attempt/orbit1/x_projected_J1_K1_L3.asc
