@@ -17,7 +17,7 @@
     {
       "label": "literature_target_runs:ghc_re400_literature_fuzz",
       "path": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz",
-      "solutions": 21
+      "solutions": 7
     },
     {
       "label": "stress:minimal_low_shear",
@@ -27,15 +27,15 @@
   ],
   "counts": {
     "from_stress_tests": 18,
-    "solutions": 118,
+    "solutions": 104,
     "with_dedup_candidates": 0,
-    "with_dns": 118,
+    "with_dns": 104,
     "with_dns_bifurcation": 42,
-    "with_dns_diagnostics": 97,
+    "with_dns_diagnostics": 104,
     "with_dns_ode_comparison": 77,
-    "with_eigen_analysis": 97,
+    "with_eigen_analysis": 104,
     "with_literature_mapping": 4,
-    "with_ode": 118
+    "with_ode": 104
   },
   "generated_at": "2026-05-27T01:36:26+00:00",
   "groups": [
@@ -62014,448 +62014,15 @@
       "shear": 0.36718
     },
     {
-      "L2": 0.07677082401832236,
-      "Lx": 5.511566576198634,
-      "Lz": 2.5132741228718345,
-      "Re": 400.0,
-      "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_001/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_001/representative.asc"
-      },
-      "bifurcation": {
-        "available": false,
-        "csv": null,
-        "curve": [],
-        "max_Re": null,
-        "max_input": null,
-        "min_Re": null,
-        "min_input": null,
-        "n_points": 0
-      },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_001",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
-      "deduplication": {
-        "component_id": "",
-        "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_001"
-        ],
-        "status": "single",
-        "strong_edges": 0,
-        "weak_edges": 0
-      },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
-      "group_representatives": [
-        {
-          "J": 2,
-          "K": 4,
-          "L": 5,
-          "group": "C",
-          "members": "fuzz:sol001@J2K4L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/C/jkl_2_4_5/dns_findsoln/sol001/ubest.nc",
-          "symmetry": "<sxytz, sz>"
-        },
-        {
-          "J": 2,
-          "K": 4,
-          "L": 5,
-          "group": "E",
-          "members": "fuzz:sol004@J2K4L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/E/jkl_2_4_5/dns_findsoln/sol004/ubest.nc",
-          "symmetry": "<sxyz, sztxz>"
-        }
-      ],
-      "groups": [
-        "C",
-        "E"
-      ],
-      "literature": "",
       "physical_id": "ghc_re400_literature_fuzz_001",
-      "representative_J": 2,
-      "representative_K": 4,
-      "representative_L": 5,
-      "representative_group": "E",
-      "shear": 0.022269335687486125
-    },
-    {
-      "L2": 0.08848482602437843,
+      "case": "ghc_re400_literature_fuzz",
+      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
+      "catalog_path": "equilibria/ghc_re400_literature_fuzz_001",
+      "Re": 400.0,
       "Lx": 5.511566576198634,
       "Lz": 2.5132741228718345,
-      "Re": 400.0,
-      "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_002/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_002/representative.asc"
-      },
-      "bifurcation": {
-        "available": false,
-        "csv": null,
-        "curve": [],
-        "max_Re": null,
-        "max_input": null,
-        "min_Re": null,
-        "min_input": null,
-        "n_points": 0
-      },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_002",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
-      "deduplication": {
-        "component_id": "",
-        "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_002"
-        ],
-        "status": "single",
-        "strong_edges": 0,
-        "weak_edges": 0
-      },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
-      "group_representatives": [
-        {
-          "J": 1,
-          "K": 4,
-          "L": 5,
-          "group": "G",
-          "members": "fuzz:sol002@J1K4L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/G/jkl_1_4_5/dns_findsoln/sol002/ubest.nc",
-          "symmetry": "<sxyz>"
-        }
-      ],
-      "groups": [
-        "G"
-      ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_002",
-      "representative_J": 1,
-      "representative_K": 4,
-      "representative_L": 5,
-      "representative_group": "G",
-      "shear": 0.02885333011016722
-    },
-    {
-      "L2": 0.13172990060518788,
-      "Lx": 5.511566576198634,
-      "Lz": 2.5132741228718345,
-      "Re": 400.0,
-      "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_003/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_003/representative.asc"
-      },
-      "bifurcation": {
-        "available": false,
-        "csv": null,
-        "curve": [],
-        "max_Re": null,
-        "max_input": null,
-        "min_Re": null,
-        "min_input": null,
-        "n_points": 0
-      },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_003",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
-      "deduplication": {
-        "component_id": "",
-        "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_003"
-        ],
-        "status": "single",
-        "strong_edges": 0,
-        "weak_edges": 0
-      },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
-      "group_representatives": [
-        {
-          "J": 1,
-          "K": 3,
-          "L": 5,
-          "group": "G",
-          "members": "fuzz:sol003@J1K3L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/G/jkl_1_3_5/dns_findsoln/sol003/ubest.nc",
-          "symmetry": "<sxyz>"
-        }
-      ],
-      "groups": [
-        "G"
-      ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_003",
-      "representative_J": 1,
-      "representative_K": 3,
-      "representative_L": 5,
-      "representative_group": "G",
-      "shear": 0.1298269496712836
-    },
-    {
-      "L2": 0.13300044242317272,
-      "Lx": 5.511566576198634,
-      "Lz": 2.5132741228718345,
-      "Re": 400.0,
-      "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_004/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_004/representative.asc"
-      },
-      "bifurcation": {
-        "available": false,
-        "csv": null,
-        "curve": [],
-        "max_Re": null,
-        "max_input": null,
-        "min_Re": null,
-        "min_input": null,
-        "n_points": 0
-      },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_004",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
-      "deduplication": {
-        "component_id": "",
-        "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_004"
-        ],
-        "status": "single",
-        "strong_edges": 0,
-        "weak_edges": 0
-      },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
-      "group_representatives": [
-        {
-          "J": 1,
-          "K": 4,
-          "L": 5,
-          "group": "G",
-          "members": "fuzz:sol003@J1K4L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/G/jkl_1_4_5/dns_findsoln/sol003/ubest.nc",
-          "symmetry": "<sxyz>"
-        }
-      ],
-      "groups": [
-        "G"
-      ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_004",
-      "representative_J": 1,
-      "representative_K": 4,
-      "representative_L": 5,
-      "representative_group": "G",
-      "shear": 0.12983935609961983
-    },
-    {
-      "L2": 0.13809453086990445,
-      "Lx": 5.511566576198634,
-      "Lz": 2.5132741228718345,
-      "Re": 400.0,
-      "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_005/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_005/representative.asc"
-      },
-      "bifurcation": {
-        "available": false,
-        "csv": null,
-        "curve": [],
-        "max_Re": null,
-        "max_input": null,
-        "min_Re": null,
-        "min_input": null,
-        "n_points": 0
-      },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_005",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
-      "deduplication": {
-        "component_id": "",
-        "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_005"
-        ],
-        "status": "single",
-        "strong_edges": 0,
-        "weak_edges": 0
-      },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
-      "group_representatives": [
-        {
-          "J": 2,
-          "K": 4,
-          "L": 5,
-          "group": "G",
-          "members": "fuzz:sol001@J2K4L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/G/jkl_2_4_5/dns_findsoln/sol001/ubest.nc",
-          "symmetry": "<sxyz>"
-        }
-      ],
-      "groups": [
-        "G"
-      ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_005",
-      "representative_J": 2,
-      "representative_K": 4,
-      "representative_L": 5,
-      "representative_group": "G",
-      "shear": 0.1534702679499127
-    },
-    {
-      "L2": 0.08831942782883857,
-      "Lx": 5.511566576198634,
-      "Lz": 2.5132741228718345,
-      "Re": 400.0,
-      "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_006/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_006/representative.asc"
-      },
-      "bifurcation": {
-        "available": false,
-        "csv": null,
-        "curve": [],
-        "max_Re": null,
-        "max_input": null,
-        "min_Re": null,
-        "min_input": null,
-        "n_points": 0
-      },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_006",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
-      "deduplication": {
-        "component_id": "",
-        "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_006"
-        ],
-        "status": "single",
-        "strong_edges": 0,
-        "weak_edges": 0
-      },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
-      "group_representatives": [
-        {
-          "J": 1,
-          "K": 4,
-          "L": 5,
-          "group": "B",
-          "members": "fuzz:sol001@J1K4L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/B/jkl_1_4_5/dns_findsoln/sol001/ubest.nc",
-          "symmetry": "<sxy, sz>"
-        },
-        {
-          "J": 1,
-          "K": 4,
-          "L": 5,
-          "group": "C",
-          "members": "fuzz:sol002@J1K4L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/C/jkl_1_4_5/dns_findsoln/sol002/ubest.nc",
-          "symmetry": "<sxytz, sz>"
-        },
-        {
-          "J": 1,
-          "K": 4,
-          "L": 5,
-          "group": "D",
-          "members": "fuzz:sol001@J1K4L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/D/jkl_1_4_5/dns_findsoln/sol001/ubest.nc",
-          "symmetry": "<sxy, sztx>"
-        },
-        {
-          "J": 1,
-          "K": 4,
-          "L": 5,
-          "group": "F",
-          "members": "fuzz:sol001@J1K4L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/F/jkl_1_4_5/dns_findsoln/sol001/ubest.nc",
-          "symmetry": "<sxy, sz, txz>"
-        },
-        {
-          "J": 1,
-          "K": 4,
-          "L": 5,
-          "group": "G",
-          "members": "fuzz:sol001@J1K4L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/G/jkl_1_4_5/dns_findsoln/sol001/ubest.nc",
-          "symmetry": "<sxyz>"
-        }
-      ],
+      "shear": 0.252105,
+      "L2": 0.0935552,
       "groups": [
         "B",
         "C",
@@ -62463,23 +62030,14 @@
         "F",
         "G"
       ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_006",
+      "representative_group": "G",
       "representative_J": 1,
       "representative_K": 4,
       "representative_L": 5,
-      "representative_group": "G",
-      "shear": 0.15471705023293203
-    },
-    {
-      "L2": 0.1324018072132757,
-      "Lx": 5.511566576198634,
-      "Lz": 2.5132741228718345,
-      "Re": 400.0,
       "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_007/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_007/representative.asc"
+        "ode": "equilibria/ghc_re400_literature_fuzz_001/representative.asc",
+        "dns": "equilibria/ghc_re400_literature_fuzz_001/ubest.nc",
+        "dns_ode_comparison": null
       },
       "bifurcation": {
         "available": false,
@@ -62491,63 +62049,472 @@
         "min_input": null,
         "n_points": 0
       },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_007",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
+      "dns_diagnostics": {
+        "method": "fieldconverge",
+        "source": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/G/jkl_1_4_5/dns_findsoln/sol001/fieldconverge.asc",
+        "values": {
+          "L2": 0.0935552,
+          "u2": 0.128468,
+          "v2": 0.0140675,
+          "w2": 0.0283421,
+          "e3d": 0.0412589,
+          "ecf": 0.00100117,
+          "ubulk": 0.0,
+          "wbulk": 0.0,
+          "wallshear": 0.252105,
+          "wallshear_a": 0.126053,
+          "wallshear_b": -0.126053,
+          "dissipation": 0.252105
+        },
+        "derived": {
+          "D_total": 1.252105,
+          "I_total": 1.252105
+        }
+      },
+      "eigen_analysis": {
+        "available": true,
+        "method": "findeigenvals",
+        "n_eigenvalues": 32,
+        "n_unstable": 2,
+        "leading": {
+          "index": 1,
+          "lambda_re": 0.0707079389058893,
+          "lambda_im": 0.0,
+          "multiplier_re": 1.4240995147895623,
+          "multiplier_im": 0.0,
+          "residual": 5.652282394374173e-08,
+          "unstable": true,
+          "eigenvector": "equilibria/ghc_re400_literature_fuzz_001/eigen/ef1.nc"
+        },
+        "spectrum": [
+          {
+            "index": 1,
+            "lambda_re": 0.0707079389058893,
+            "lambda_im": 0.0,
+            "multiplier_re": 1.4240995147895623,
+            "multiplier_im": 0.0,
+            "residual": 5.652282394374173e-08,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_001/eigen/ef1.nc"
+          },
+          {
+            "index": 2,
+            "lambda_re": 0.0066585338070788485,
+            "lambda_im": 0.0,
+            "multiplier_re": 1.0338530717494456,
+            "multiplier_im": 0.0,
+            "residual": 0.009636392849810905,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_001/eigen/ef2.nc"
+          },
+          {
+            "index": 3,
+            "lambda_re": -0.0059182347035803325,
+            "lambda_im": 0.02518603614768979,
+            "multiplier_re": 0.9631545180104326,
+            "multiplier_im": 0.12193547260727296,
+            "residual": 0.04539227669397589,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_001/eigen/ef3.nc"
+          },
+          {
+            "index": 4,
+            "lambda_re": -0.0059182347035803325,
+            "lambda_im": -0.02518603614768979,
+            "multiplier_re": 0.9631545180104326,
+            "multiplier_im": -0.12193547260727296,
+            "residual": 0.04539227669397589,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_001/eigen/ef4.nc"
+          },
+          {
+            "index": 5,
+            "lambda_re": -0.009191073015283973,
+            "lambda_im": 0.052388771210534514,
+            "multiplier_re": 0.9225051517678208,
+            "multiplier_im": 0.24732735721843155,
+            "residual": 0.05780118124301692,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_001/eigen/ef5.nc"
+          },
+          {
+            "index": 6,
+            "lambda_re": -0.009191073015283973,
+            "lambda_im": -0.052388771210534514,
+            "multiplier_re": 0.9225051517678208,
+            "multiplier_im": -0.24732735721843155,
+            "residual": 0.05780118124301692,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_001/eigen/ef6.nc"
+          },
+          {
+            "index": 7,
+            "lambda_re": -0.02702951073128436,
+            "lambda_im": 0.027593968770383337,
+            "multiplier_re": 0.865285522106572,
+            "multiplier_im": 0.12014663514143158,
+            "residual": 0.09022198001888884,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_001/eigen/ef7.nc"
+          },
+          {
+            "index": 8,
+            "lambda_re": -0.02702951073128436,
+            "lambda_im": -0.027593968770383337,
+            "multiplier_re": 0.865285522106572,
+            "multiplier_im": -0.12014663514143158,
+            "residual": 0.09022198001888884,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_001/eigen/ef8.nc"
+          },
+          {
+            "index": 9,
+            "lambda_re": -0.06869196703473962,
+            "lambda_im": 0.027577399258725745,
+            "multiplier_re": 0.7025796351036795,
+            "multiplier_im": 0.09749526692257802,
+            "residual": 0.29569492307551065,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 10,
+            "lambda_re": -0.06869196703473962,
+            "lambda_im": -0.027577399258725745,
+            "multiplier_re": 0.7025796351036795,
+            "multiplier_im": -0.09749526692257802,
+            "residual": 0.29569492307551065,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 11,
+            "lambda_re": -0.08544656485205283,
+            "lambda_im": 0.6121707352913615,
+            "multiplier_re": -0.6501866764067888,
+            "multiplier_im": 0.052609774133780984,
+            "residual": 0.012921141796057177,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 12,
+            "lambda_re": -0.08544656485205283,
+            "lambda_im": -0.6121707352913615,
+            "multiplier_re": -0.6501866764067888,
+            "multiplier_im": -0.052609774133780984,
+            "residual": 0.012921141796057177,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 13,
+            "lambda_re": -0.09850695440354136,
+            "lambda_im": -0.1742876509805013,
+            "multiplier_re": 0.39336553733606355,
+            "multiplier_im": -0.4676289249021844,
+            "residual": 0.18430873930581404,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 14,
+            "lambda_re": -0.09850695440354136,
+            "lambda_im": 0.1742876509805013,
+            "multiplier_re": 0.39336553733606355,
+            "multiplier_im": 0.4676289249021844,
+            "residual": 0.18430873930581404,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 15,
+            "lambda_re": -0.09937416191715437,
+            "lambda_im": -0.20533430834332633,
+            "multiplier_re": 0.3149664558652189,
+            "multiplier_im": -0.5205623132476044,
+            "residual": 0.026556341111329547,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 16,
+            "lambda_re": -0.09937416191715437,
+            "lambda_im": 0.20533430834332633,
+            "multiplier_re": 0.3149664558652189,
+            "multiplier_im": 0.5205623132476044,
+            "residual": 0.026556341111329547,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 17,
+            "lambda_re": -0.10374115805344819,
+            "lambda_im": 0.6283185307179586,
+            "multiplier_re": -0.5952904803692365,
+            "multiplier_im": 0.0,
+            "residual": 0.23740402170987238,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 18,
+            "lambda_re": -0.10950263405031552,
+            "lambda_im": 0.15587458830788614,
+            "multiplier_re": 0.4114376879168507,
+            "multiplier_im": 0.40650931611062247,
+            "residual": 0.231528425376248,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 19,
+            "lambda_re": -0.10950263405031552,
+            "lambda_im": -0.15587458830788614,
+            "multiplier_re": 0.4114376879168507,
+            "multiplier_im": -0.40650931611062247,
+            "residual": 0.231528425376248,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 20,
+            "lambda_re": -0.15274004624810278,
+            "lambda_im": 0.6203825241817191,
+            "multiplier_re": -0.46557238708480675,
+            "multiplier_im": 0.018483629409012336,
+            "residual": 0.08361485206947288,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 21,
+            "lambda_re": -0.15274004624810278,
+            "lambda_im": -0.6203825241817191,
+            "multiplier_re": -0.46557238708480675,
+            "multiplier_im": -0.018483629409012336,
+            "residual": 0.08361485206947288,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 22,
+            "lambda_re": -0.15308389071076028,
+            "lambda_im": -0.3268168721031173,
+            "multiplier_re": -0.029418071585711046,
+            "multiplier_im": -0.4642075691365322,
+            "residual": 0.11551555660476652,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 23,
+            "lambda_re": -0.15308389071076028,
+            "lambda_im": 0.3268168721031173,
+            "multiplier_re": -0.029418071585711046,
+            "multiplier_im": 0.4642075691365322,
+            "residual": 0.11551555660476652,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 24,
+            "lambda_re": -0.17242711775709751,
+            "lambda_im": 0.44499899413212063,
+            "multiplier_re": -0.25695474972856014,
+            "multiplier_im": 0.3350779196155434,
+            "residual": 0.015848469049470633,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 25,
+            "lambda_re": -0.17242711775709751,
+            "lambda_im": -0.44499899413212063,
+            "multiplier_re": -0.25695474972856014,
+            "multiplier_im": -0.3350779196155434,
+            "residual": 0.015848469049470633,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 26,
+            "lambda_re": -0.174920360251192,
+            "lambda_im": -0.5009345966643908,
+            "multiplier_re": -0.3352619866574852,
+            "multiplier_im": -0.24801570919516888,
+            "residual": 0.03894320037188764,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 27,
+            "lambda_re": -0.174920360251192,
+            "lambda_im": 0.5009345966643908,
+            "multiplier_re": -0.3352619866574852,
+            "multiplier_im": 0.24801570919516888,
+            "residual": 0.03894320037188764,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 28,
+            "lambda_re": -0.18674235683552953,
+            "lambda_im": 0.33486017019215175,
+            "multiplier_re": -0.040614184201962805,
+            "multiplier_im": 0.3909881723431923,
+            "residual": 0.1508564431670962,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 29,
+            "lambda_re": -0.18674235683552953,
+            "lambda_im": -0.33486017019215175,
+            "multiplier_re": -0.040614184201962805,
+            "multiplier_im": -0.3909881723431923,
+            "residual": 0.1508564431670962,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 30,
+            "lambda_re": -0.3732265453184209,
+            "lambda_im": 0.6283185307179586,
+            "multiplier_re": -0.15472085416274847,
+            "multiplier_im": 0.0,
+            "residual": 0.3242151389376499,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 31,
+            "lambda_re": -0.42349313142869555,
+            "lambda_im": 0.0,
+            "multiplier_re": 0.12033621561277616,
+            "multiplier_im": 0.0,
+            "residual": 0.5508722548723926,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 32,
+            "lambda_re": -0.7229474655777094,
+            "lambda_im": 0.0,
+            "multiplier_re": 0.026923996471478733,
+            "multiplier_im": 0.0,
+            "residual": 0.5388012644244562,
+            "unstable": false,
+            "eigenvector": null
+          }
+        ],
+        "files": {
+          "args": "equilibria/ghc_re400_literature_fuzz_001/eigen/findeigenvals.args",
+          "lambda": "equilibria/ghc_re400_literature_fuzz_001/eigen/lambda.asc",
+          "multipliers": "equilibria/ghc_re400_literature_fuzz_001/eigen/Lambda.asc",
+          "residuals": "equilibria/ghc_re400_literature_fuzz_001/eigen/Residu.asc"
+        },
+        "eigenvectors": [
+          "equilibria/ghc_re400_literature_fuzz_001/eigen/ef1.nc",
+          "equilibria/ghc_re400_literature_fuzz_001/eigen/ef2.nc",
+          "equilibria/ghc_re400_literature_fuzz_001/eigen/ef3.nc",
+          "equilibria/ghc_re400_literature_fuzz_001/eigen/ef4.nc",
+          "equilibria/ghc_re400_literature_fuzz_001/eigen/ef5.nc",
+          "equilibria/ghc_re400_literature_fuzz_001/eigen/ef6.nc",
+          "equilibria/ghc_re400_literature_fuzz_001/eigen/ef7.nc",
+          "equilibria/ghc_re400_literature_fuzz_001/eigen/ef8.nc"
+        ],
+        "error": null,
+        "parameters": {
+          "R": 400.0,
+          "T": 5.0,
+          "N": 32,
+          "Ns": 6,
+          "dt": null,
+          "variabledt": false
+        }
+      },
+      "literature": "",
       "deduplication": {
         "component_id": "",
         "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_007"
-        ],
         "status": "single",
+        "members": [
+          "ghc_re400_literature_fuzz_001"
+        ],
+        "edges": [],
         "strong_edges": 0,
         "weak_edges": 0
       },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
       "group_representatives": [
         {
-          "J": 2,
+          "group": "B",
+          "symmetry": "<sxy, sz>",
+          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/B/jkl_1_4_5/dns_findsoln/sol001/ubest.nc",
+          "members": "fuzz:sol001@J1K4L5",
+          "J": 1,
           "K": 4,
-          "L": 5,
-          "group": "A",
-          "members": "fuzz:sol001@J2K4L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/A/jkl_2_4_5/dns_findsoln/sol001/ubest.nc",
-          "symmetry": "<sxyz, txz>"
+          "L": 5
+        },
+        {
+          "group": "C",
+          "symmetry": "<sxytz, sz>",
+          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/C/jkl_1_4_5/dns_findsoln/sol002/ubest.nc",
+          "members": "fuzz:sol002@J1K4L5",
+          "J": 1,
+          "K": 4,
+          "L": 5
+        },
+        {
+          "group": "D",
+          "symmetry": "<sxy, sztx>",
+          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/D/jkl_1_4_5/dns_findsoln/sol001/ubest.nc",
+          "members": "fuzz:sol001@J1K4L5",
+          "J": 1,
+          "K": 4,
+          "L": 5
+        },
+        {
+          "group": "F",
+          "symmetry": "<sxy, sz, txz>",
+          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/F/jkl_1_4_5/dns_findsoln/sol001/ubest.nc",
+          "members": "fuzz:sol001@J1K4L5",
+          "J": 1,
+          "K": 4,
+          "L": 5
+        },
+        {
+          "group": "G",
+          "symmetry": "<sxyz>",
+          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/G/jkl_1_4_5/dns_findsoln/sol001/ubest.nc",
+          "members": "fuzz:sol001@J1K4L5",
+          "J": 1,
+          "K": 4,
+          "L": 5
         }
-      ],
+      ]
+    },
+    {
+      "physical_id": "ghc_re400_literature_fuzz_002",
+      "case": "ghc_re400_literature_fuzz",
+      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
+      "catalog_path": "equilibria/ghc_re400_literature_fuzz_002",
+      "Re": 400.0,
+      "Lx": 5.511566576198634,
+      "Lz": 2.5132741228718345,
+      "shear": 0.317713,
+      "L2": 0.12589,
       "groups": [
-        "A"
+        "E"
       ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_007",
+      "representative_group": "E",
       "representative_J": 2,
       "representative_K": 4,
       "representative_L": 5,
-      "representative_group": "A",
-      "shear": 0.22583074021884197
-    },
-    {
-      "L2": 0.21175076716774255,
-      "Lx": 5.511566576198634,
-      "Lz": 2.5132741228718345,
-      "Re": 400.0,
       "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_008/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_008/representative.asc"
+        "ode": "equilibria/ghc_re400_literature_fuzz_002/representative.asc",
+        "dns": "equilibria/ghc_re400_literature_fuzz_002/ubest.nc",
+        "dns_ode_comparison": null
       },
       "bifurcation": {
         "available": false,
@@ -62559,277 +62526,1324 @@
         "min_input": null,
         "n_points": 0
       },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_008",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
+      "dns_diagnostics": {
+        "method": "fieldconverge",
+        "source": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/E/jkl_2_4_5/dns_findsoln/sol003/fieldconverge.asc",
+        "values": {
+          "L2": 0.12589,
+          "u2": 0.173565,
+          "v2": 0.0151295,
+          "w2": 0.036646,
+          "e3d": 0.0450151,
+          "ecf": 0.00157183,
+          "ubulk": 0.0,
+          "wbulk": 0.0,
+          "wallshear": 0.317713,
+          "wallshear_a": 0.158856,
+          "wallshear_b": -0.158856,
+          "dissipation": 0.317713
+        },
+        "derived": {
+          "D_total": 1.317713,
+          "I_total": 1.317713
+        }
+      },
+      "eigen_analysis": {
+        "available": true,
+        "method": "findeigenvals",
+        "n_eigenvalues": 32,
+        "n_unstable": 4,
+        "leading": {
+          "index": 1,
+          "lambda_re": 0.033973405046489824,
+          "lambda_im": -0.017977558422515597,
+          "multiplier_re": 1.180362583713574,
+          "multiplier_im": -0.10638686974918822,
+          "residual": 0.0002359443046920206,
+          "unstable": true,
+          "eigenvector": "equilibria/ghc_re400_literature_fuzz_002/eigen/ef1.nc"
+        },
+        "spectrum": [
+          {
+            "index": 1,
+            "lambda_re": 0.033973405046489824,
+            "lambda_im": -0.017977558422515597,
+            "multiplier_re": 1.180362583713574,
+            "multiplier_im": -0.10638686974918822,
+            "residual": 0.0002359443046920206,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_002/eigen/ef1.nc"
+          },
+          {
+            "index": 2,
+            "lambda_re": 0.033973405046489824,
+            "lambda_im": 0.017977558422515597,
+            "multiplier_re": 1.180362583713574,
+            "multiplier_im": 0.10638686974918822,
+            "residual": 0.0002359443046920206,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_002/eigen/ef2.nc"
+          },
+          {
+            "index": 3,
+            "lambda_re": 0.008120373707859563,
+            "lambda_im": 0.005855248654762415,
+            "multiplier_re": 1.0409911187091332,
+            "multiplier_im": 0.030485019288867682,
+            "residual": 0.01643478495887722,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_002/eigen/ef3.nc"
+          },
+          {
+            "index": 4,
+            "lambda_re": 0.008120373707859563,
+            "lambda_im": -0.005855248654762415,
+            "multiplier_re": 1.0409911187091332,
+            "multiplier_im": -0.030485019288867682,
+            "residual": 0.01643478495887722,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_002/eigen/ef4.nc"
+          },
+          {
+            "index": 5,
+            "lambda_re": -0.02574082821151414,
+            "lambda_im": 0.026043231363934716,
+            "multiplier_re": 0.8717903282579643,
+            "multiplier_im": 0.11416719914441333,
+            "residual": 0.11690736623201718,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_002/eigen/ef5.nc"
+          },
+          {
+            "index": 6,
+            "lambda_re": -0.02574082821151414,
+            "lambda_im": -0.026043231363934716,
+            "multiplier_re": 0.8717903282579643,
+            "multiplier_im": -0.11416719914441333,
+            "residual": 0.11690736623201718,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_002/eigen/ef6.nc"
+          },
+          {
+            "index": 7,
+            "lambda_re": -0.04293403483463239,
+            "lambda_im": 0.18243507683737387,
+            "multiplier_re": 0.4937878337295231,
+            "multiplier_im": 0.638053227361617,
+            "residual": 0.0068681316346853325,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_002/eigen/ef7.nc"
+          },
+          {
+            "index": 8,
+            "lambda_re": -0.04293403483463239,
+            "lambda_im": -0.18243507683737387,
+            "multiplier_re": 0.4937878337295231,
+            "multiplier_im": -0.638053227361617,
+            "residual": 0.0068681316346853325,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_002/eigen/ef8.nc"
+          },
+          {
+            "index": 9,
+            "lambda_re": -0.051041267198882224,
+            "lambda_im": 0.16720543300356655,
+            "multiplier_re": 0.5194091535761118,
+            "multiplier_im": 0.5748582028756674,
+            "residual": 0.03425233175067128,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_002/eigen/ef9.nc"
+          },
+          {
+            "index": 10,
+            "lambda_re": -0.051041267198882224,
+            "lambda_im": -0.16720543300356655,
+            "multiplier_re": 0.5194091535761118,
+            "multiplier_im": -0.5748582028756674,
+            "residual": 0.03425233175067128,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_002/eigen/ef10.nc"
+          },
+          {
+            "index": 11,
+            "lambda_re": -0.06808137324006436,
+            "lambda_im": -0.13304763879343803,
+            "multiplier_re": 0.5597715839408005,
+            "multiplier_im": -0.43915906366824065,
+            "residual": 0.17154772684115188,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 12,
+            "lambda_re": -0.06808137324006436,
+            "lambda_im": 0.13304763879343803,
+            "multiplier_re": 0.5597715839408005,
+            "multiplier_im": 0.43915906366824065,
+            "residual": 0.17154772684115188,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 13,
+            "lambda_re": -0.08457189048376564,
+            "lambda_im": 0.31358723028954616,
+            "multiplier_re": 0.0018739005559818105,
+            "multiplier_im": 0.6551680294556451,
+            "residual": 0.006005052321851536,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 14,
+            "lambda_re": -0.08457189048376564,
+            "lambda_im": -0.31358723028954616,
+            "multiplier_re": 0.0018739005559818105,
+            "multiplier_im": -0.6551680294556451,
+            "residual": 0.006005052321851536,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 15,
+            "lambda_re": -0.0901329964260964,
+            "lambda_im": 0.24335450238302908,
+            "multiplier_re": 0.2209027197841627,
+            "multiplier_im": 0.5976882836624533,
+            "residual": 0.025066894843362848,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 16,
+            "lambda_re": -0.0901329964260964,
+            "lambda_im": -0.24335450238302908,
+            "multiplier_re": 0.2209027197841627,
+            "multiplier_im": -0.5976882836624533,
+            "residual": 0.025066894843362848,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 17,
+            "lambda_re": -0.10391290824994806,
+            "lambda_im": -0.5882627531066836,
+            "multiplier_re": -0.5828905254641021,
+            "multiplier_im": -0.11832700975370858,
+            "residual": 0.0032541911736694218,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 18,
+            "lambda_re": -0.10391290824994806,
+            "lambda_im": 0.5882627531066836,
+            "multiplier_re": -0.5828905254641021,
+            "multiplier_im": 0.11832700975370858,
+            "residual": 0.0032541911736694218,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 19,
+            "lambda_re": -0.10526721812179585,
+            "lambda_im": 0.3576220282356515,
+            "multiplier_re": -0.1273734162536506,
+            "multiplier_im": 0.5768707941339373,
+            "residual": 0.1042883287621494,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 20,
+            "lambda_re": -0.10526721812179585,
+            "lambda_im": -0.3576220282356515,
+            "multiplier_re": -0.1273734162536506,
+            "multiplier_im": -0.5768707941339373,
+            "residual": 0.1042883287621494,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 21,
+            "lambda_re": -0.11776112078677684,
+            "lambda_im": 0.4357445496578974,
+            "multiplier_re": -0.3169916320301908,
+            "multiplier_im": 0.4555545480754932,
+            "residual": 0.015901713103761258,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 22,
+            "lambda_re": -0.11776112078677684,
+            "lambda_im": -0.4357445496578974,
+            "multiplier_re": -0.3169916320301908,
+            "multiplier_im": -0.4555545480754932,
+            "residual": 0.015901713103761258,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 23,
+            "lambda_re": -0.12992905301294214,
+            "lambda_im": 0.048134863325470366,
+            "multiplier_re": 0.5071789774295868,
+            "multiplier_im": 0.12447770719588759,
+            "residual": 0.44696997242448655,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 24,
+            "lambda_re": -0.12992905301294214,
+            "lambda_im": -0.048134863325470366,
+            "multiplier_re": 0.5071789774295868,
+            "multiplier_im": -0.12447770719588759,
+            "residual": 0.44696997242448655,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 25,
+            "lambda_re": -0.13772070189829583,
+            "lambda_im": 0.6283185307179586,
+            "multiplier_re": -0.5022770045968025,
+            "multiplier_im": 0.0,
+            "residual": 0.20639117714167887,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 26,
+            "lambda_re": -0.14567027035598346,
+            "lambda_im": 0.5197585415655367,
+            "multiplier_re": -0.4133230345142108,
+            "multiplier_im": 0.24933383155076672,
+            "residual": 0.03900307342618631,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 27,
+            "lambda_re": -0.14567027035598346,
+            "lambda_im": -0.5197585415655367,
+            "multiplier_re": -0.4133230345142108,
+            "multiplier_im": -0.24933383155076672,
+            "residual": 0.03900307342618631,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 28,
+            "lambda_re": -0.1506105749856475,
+            "lambda_im": -0.42623328008236383,
+            "multiplier_re": -0.25029739078561763,
+            "multiplier_im": -0.3989024317867909,
+            "residual": 0.2525354879286843,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 29,
+            "lambda_re": -0.1506105749856475,
+            "lambda_im": 0.42623328008236383,
+            "multiplier_re": -0.25029739078561763,
+            "multiplier_im": 0.3989024317867909,
+            "residual": 0.2525354879286843,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 30,
+            "lambda_re": -0.30163358165614595,
+            "lambda_im": 0.5692174480710972,
+            "multiplier_re": -0.2117221911934199,
+            "multiplier_im": 0.06445212753137167,
+            "residual": 0.5996532291034131,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 31,
+            "lambda_re": -0.30163358165614595,
+            "lambda_im": -0.5692174480710972,
+            "multiplier_re": -0.2117221911934199,
+            "multiplier_im": -0.06445212753137167,
+            "residual": 0.5996532291034131,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 32,
+            "lambda_re": -0.47510202696771897,
+            "lambda_im": 0.6283185307179586,
+            "multiplier_re": -0.09296705138009681,
+            "multiplier_im": 0.0,
+            "residual": 0.7611797319496755,
+            "unstable": false,
+            "eigenvector": null
+          }
+        ],
+        "files": {
+          "args": "equilibria/ghc_re400_literature_fuzz_002/eigen/findeigenvals.args",
+          "lambda": "equilibria/ghc_re400_literature_fuzz_002/eigen/lambda.asc",
+          "multipliers": "equilibria/ghc_re400_literature_fuzz_002/eigen/Lambda.asc",
+          "residuals": "equilibria/ghc_re400_literature_fuzz_002/eigen/Residu.asc"
+        },
+        "eigenvectors": [
+          "equilibria/ghc_re400_literature_fuzz_002/eigen/ef1.nc",
+          "equilibria/ghc_re400_literature_fuzz_002/eigen/ef2.nc",
+          "equilibria/ghc_re400_literature_fuzz_002/eigen/ef3.nc",
+          "equilibria/ghc_re400_literature_fuzz_002/eigen/ef4.nc",
+          "equilibria/ghc_re400_literature_fuzz_002/eigen/ef5.nc",
+          "equilibria/ghc_re400_literature_fuzz_002/eigen/ef6.nc",
+          "equilibria/ghc_re400_literature_fuzz_002/eigen/ef7.nc",
+          "equilibria/ghc_re400_literature_fuzz_002/eigen/ef8.nc",
+          "equilibria/ghc_re400_literature_fuzz_002/eigen/ef9.nc",
+          "equilibria/ghc_re400_literature_fuzz_002/eigen/ef10.nc"
+        ],
+        "error": null,
+        "parameters": {
+          "R": 400.0,
+          "T": 5.0,
+          "N": 32,
+          "Ns": 6,
+          "dt": null,
+          "variabledt": false
+        }
+      },
+      "literature": "",
       "deduplication": {
         "component_id": "",
         "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_008"
-        ],
         "status": "single",
+        "members": [
+          "ghc_re400_literature_fuzz_002"
+        ],
+        "edges": [],
         "strong_edges": 0,
         "weak_edges": 0
       },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
+      "group_representatives": [
+        {
+          "group": "E",
+          "symmetry": "<sxyz, sztxz>",
+          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/E/jkl_2_4_5/dns_findsoln/sol003/ubest.nc",
+          "members": "fuzz:sol003@J2K4L5",
+          "J": 2,
+          "K": 4,
+          "L": 5
+        }
+      ]
+    },
+    {
+      "physical_id": "ghc_re400_literature_fuzz_003",
+      "case": "ghc_re400_literature_fuzz",
+      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
+      "catalog_path": "equilibria/ghc_re400_literature_fuzz_003",
+      "Re": 400.0,
+      "Lx": 5.511566576198634,
+      "Lz": 2.5132741228718345,
+      "shear": 0.429258,
+      "L2": 0.209125,
+      "groups": [
+        "E"
+      ],
+      "representative_group": "E",
+      "representative_J": 2,
+      "representative_K": 4,
+      "representative_L": 7,
+      "assets": {
+        "ode": "equilibria/ghc_re400_literature_fuzz_003/representative.asc",
+        "dns": "equilibria/ghc_re400_literature_fuzz_003/ubest.nc",
+        "dns_ode_comparison": null
+      },
+      "bifurcation": {
         "available": false,
-        "eigenvectors": [],
+        "csv": null,
+        "curve": [],
+        "max_Re": null,
+        "max_input": null,
+        "min_Re": null,
+        "min_input": null,
+        "n_points": 0
+      },
+      "dns_diagnostics": {
+        "method": "fieldconverge",
+        "source": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/E/jkl_2_4_7/dns_findsoln/sol001/fieldconverge.asc",
+        "values": {
+          "L2": 0.209125,
+          "u2": 0.294671,
+          "v2": 0.0121805,
+          "w2": 0.0220762,
+          "e3d": 0.0274429,
+          "ecf": 0.000635723,
+          "ubulk": 0.0,
+          "wbulk": 0.0,
+          "wallshear": 0.429258,
+          "wallshear_a": 0.214629,
+          "wallshear_b": -0.214629,
+          "dissipation": 0.429258
+        },
+        "derived": {
+          "D_total": 1.429258,
+          "I_total": 1.429258
+        }
+      },
+      "eigen_analysis": {
+        "available": true,
+        "method": "findeigenvals",
+        "n_eigenvalues": 32,
+        "n_unstable": 2,
+        "leading": {
+          "index": 1,
+          "lambda_re": 0.05012059377963958,
+          "lambda_im": 0.0,
+          "multiplier_re": 1.2847998775429397,
+          "multiplier_im": 0.0,
+          "residual": 6.27293589724488e-08,
+          "unstable": true,
+          "eigenvector": "equilibria/ghc_re400_literature_fuzz_003/eigen/ef1.nc"
+        },
+        "spectrum": [
+          {
+            "index": 1,
+            "lambda_re": 0.05012059377963958,
+            "lambda_im": 0.0,
+            "multiplier_re": 1.2847998775429397,
+            "multiplier_im": 0.0,
+            "residual": 6.27293589724488e-08,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_003/eigen/ef1.nc"
+          },
+          {
+            "index": 2,
+            "lambda_re": 0.0005682564195372915,
+            "lambda_im": 0.0,
+            "multiplier_re": 1.002845322365273,
+            "multiplier_im": 0.0,
+            "residual": 0.007053005397785971,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_003/eigen/ef2.nc"
+          },
+          {
+            "index": 3,
+            "lambda_re": -0.004351254153833497,
+            "lambda_im": -0.0024450897198457847,
+            "multiplier_re": 0.9784055682679641,
+            "multiplier_im": -0.011962042945330792,
+            "residual": 0.021143768223227492,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_003/eigen/ef3.nc"
+          },
+          {
+            "index": 4,
+            "lambda_re": -0.004351254153833497,
+            "lambda_im": 0.0024450897198457847,
+            "multiplier_re": 0.9784055682679641,
+            "multiplier_im": 0.011962042945330792,
+            "residual": 0.021143768223227492,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_003/eigen/ef4.nc"
+          },
+          {
+            "index": 5,
+            "lambda_re": -0.04414690261403145,
+            "lambda_im": 0.0,
+            "multiplier_re": 0.8019295538465724,
+            "multiplier_im": 0.0,
+            "residual": 0.16266902495243546,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_003/eigen/ef5.nc"
+          },
+          {
+            "index": 6,
+            "lambda_re": -0.04853693950369192,
+            "lambda_im": -0.10265688481347096,
+            "multiplier_re": 0.6834229314353457,
+            "multiplier_im": -0.3852309697642086,
+            "residual": 0.004863205353962714,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_003/eigen/ef6.nc"
+          },
+          {
+            "index": 7,
+            "lambda_re": -0.04853693950369192,
+            "lambda_im": 0.10265688481347096,
+            "multiplier_re": 0.6834229314353457,
+            "multiplier_im": 0.3852309697642086,
+            "residual": 0.004863205353962714,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_003/eigen/ef7.nc"
+          },
+          {
+            "index": 8,
+            "lambda_re": -0.05177355079001457,
+            "lambda_im": 0.0,
+            "multiplier_re": 0.7719251003392547,
+            "multiplier_im": 0.0,
+            "residual": 0.18525313996713788,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_003/eigen/ef8.nc"
+          },
+          {
+            "index": 9,
+            "lambda_re": -0.09022585362918108,
+            "lambda_im": 0.0,
+            "multiplier_re": 0.6369085048747655,
+            "multiplier_im": 0.0,
+            "residual": 0.3245299194623335,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 10,
+            "lambda_re": -0.11009564941332284,
+            "lambda_im": -0.07255910994198968,
+            "multiplier_re": 0.5391373030084924,
+            "multiplier_im": -0.20465535708676916,
+            "residual": 0.45753813479198197,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 11,
+            "lambda_re": -0.11009564941332284,
+            "lambda_im": 0.07255910994198968,
+            "multiplier_re": 0.5391373030084924,
+            "multiplier_im": 0.20465535708676916,
+            "residual": 0.45753813479198197,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 12,
+            "lambda_re": -0.1127893774187657,
+            "lambda_im": -0.604842049693403,
+            "multiplier_re": -0.5650437705310939,
+            "multiplier_im": -0.06663251316353022,
+            "residual": 0.02058021943399286,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 13,
+            "lambda_re": -0.1127893774187657,
+            "lambda_im": 0.604842049693403,
+            "multiplier_re": -0.5650437705310939,
+            "multiplier_im": 0.06663251316353022,
+            "residual": 0.02058021943399286,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 14,
+            "lambda_re": -0.11360008043770714,
+            "lambda_im": -0.6032781234827604,
+            "multiplier_re": -0.5622218590300674,
+            "multiplier_im": -0.07076145005064807,
+            "residual": 0.011150762010682286,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 15,
+            "lambda_re": -0.11360008043770714,
+            "lambda_im": 0.6032781234827604,
+            "multiplier_re": -0.5622218590300674,
+            "multiplier_im": 0.07076145005064807,
+            "residual": 0.011150762010682286,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 16,
+            "lambda_re": -0.14508520052838889,
+            "lambda_im": -0.35253462023795934,
+            "multiplier_re": -0.09232211382261497,
+            "multiplier_im": -0.4752337797156883,
+            "residual": 0.0066014425187931386,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 17,
+            "lambda_re": -0.14508520052838889,
+            "lambda_im": 0.35253462023795934,
+            "multiplier_re": -0.09232211382261497,
+            "multiplier_im": 0.4752337797156883,
+            "residual": 0.0066014425187931386,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 18,
+            "lambda_re": -0.1467811322495167,
+            "lambda_im": -0.14747657990089022,
+            "multiplier_re": 0.3553333072135615,
+            "multiplier_im": -0.32274991838525957,
+            "residual": 0.2644845217011895,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 19,
+            "lambda_re": -0.1467811322495167,
+            "lambda_im": 0.14747657990089022,
+            "multiplier_re": 0.3553333072135615,
+            "multiplier_im": 0.32274991838525957,
+            "residual": 0.2644845217011895,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 20,
+            "lambda_re": -0.15750405643836207,
+            "lambda_im": 0.2992171944991912,
+            "multiplier_re": 0.03395947717901082,
+            "multiplier_im": 0.45370244613337884,
+            "residual": 0.05586765596005868,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 21,
+            "lambda_re": -0.15750405643836207,
+            "lambda_im": -0.2992171944991912,
+            "multiplier_re": 0.03395947717901082,
+            "multiplier_im": -0.45370244613337884,
+            "residual": 0.05586765596005868,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 22,
+            "lambda_re": -0.16412168061038374,
+            "lambda_im": -0.2980688734031471,
+            "multiplier_re": 0.03537384992545638,
+            "multiplier_im": -0.43874006026315343,
+            "residual": 0.0831158016961267,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 23,
+            "lambda_re": -0.16412168061038374,
+            "lambda_im": 0.2980688734031471,
+            "multiplier_re": 0.03537384992545638,
+            "multiplier_im": 0.43874006026315343,
+            "residual": 0.0831158016961267,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 24,
+            "lambda_re": -0.17170972317837363,
+            "lambda_im": 0.20861190088070575,
+            "multiplier_re": 0.21340519992932114,
+            "multiplier_im": 0.3661214432660652,
+            "residual": 0.16373843915298927,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 25,
+            "lambda_re": -0.17170972317837363,
+            "lambda_im": -0.20861190088070575,
+            "multiplier_re": 0.21340519992932114,
+            "multiplier_im": -0.3661214432660652,
+            "residual": 0.16373843915298927,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 26,
+            "lambda_re": -0.1782727805069219,
+            "lambda_im": -0.49961764838439837,
+            "multiplier_re": -0.32807601939181347,
+            "multiplier_im": -0.24605870766356053,
+            "residual": 0.16015823188424633,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 27,
+            "lambda_re": -0.1782727805069219,
+            "lambda_im": 0.49961764838439837,
+            "multiplier_re": -0.32807601939181347,
+            "multiplier_im": 0.24605870766356053,
+            "residual": 0.16015823188424633,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 28,
+            "lambda_re": -0.1986339679415831,
+            "lambda_im": -0.4019256477189357,
+            "multiplier_re": -0.1573767253414582,
+            "multiplier_im": -0.33530472362190006,
+            "residual": 0.037661832942652324,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 29,
+            "lambda_re": -0.1986339679415831,
+            "lambda_im": 0.4019256477189357,
+            "multiplier_re": -0.1573767253414582,
+            "multiplier_im": 0.33530472362190006,
+            "residual": 0.037661832942652324,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 30,
+            "lambda_re": -0.25546877785809974,
+            "lambda_im": -0.5187622557554867,
+            "multiplier_re": -0.2379867385585068,
+            "multiplier_im": -0.14518541698024773,
+            "residual": 0.1246457211977239,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 31,
+            "lambda_re": -0.25546877785809974,
+            "lambda_im": 0.5187622557554867,
+            "multiplier_re": -0.2379867385585068,
+            "multiplier_im": 0.14518541698024773,
+            "residual": 0.1246457211977239,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 32,
+            "lambda_re": -0.5454237171161839,
+            "lambda_im": 0.6283185307179586,
+            "multiplier_re": -0.06540748447318388,
+            "multiplier_im": 0.0,
+            "residual": 0.4957724628025449,
+            "unstable": false,
+            "eigenvector": null
+          }
+        ],
+        "files": {
+          "args": "equilibria/ghc_re400_literature_fuzz_003/eigen/findeigenvals.args",
+          "lambda": "equilibria/ghc_re400_literature_fuzz_003/eigen/lambda.asc",
+          "multipliers": "equilibria/ghc_re400_literature_fuzz_003/eigen/Lambda.asc",
+          "residuals": "equilibria/ghc_re400_literature_fuzz_003/eigen/Residu.asc"
+        },
+        "eigenvectors": [
+          "equilibria/ghc_re400_literature_fuzz_003/eigen/ef1.nc",
+          "equilibria/ghc_re400_literature_fuzz_003/eigen/ef2.nc",
+          "equilibria/ghc_re400_literature_fuzz_003/eigen/ef3.nc",
+          "equilibria/ghc_re400_literature_fuzz_003/eigen/ef4.nc",
+          "equilibria/ghc_re400_literature_fuzz_003/eigen/ef5.nc",
+          "equilibria/ghc_re400_literature_fuzz_003/eigen/ef6.nc",
+          "equilibria/ghc_re400_literature_fuzz_003/eigen/ef7.nc",
+          "equilibria/ghc_re400_literature_fuzz_003/eigen/ef8.nc"
+        ],
         "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
+        "parameters": {
+          "R": 400.0,
+          "T": 5.0,
+          "N": 32,
+          "Ns": 6,
+          "dt": null,
+          "variabledt": false
+        }
+      },
+      "literature": "",
+      "deduplication": {
+        "component_id": "",
+        "component_size": 1,
+        "status": "single",
+        "members": [
+          "ghc_re400_literature_fuzz_003"
+        ],
+        "edges": [],
+        "strong_edges": 0,
+        "weak_edges": 0
       },
       "group_representatives": [
         {
-          "J": 1,
+          "group": "E",
+          "symmetry": "<sxyz, sztxz>",
+          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/E/jkl_2_4_7/dns_findsoln/sol001/ubest.nc",
+          "members": "fuzz:sol001@J2K4L7",
+          "J": 2,
           "K": 4,
-          "L": 5,
-          "group": "B",
-          "members": "fuzz:sol002@J1K4L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/B/jkl_1_4_5/dns_findsoln/sol002/ubest.nc",
-          "symmetry": "<sxy, sz>"
-        },
-        {
-          "J": 1,
-          "K": 4,
-          "L": 5,
-          "group": "G",
-          "members": "fuzz:sol004@J1K4L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/G/jkl_1_4_5/dns_findsoln/sol004/ubest.nc",
-          "symmetry": "<sxyz>"
+          "L": 7
         }
+      ]
+    },
+    {
+      "physical_id": "ghc_re400_literature_fuzz_004",
+      "case": "ghc_re400_literature_fuzz",
+      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
+      "catalog_path": "equilibria/ghc_re400_literature_fuzz_004",
+      "Re": 400.0,
+      "Lx": 5.511566576198634,
+      "Lz": 2.5132741228718345,
+      "shear": 0.453688,
+      "L2": 0.168118,
+      "groups": [
+        "E"
       ],
+      "representative_group": "E",
+      "representative_J": 1,
+      "representative_K": 3,
+      "representative_L": 5,
+      "assets": {
+        "ode": "equilibria/ghc_re400_literature_fuzz_004/representative.asc",
+        "dns": "equilibria/ghc_re400_literature_fuzz_004/ubest.nc",
+        "dns_ode_comparison": null
+      },
+      "bifurcation": {
+        "available": false,
+        "csv": null,
+        "curve": [],
+        "max_Re": null,
+        "max_input": null,
+        "min_Re": null,
+        "min_input": null,
+        "n_points": 0
+      },
+      "dns_diagnostics": {
+        "method": "fieldconverge",
+        "source": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/E/jkl_1_3_5/dns_findsoln/sol006/fieldconverge.asc",
+        "values": {
+          "L2": 0.168118,
+          "u2": 0.229188,
+          "v2": 0.0250745,
+          "w2": 0.0580634,
+          "e3d": 0.0605875,
+          "ecf": 0.00400008,
+          "ubulk": 0.0,
+          "wbulk": 0.0,
+          "wallshear": 0.453688,
+          "wallshear_a": 0.226844,
+          "wallshear_b": -0.226844,
+          "dissipation": 0.453688
+        },
+        "derived": {
+          "D_total": 1.453688,
+          "I_total": 1.453688
+        }
+      },
+      "eigen_analysis": {
+        "available": true,
+        "method": "findeigenvals",
+        "n_eigenvalues": 32,
+        "n_unstable": 5,
+        "leading": {
+          "index": 1,
+          "lambda_re": 0.02931995715725033,
+          "lambda_im": 0.0,
+          "multiplier_re": 1.1578904660645224,
+          "multiplier_im": 0.0,
+          "residual": 0.014388504013513404,
+          "unstable": true,
+          "eigenvector": "equilibria/ghc_re400_literature_fuzz_004/eigen/ef1.nc"
+        },
+        "spectrum": [
+          {
+            "index": 1,
+            "lambda_re": 0.02931995715725033,
+            "lambda_im": 0.0,
+            "multiplier_re": 1.1578904660645224,
+            "multiplier_im": 0.0,
+            "residual": 0.014388504013513404,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_004/eigen/ef1.nc"
+          },
+          {
+            "index": 2,
+            "lambda_re": 0.026177459651934076,
+            "lambda_im": -0.056376794980786876,
+            "multiplier_re": 1.0948533720289801,
+            "multiplier_im": -0.3170642701253911,
+            "residual": 0.0016040022320183318,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_004/eigen/ef2.nc"
+          },
+          {
+            "index": 3,
+            "lambda_re": 0.026177459651934076,
+            "lambda_im": 0.056376794980786876,
+            "multiplier_re": 1.0948533720289801,
+            "multiplier_im": 0.3170642701253911,
+            "residual": 0.0016040022320183318,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_004/eigen/ef3.nc"
+          },
+          {
+            "index": 4,
+            "lambda_re": 0.017328020944482072,
+            "lambda_im": 0.0,
+            "multiplier_re": 1.0905041417954182,
+            "multiplier_im": 0.0,
+            "residual": 0.04934176723462621,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_004/eigen/ef4.nc"
+          },
+          {
+            "index": 5,
+            "lambda_re": 9.471045861673546e-05,
+            "lambda_im": 0.0,
+            "multiplier_re": 1.000473664436672,
+            "multiplier_im": 0.0,
+            "residual": 0.16813052792126268,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_004/eigen/ef5.nc"
+          },
+          {
+            "index": 6,
+            "lambda_re": -0.006321353059755947,
+            "lambda_im": 0.25296539592005013,
+            "multiplier_re": 0.2918460111552277,
+            "multiplier_im": 0.9238879302735226,
+            "residual": 0.04319258225063234,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_004/eigen/ef6.nc"
+          },
+          {
+            "index": 7,
+            "lambda_re": -0.006321353059755947,
+            "lambda_im": -0.25296539592005013,
+            "multiplier_re": 0.2918460111552277,
+            "multiplier_im": -0.9238879302735226,
+            "residual": 0.04319258225063234,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_004/eigen/ef7.nc"
+          },
+          {
+            "index": 8,
+            "lambda_re": -0.014798631714511618,
+            "lambda_im": 0.280560635848599,
+            "multiplier_re": 0.15527876455673528,
+            "multiplier_im": 0.9156044019227437,
+            "residual": 0.016961279691232574,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_004/eigen/ef8.nc"
+          },
+          {
+            "index": 9,
+            "lambda_re": -0.014798631714511618,
+            "lambda_im": -0.280560635848599,
+            "multiplier_re": 0.15527876455673528,
+            "multiplier_im": -0.9156044019227437,
+            "residual": 0.016961279691232574,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_004/eigen/ef9.nc"
+          },
+          {
+            "index": 10,
+            "lambda_re": -0.01996373730875607,
+            "lambda_im": -0.3049787017764828,
+            "multiplier_re": 0.04152753155676378,
+            "multiplier_im": -0.9040482093579086,
+            "residual": 0.13628676208519824,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_004/eigen/ef10.nc"
+          },
+          {
+            "index": 11,
+            "lambda_re": -0.01996373730875607,
+            "lambda_im": 0.3049787017764828,
+            "multiplier_re": 0.04152753155676378,
+            "multiplier_im": 0.9040482093579086,
+            "residual": 0.13628676208519824,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_004/eigen/ef11.nc"
+          },
+          {
+            "index": 12,
+            "lambda_re": -0.023677509723561235,
+            "lambda_im": 0.0,
+            "multiplier_re": 0.888351706417533,
+            "multiplier_im": 0.0,
+            "residual": 0.27561325385338464,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 13,
+            "lambda_re": -0.027901128569449297,
+            "lambda_im": 0.35089088498663656,
+            "multiplier_re": -0.15884711098178678,
+            "multiplier_im": 0.855160195821664,
+            "residual": 0.0025277879832959274,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 14,
+            "lambda_re": -0.027901128569449297,
+            "lambda_im": -0.35089088498663656,
+            "multiplier_re": -0.15884711098178678,
+            "multiplier_im": -0.855160195821664,
+            "residual": 0.0025277879832959274,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 15,
+            "lambda_re": -0.042909879940680566,
+            "lambda_im": 0.390549339601515,
+            "multiplier_re": -0.30075849174329844,
+            "multiplier_im": 0.7487589250143043,
+            "residual": 0.007429796187538105,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 16,
+            "lambda_re": -0.042909879940680566,
+            "lambda_im": -0.390549339601515,
+            "multiplier_re": -0.30075849174329844,
+            "multiplier_im": -0.7487589250143043,
+            "residual": 0.007429796187538105,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 17,
+            "lambda_re": -0.05314199982475196,
+            "lambda_im": -0.14122843187762185,
+            "multiplier_re": 0.5833303684042697,
+            "multiplier_im": -0.49748912158915104,
+            "residual": 0.17625720624768065,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 18,
+            "lambda_re": -0.05314199982475196,
+            "lambda_im": 0.14122843187762185,
+            "multiplier_re": 0.5833303684042697,
+            "multiplier_im": 0.49748912158915104,
+            "residual": 0.17625720624768065,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 19,
+            "lambda_re": -0.054164893068463886,
+            "lambda_im": 0.44792159534250786,
+            "multiplier_re": -0.47294649214862144,
+            "multiplier_im": 0.5984227170374494,
+            "residual": 0.004739167374588775,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 20,
+            "lambda_re": -0.054164893068463886,
+            "lambda_im": -0.44792159534250786,
+            "multiplier_re": -0.47294649214862144,
+            "multiplier_im": -0.5984227170374494,
+            "residual": 0.004739167374588775,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 21,
+            "lambda_re": -0.057592022055348406,
+            "lambda_im": 0.2130575036138133,
+            "multiplier_re": 0.363088539183008,
+            "multiplier_im": 0.6560137247900467,
+            "residual": 0.05741085630301232,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 22,
+            "lambda_re": -0.057592022055348406,
+            "lambda_im": -0.2130575036138133,
+            "multiplier_re": 0.363088539183008,
+            "multiplier_im": -0.6560137247900467,
+            "residual": 0.05741085630301232,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 23,
+            "lambda_re": -0.06549793105330988,
+            "lambda_im": -0.49975685752778515,
+            "multiplier_re": -0.5768840278700252,
+            "multiplier_im": -0.4320389196195645,
+            "residual": 0.012349775037277673,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 24,
+            "lambda_re": -0.06549793105330988,
+            "lambda_im": 0.49975685752778515,
+            "multiplier_re": -0.5768840278700252,
+            "multiplier_im": 0.4320389196195645,
+            "residual": 0.012349775037277673,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 25,
+            "lambda_re": -0.09009102172546513,
+            "lambda_im": 0.556542151342458,
+            "multiplier_re": -0.5967332967287495,
+            "multiplier_im": 0.22385069570093438,
+            "residual": 0.045348780000473335,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 26,
+            "lambda_re": -0.09009102172546513,
+            "lambda_im": -0.556542151342458,
+            "multiplier_re": -0.5967332967287495,
+            "multiplier_im": -0.22385069570093438,
+            "residual": 0.045348780000473335,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 27,
+            "lambda_re": -0.11446496886998787,
+            "lambda_im": 0.5905388660529444,
+            "multiplier_re": -0.554175831526867,
+            "multiplier_im": 0.10594603581294698,
+            "residual": 0.15631735017683868,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 28,
+            "lambda_re": -0.11446496886998787,
+            "lambda_im": -0.5905388660529444,
+            "multiplier_re": -0.554175831526867,
+            "multiplier_im": -0.10594603581294698,
+            "residual": 0.15631735017683868,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 29,
+            "lambda_re": -0.12289147719871732,
+            "lambda_im": 0.0,
+            "multiplier_re": 0.5409343342363875,
+            "multiplier_im": 0.0,
+            "residual": 0.498601812076349,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 30,
+            "lambda_re": -0.15340970703208248,
+            "lambda_im": 0.3867181869744003,
+            "multiplier_re": -0.16480362452571345,
+            "multiplier_im": 0.43415444913768697,
+            "residual": 0.21501803229033833,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 31,
+            "lambda_re": -0.15340970703208248,
+            "lambda_im": -0.3867181869744003,
+            "multiplier_re": -0.16480362452571345,
+            "multiplier_im": -0.43415444913768697,
+            "residual": 0.21501803229033833,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 32,
+            "lambda_re": -0.5330856716708609,
+            "lambda_im": 0.0,
+            "multiplier_re": 0.06956954645324052,
+            "multiplier_im": 0.0,
+            "residual": 0.7521743582811853,
+            "unstable": false,
+            "eigenvector": null
+          }
+        ],
+        "files": {
+          "args": "equilibria/ghc_re400_literature_fuzz_004/eigen/findeigenvals.args",
+          "lambda": "equilibria/ghc_re400_literature_fuzz_004/eigen/lambda.asc",
+          "multipliers": "equilibria/ghc_re400_literature_fuzz_004/eigen/Lambda.asc",
+          "residuals": "equilibria/ghc_re400_literature_fuzz_004/eigen/Residu.asc"
+        },
+        "eigenvectors": [
+          "equilibria/ghc_re400_literature_fuzz_004/eigen/ef1.nc",
+          "equilibria/ghc_re400_literature_fuzz_004/eigen/ef2.nc",
+          "equilibria/ghc_re400_literature_fuzz_004/eigen/ef3.nc",
+          "equilibria/ghc_re400_literature_fuzz_004/eigen/ef4.nc",
+          "equilibria/ghc_re400_literature_fuzz_004/eigen/ef5.nc",
+          "equilibria/ghc_re400_literature_fuzz_004/eigen/ef6.nc",
+          "equilibria/ghc_re400_literature_fuzz_004/eigen/ef7.nc",
+          "equilibria/ghc_re400_literature_fuzz_004/eigen/ef8.nc",
+          "equilibria/ghc_re400_literature_fuzz_004/eigen/ef9.nc",
+          "equilibria/ghc_re400_literature_fuzz_004/eigen/ef10.nc",
+          "equilibria/ghc_re400_literature_fuzz_004/eigen/ef11.nc"
+        ],
+        "error": null,
+        "parameters": {
+          "R": 400.0,
+          "T": 5.0,
+          "N": 32,
+          "Ns": 6,
+          "dt": null,
+          "variabledt": false
+        }
+      },
+      "literature": "",
+      "deduplication": {
+        "component_id": "",
+        "component_size": 1,
+        "status": "single",
+        "members": [
+          "ghc_re400_literature_fuzz_004"
+        ],
+        "edges": [],
+        "strong_edges": 0,
+        "weak_edges": 0
+      },
+      "group_representatives": [
+        {
+          "group": "E",
+          "symmetry": "<sxyz, sztxz>",
+          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/E/jkl_1_3_5/dns_findsoln/sol006/ubest.nc",
+          "members": "fuzz:sol006@J1K3L5",
+          "J": 1,
+          "K": 3,
+          "L": 5
+        }
+      ]
+    },
+    {
+      "physical_id": "ghc_re400_literature_fuzz_005",
+      "case": "ghc_re400_literature_fuzz",
+      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
+      "catalog_path": "equilibria/ghc_re400_literature_fuzz_005",
+      "Re": 400.0,
+      "Lx": 5.511566576198634,
+      "Lz": 2.5132741228718345,
+      "shear": 1.59813,
+      "L2": 0.272377,
       "groups": [
         "B",
         "G"
       ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_008",
-      "representative_J": 1,
-      "representative_K": 4,
-      "representative_L": 5,
       "representative_group": "G",
-      "shear": 0.6842234876075812
-    },
-    {
-      "L2": 0.30748841166738083,
-      "Lx": 5.511566576198634,
-      "Lz": 2.5132741228718345,
-      "Re": 400.0,
-      "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_009/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_009/representative.asc"
-      },
-      "bifurcation": {
-        "available": false,
-        "csv": null,
-        "curve": [],
-        "max_Re": null,
-        "max_input": null,
-        "min_Re": null,
-        "min_input": null,
-        "n_points": 0
-      },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_009",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
-      "deduplication": {
-        "component_id": "",
-        "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_009"
-        ],
-        "status": "single",
-        "strong_edges": 0,
-        "weak_edges": 0
-      },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
-      "group_representatives": [
-        {
-          "J": 1,
-          "K": 3,
-          "L": 5,
-          "group": "E",
-          "members": "fuzz:sol006@J1K3L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/E/jkl_1_3_5/dns_findsoln/sol006/ubest.nc",
-          "symmetry": "<sxyz, sztxz>"
-        }
-      ],
-      "groups": [
-        "E"
-      ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_009",
-      "representative_J": 1,
-      "representative_K": 3,
-      "representative_L": 5,
-      "representative_group": "E",
-      "shear": 0.7132990814015203
-    },
-    {
-      "L2": 0.4164793564374467,
-      "Lx": 5.511566576198634,
-      "Lz": 2.5132741228718345,
-      "Re": 400.0,
-      "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_010/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_010/representative.asc"
-      },
-      "bifurcation": {
-        "available": false,
-        "csv": null,
-        "curve": [],
-        "max_Re": null,
-        "max_input": null,
-        "min_Re": null,
-        "min_input": null,
-        "n_points": 0
-      },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_010",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
-      "deduplication": {
-        "component_id": "",
-        "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_010"
-        ],
-        "status": "single",
-        "strong_edges": 0,
-        "weak_edges": 0
-      },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
-      "group_representatives": [
-        {
-          "J": 2,
-          "K": 4,
-          "L": 7,
-          "group": "E",
-          "members": "fuzz:sol001@J2K4L7",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/E/jkl_2_4_7/dns_findsoln/sol001/ubest.nc",
-          "symmetry": "<sxyz, sztxz>"
-        }
-      ],
-      "groups": [
-        "E"
-      ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_010",
-      "representative_J": 2,
-      "representative_K": 4,
-      "representative_L": 7,
-      "representative_group": "E",
-      "shear": 0.725626395419213
-    },
-    {
-      "L2": 0.3901318998074225,
-      "Lx": 5.511566576198634,
-      "Lz": 2.5132741228718345,
-      "Re": 400.0,
-      "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_011/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_011/representative.asc"
-      },
-      "bifurcation": {
-        "available": false,
-        "csv": null,
-        "curve": [],
-        "max_Re": null,
-        "max_input": null,
-        "min_Re": null,
-        "min_input": null,
-        "n_points": 0
-      },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_011",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
-      "deduplication": {
-        "component_id": "",
-        "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_011"
-        ],
-        "status": "single",
-        "strong_edges": 0,
-        "weak_edges": 0
-      },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
-      "group_representatives": [
-        {
-          "J": 1,
-          "K": 4,
-          "L": 5,
-          "group": "E",
-          "members": "fuzz:sol005@J1K4L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/E/jkl_1_4_5/dns_findsoln/sol005/ubest.nc",
-          "symmetry": "<sxyz, sztxz>"
-        }
-      ],
-      "groups": [
-        "E"
-      ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_011",
       "representative_J": 1,
       "representative_K": 4,
       "representative_L": 5,
-      "representative_group": "E",
-      "shear": 0.8749204550114762
-    },
-    {
-      "L2": 0.22207199714179263,
-      "Lx": 5.511566576198634,
-      "Lz": 2.5132741228718345,
-      "Re": 400.0,
       "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_012/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_012/representative.asc"
+        "ode": "equilibria/ghc_re400_literature_fuzz_005/representative.asc",
+        "dns": "equilibria/ghc_re400_literature_fuzz_005/ubest.nc",
+        "dns_ode_comparison": null
       },
       "bifurcation": {
         "available": false,
@@ -62841,131 +63855,457 @@
         "min_input": null,
         "n_points": 0
       },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_012",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
+      "dns_diagnostics": {
+        "method": "fieldconverge",
+        "source": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/G/jkl_1_4_5/dns_findsoln/sol004/fieldconverge.asc",
+        "values": {
+          "L2": 0.272377,
+          "u2": 0.373044,
+          "v2": 0.0599054,
+          "w2": 0.075014,
+          "e3d": 0.100573,
+          "ecf": 0.00921576,
+          "ubulk": 0.0,
+          "wbulk": 0.0,
+          "wallshear": 1.59813,
+          "wallshear_a": 0.799064,
+          "wallshear_b": -0.799064,
+          "dissipation": 1.59813
+        },
+        "derived": {
+          "D_total": 2.5981300000000003,
+          "I_total": 2.5981300000000003
+        }
+      },
+      "eigen_analysis": {
+        "available": true,
+        "method": "findeigenvals",
+        "n_eigenvalues": 32,
+        "n_unstable": 13,
+        "leading": {
+          "index": 1,
+          "lambda_re": 0.17691213139945364,
+          "lambda_im": 0.0,
+          "multiplier_re": 2.4219201040581586,
+          "multiplier_im": 0.0,
+          "residual": 2.0029569857485843e-10,
+          "unstable": true,
+          "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef1.nc"
+        },
+        "spectrum": [
+          {
+            "index": 1,
+            "lambda_re": 0.17691213139945364,
+            "lambda_im": 0.0,
+            "multiplier_re": 2.4219201040581586,
+            "multiplier_im": 0.0,
+            "residual": 2.0029569857485843e-10,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef1.nc"
+          },
+          {
+            "index": 2,
+            "lambda_re": 0.15710199057593877,
+            "lambda_im": 0.0,
+            "multiplier_re": 2.1935252500844054,
+            "multiplier_im": 0.0,
+            "residual": 8.848010292195101e-08,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef2.nc"
+          },
+          {
+            "index": 3,
+            "lambda_re": 0.05563795147597044,
+            "lambda_im": 0.3575233856496251,
+            "multiplier_re": -0.28412450421367996,
+            "multiplier_im": 1.2898135301084561,
+            "residual": 0.00011857642205296595,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef3.nc"
+          },
+          {
+            "index": 4,
+            "lambda_re": 0.05563795147597044,
+            "lambda_im": -0.3575233856496251,
+            "multiplier_re": -0.28412450421367996,
+            "multiplier_im": -1.2898135301084561,
+            "residual": 0.00011857642205296595,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef4.nc"
+          },
+          {
+            "index": 5,
+            "lambda_re": 0.05457472871171698,
+            "lambda_im": 0.0,
+            "multiplier_re": 1.31373423555382,
+            "multiplier_im": 0.0,
+            "residual": 0.03301708687644782,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef5.nc"
+          },
+          {
+            "index": 6,
+            "lambda_re": 0.03662186503459639,
+            "lambda_im": 0.2711916638105181,
+            "multiplier_re": 0.25602860728727617,
+            "multiplier_im": 1.173337084297908,
+            "residual": 0.00341073260963204,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef6.nc"
+          },
+          {
+            "index": 7,
+            "lambda_re": 0.03662186503459639,
+            "lambda_im": -0.2711916638105181,
+            "multiplier_re": 0.25602860728727617,
+            "multiplier_im": -1.173337084297908,
+            "residual": 0.00341073260963204,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef7.nc"
+          },
+          {
+            "index": 8,
+            "lambda_re": 0.018531150710251482,
+            "lambda_im": 0.06858387899740594,
+            "multiplier_re": 1.0332085566477875,
+            "multiplier_im": 0.36888126554717854,
+            "residual": 0.13357364095422142,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef8.nc"
+          },
+          {
+            "index": 9,
+            "lambda_re": 0.018531150710251482,
+            "lambda_im": -0.06858387899740594,
+            "multiplier_re": 1.0332085566477875,
+            "multiplier_im": -0.36888126554717854,
+            "residual": 0.13357364095422142,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef9.nc"
+          },
+          {
+            "index": 10,
+            "lambda_re": 0.010601721996618435,
+            "lambda_im": 0.14164808166120546,
+            "multiplier_re": 0.8008542905397715,
+            "multiplier_im": 0.6859106556473155,
+            "residual": 0.11278062350240103,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef10.nc"
+          },
+          {
+            "index": 11,
+            "lambda_re": 0.010601721996618435,
+            "lambda_im": -0.14164808166120546,
+            "multiplier_re": 0.8008542905397715,
+            "multiplier_im": -0.6859106556473155,
+            "residual": 0.11278062350240103,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef11.nc"
+          },
+          {
+            "index": 12,
+            "lambda_re": 0.006441302661852603,
+            "lambda_im": -0.017032227935689075,
+            "multiplier_re": 1.0289881202362603,
+            "multiplier_im": -0.0878422600918696,
+            "residual": 0.11538752294777094,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef12.nc"
+          },
+          {
+            "index": 13,
+            "lambda_re": 0.006441302661852603,
+            "lambda_im": 0.017032227935689075,
+            "multiplier_re": 1.0289881202362603,
+            "multiplier_im": 0.0878422600918696,
+            "residual": 0.11538752294777094,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef13.nc"
+          },
+          {
+            "index": 14,
+            "lambda_re": -0.008965644747203579,
+            "lambda_im": 0.0,
+            "multiplier_re": 0.9561617136140625,
+            "multiplier_im": 0.0,
+            "residual": 0.23884424159665332,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef14.nc"
+          },
+          {
+            "index": 15,
+            "lambda_re": -0.01632679817509904,
+            "lambda_im": -0.43282033637423356,
+            "multiplier_re": -0.5152758891059518,
+            "multiplier_im": -0.764103593820892,
+            "residual": 0.059172076641990416,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef15.nc"
+          },
+          {
+            "index": 16,
+            "lambda_re": -0.01632679817509904,
+            "lambda_im": 0.43282033637423356,
+            "multiplier_re": -0.5152758891059518,
+            "multiplier_im": 0.764103593820892,
+            "residual": 0.059172076641990416,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef16.nc"
+          },
+          {
+            "index": 17,
+            "lambda_re": -0.022013774356335787,
+            "lambda_im": 0.19341839923361925,
+            "multiplier_re": 0.5085263488665726,
+            "multiplier_im": 0.7374342114961032,
+            "residual": 0.14289147958319945,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef17.nc"
+          },
+          {
+            "index": 18,
+            "lambda_re": -0.022013774356335787,
+            "lambda_im": -0.19341839923361925,
+            "multiplier_re": 0.5085263488665726,
+            "multiplier_im": -0.7374342114961032,
+            "residual": 0.14289147958319945,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef18.nc"
+          },
+          {
+            "index": 19,
+            "lambda_re": -0.03142078290272105,
+            "lambda_im": -0.4887489576338571,
+            "multiplier_re": -0.6548291558239779,
+            "multiplier_im": -0.5491502504404661,
+            "residual": 0.014929981971918789,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef19.nc"
+          },
+          {
+            "index": 20,
+            "lambda_re": -0.03142078290272105,
+            "lambda_im": 0.4887489576338571,
+            "multiplier_re": -0.6548291558239779,
+            "multiplier_im": 0.5491502504404661,
+            "residual": 0.014929981971918789,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_005/eigen/ef20.nc"
+          },
+          {
+            "index": 21,
+            "lambda_re": -0.05351565660887832,
+            "lambda_im": 0.2991372301940868,
+            "multiplier_re": 0.057422564179060095,
+            "multiplier_im": 0.7630728998566786,
+            "residual": 0.17465034395819914,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 22,
+            "lambda_re": -0.05351565660887832,
+            "lambda_im": -0.2991372301940868,
+            "multiplier_re": 0.057422564179060095,
+            "multiplier_im": -0.7630728998566786,
+            "residual": 0.17465034395819914,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 23,
+            "lambda_re": -0.0639071486817104,
+            "lambda_im": -0.4582382157624134,
+            "multiplier_re": -0.4792494545881031,
+            "multiplier_im": -0.5459873713342362,
+            "residual": 0.201629135288435,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 24,
+            "lambda_re": -0.0639071486817104,
+            "lambda_im": 0.4582382157624134,
+            "multiplier_re": -0.4792494545881031,
+            "multiplier_im": 0.5459873713342362,
+            "residual": 0.201629135288435,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 25,
+            "lambda_re": -0.0708891305374255,
+            "lambda_im": 0.6283185307179586,
+            "multiplier_re": -0.7015622445782133,
+            "multiplier_im": 0.0,
+            "residual": 0.29995831700399744,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 26,
+            "lambda_re": -0.08209791302901043,
+            "lambda_im": -0.5373587830617605,
+            "multiplier_re": -0.5958980394663909,
+            "multiplier_im": -0.29138660254657534,
+            "residual": 0.08492328903711956,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 27,
+            "lambda_re": -0.08209791302901043,
+            "lambda_im": 0.5373587830617605,
+            "multiplier_re": -0.5958980394663909,
+            "multiplier_im": 0.29138660254657534,
+            "residual": 0.08492328903711956,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 28,
+            "lambda_re": -0.11880420722775203,
+            "lambda_im": 0.06523197890600135,
+            "multiplier_re": 0.5229957788880978,
+            "multiplier_im": 0.1768980103692055,
+            "residual": 0.5822060235320673,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 29,
+            "lambda_re": -0.11880420722775203,
+            "lambda_im": -0.06523197890600135,
+            "multiplier_re": 0.5229957788880978,
+            "multiplier_im": -0.1768980103692055,
+            "residual": 0.5822060235320673,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 30,
+            "lambda_re": -0.12904897816802555,
+            "lambda_im": 0.25498377894490626,
+            "multiplier_re": 0.15294326045040516,
+            "multiplier_im": 0.5017413204005744,
+            "residual": 0.47491315756953156,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 31,
+            "lambda_re": -0.12904897816802555,
+            "lambda_im": -0.25498377894490626,
+            "multiplier_re": 0.15294326045040516,
+            "multiplier_im": -0.5017413204005744,
+            "residual": 0.47491315756953156,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 32,
+            "lambda_re": -0.17053885312382716,
+            "lambda_im": 0.6283185307179586,
+            "multiplier_re": -0.4262649125170523,
+            "multiplier_im": 0.0,
+            "residual": 0.4353499605592838,
+            "unstable": false,
+            "eigenvector": null
+          }
+        ],
+        "files": {
+          "args": "equilibria/ghc_re400_literature_fuzz_005/eigen/findeigenvals.args",
+          "lambda": "equilibria/ghc_re400_literature_fuzz_005/eigen/lambda.asc",
+          "multipliers": "equilibria/ghc_re400_literature_fuzz_005/eigen/Lambda.asc",
+          "residuals": "equilibria/ghc_re400_literature_fuzz_005/eigen/Residu.asc"
+        },
+        "eigenvectors": [
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef1.nc",
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef2.nc",
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef3.nc",
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef4.nc",
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef5.nc",
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef6.nc",
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef7.nc",
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef8.nc",
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef9.nc",
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef10.nc",
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef11.nc",
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef12.nc",
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef13.nc",
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef14.nc",
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef15.nc",
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef16.nc",
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef17.nc",
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef18.nc",
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef19.nc",
+          "equilibria/ghc_re400_literature_fuzz_005/eigen/ef20.nc"
+        ],
+        "error": null,
+        "parameters": {
+          "R": 400.0,
+          "T": 5.0,
+          "N": 32,
+          "Ns": 6,
+          "dt": null,
+          "variabledt": false
+        }
+      },
+      "literature": "",
       "deduplication": {
         "component_id": "",
         "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_012"
-        ],
         "status": "single",
+        "members": [
+          "ghc_re400_literature_fuzz_005"
+        ],
+        "edges": [],
         "strong_edges": 0,
         "weak_edges": 0
       },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
       "group_representatives": [
         {
-          "J": 2,
+          "group": "B",
+          "symmetry": "<sxy, sz>",
+          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/B/jkl_1_4_5/dns_findsoln/sol002/ubest.nc",
+          "members": "fuzz:sol002@J1K4L5",
+          "J": 1,
           "K": 4,
-          "L": 5,
-          "group": "E",
-          "members": "fuzz:sol003@J2K4L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/E/jkl_2_4_5/dns_findsoln/sol003/ubest.nc",
-          "symmetry": "<sxyz, sztxz>"
+          "L": 5
+        },
+        {
+          "group": "G",
+          "symmetry": "<sxyz>",
+          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/G/jkl_1_4_5/dns_findsoln/sol004/ubest.nc",
+          "members": "fuzz:sol004@J1K4L5",
+          "J": 1,
+          "K": 4,
+          "L": 5
         }
-      ],
-      "groups": [
-        "E"
-      ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_012",
-      "representative_J": 2,
-      "representative_K": 4,
-      "representative_L": 5,
-      "representative_group": "E",
-      "shear": 1.1598721787890902
+      ]
     },
     {
-      "L2": 0.47624970213907436,
+      "physical_id": "ghc_re400_literature_fuzz_007",
+      "case": "ghc_re400_literature_fuzz",
+      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
+      "catalog_path": "equilibria/ghc_re400_literature_fuzz_007",
+      "Re": 400.0,
       "Lx": 5.511566576198634,
       "Lz": 2.5132741228718345,
-      "Re": 400.0,
-      "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_013/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_013/representative.asc"
-      },
-      "bifurcation": {
-        "available": false,
-        "csv": null,
-        "curve": [],
-        "max_Re": null,
-        "max_input": null,
-        "min_Re": null,
-        "min_input": null,
-        "n_points": 0
-      },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_013",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
-      "deduplication": {
-        "component_id": "",
-        "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_013"
-        ],
-        "status": "single",
-        "strong_edges": 0,
-        "weak_edges": 0
-      },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
-      "group_representatives": [
-        {
-          "J": 2,
-          "K": 4,
-          "L": 6,
-          "group": "E",
-          "members": "fuzz:sol002@J2K4L6",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/E/jkl_2_4_6/dns_findsoln/sol002/ubest.nc",
-          "symmetry": "<sxyz, sztxz>"
-        }
-      ],
+      "shear": 2.04368,
+      "L2": 0.385806,
       "groups": [
         "E"
       ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_013",
+      "representative_group": "E",
       "representative_J": 2,
       "representative_K": 4,
       "representative_L": 6,
-      "representative_group": "E",
-      "shear": 1.8701525438054176
-    },
-    {
-      "L2": 0.3818494445335894,
-      "Lx": 5.511566576198634,
-      "Lz": 2.5132741228718345,
-      "Re": 400.0,
       "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_014/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_014/representative.asc"
+        "ode": "equilibria/ghc_re400_literature_fuzz_007/representative.asc",
+        "dns": "equilibria/ghc_re400_literature_fuzz_007/ubest.nc",
+        "dns_ode_comparison": null
       },
       "bifurcation": {
         "available": false,
@@ -62977,471 +64317,452 @@
         "min_input": null,
         "n_points": 0
       },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_014",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
+      "dns_diagnostics": {
+        "method": "fieldconverge",
+        "source": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/E/jkl_2_4_6/dns_findsoln/sol002/fieldconverge.asc",
+        "values": {
+          "L2": 0.385806,
+          "u2": 0.534477,
+          "v2": 0.0677193,
+          "w2": 0.0862577,
+          "e3d": 0.0851956,
+          "ecf": 0.0120263,
+          "ubulk": 0.0,
+          "wbulk": 0.0,
+          "wallshear": 2.04368,
+          "wallshear_a": 1.02184,
+          "wallshear_b": -1.02184,
+          "dissipation": 2.04368
+        },
+        "derived": {
+          "D_total": 3.04368,
+          "I_total": 3.04368
+        }
+      },
+      "eigen_analysis": {
+        "available": true,
+        "method": "findeigenvals",
+        "n_eigenvalues": 32,
+        "n_unstable": 8,
+        "leading": {
+          "index": 1,
+          "lambda_re": 0.055589983720085126,
+          "lambda_im": 0.0,
+          "multiplier_re": 1.3204200670681794,
+          "multiplier_im": 0.0,
+          "residual": 0.0005801679914531012,
+          "unstable": true,
+          "eigenvector": "equilibria/ghc_re400_literature_fuzz_007/eigen/ef1.nc"
+        },
+        "spectrum": [
+          {
+            "index": 1,
+            "lambda_re": 0.055589983720085126,
+            "lambda_im": 0.0,
+            "multiplier_re": 1.3204200670681794,
+            "multiplier_im": 0.0,
+            "residual": 0.0005801679914531012,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_007/eigen/ef1.nc"
+          },
+          {
+            "index": 2,
+            "lambda_re": 0.03253884548203372,
+            "lambda_im": 0.10696505656311697,
+            "multiplier_re": 1.0123629720735012,
+            "multiplier_im": 0.599741274690883,
+            "residual": 0.0006887976111977522,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_007/eigen/ef2.nc"
+          },
+          {
+            "index": 3,
+            "lambda_re": 0.03253884548203372,
+            "lambda_im": -0.10696505656311697,
+            "multiplier_re": 1.0123629720735012,
+            "multiplier_im": -0.599741274690883,
+            "residual": 0.0006887976111977522,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_007/eigen/ef3.nc"
+          },
+          {
+            "index": 4,
+            "lambda_re": 0.02150779840511674,
+            "lambda_im": 0.0,
+            "multiplier_re": 1.11353427885714,
+            "multiplier_im": 0.0,
+            "residual": 0.08425567443577203,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_007/eigen/ef4.nc"
+          },
+          {
+            "index": 5,
+            "lambda_re": 0.015294920447831742,
+            "lambda_im": 0.3441055965298977,
+            "multiplier_re": -0.16102827039097356,
+            "multiplier_im": 1.067396685066403,
+            "residual": 0.00045569154294554295,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_007/eigen/ef5.nc"
+          },
+          {
+            "index": 6,
+            "lambda_re": 0.015294920447831742,
+            "lambda_im": -0.3441055965298977,
+            "multiplier_re": -0.16102827039097356,
+            "multiplier_im": -1.067396685066403,
+            "residual": 0.00045569154294554295,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_007/eigen/ef6.nc"
+          },
+          {
+            "index": 7,
+            "lambda_re": 0.0148367446216162,
+            "lambda_im": 0.038397467612443885,
+            "multiplier_re": 1.05721681872347,
+            "multiplier_im": 0.20550336124735877,
+            "residual": 0.03504208345689398,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_007/eigen/ef7.nc"
+          },
+          {
+            "index": 8,
+            "lambda_re": 0.0148367446216162,
+            "lambda_im": -0.038397467612443885,
+            "multiplier_re": 1.05721681872347,
+            "multiplier_im": -0.20550336124735877,
+            "residual": 0.03504208345689398,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_007/eigen/ef8.nc"
+          },
+          {
+            "index": 9,
+            "lambda_re": -0.02067316312183666,
+            "lambda_im": 0.17351721894218616,
+            "multiplier_re": 0.5831647954479118,
+            "multiplier_im": 0.6878638598668105,
+            "residual": 0.053652601636820445,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_007/eigen/ef9.nc"
+          },
+          {
+            "index": 10,
+            "lambda_re": -0.02067316312183666,
+            "lambda_im": -0.17351721894218616,
+            "multiplier_re": 0.5831647954479118,
+            "multiplier_im": -0.6878638598668105,
+            "residual": 0.053652601636820445,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_007/eigen/ef10.nc"
+          },
+          {
+            "index": 11,
+            "lambda_re": -0.024489854017276227,
+            "lambda_im": 0.0,
+            "multiplier_re": 0.8847507871360447,
+            "multiplier_im": 0.0,
+            "residual": 0.15837751931374777,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_007/eigen/ef11.nc"
+          },
+          {
+            "index": 12,
+            "lambda_re": -0.02668749946656005,
+            "lambda_im": -0.31211947515647576,
+            "multiplier_re": 0.008924765379108357,
+            "multiplier_im": -0.8750366502205618,
+            "residual": 0.013562288767593305,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_007/eigen/ef12.nc"
+          },
+          {
+            "index": 13,
+            "lambda_re": -0.02668749946656005,
+            "lambda_im": 0.31211947515647576,
+            "multiplier_re": 0.008924765379108357,
+            "multiplier_im": 0.8750366502205618,
+            "residual": 0.013562288767593305,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_007/eigen/ef13.nc"
+          },
+          {
+            "index": 14,
+            "lambda_re": -0.027102699665863816,
+            "lambda_im": 0.4806673051064924,
+            "multiplier_re": -0.645906369312925,
+            "multiplier_im": 0.5877081509275993,
+            "residual": 0.02087387173790737,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_007/eigen/ef14.nc"
+          },
+          {
+            "index": 15,
+            "lambda_re": -0.027102699665863816,
+            "lambda_im": -0.4806673051064924,
+            "multiplier_re": -0.645906369312925,
+            "multiplier_im": -0.5877081509275993,
+            "residual": 0.02087387173790737,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_007/eigen/ef15.nc"
+          },
+          {
+            "index": 16,
+            "lambda_re": -0.031038381694438223,
+            "lambda_im": -0.2512563808589496,
+            "multiplier_re": 0.26488526400168083,
+            "multiplier_im": -0.8142489163557828,
+            "residual": 0.015494497175800306,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 17,
+            "lambda_re": -0.031038381694438223,
+            "lambda_im": 0.2512563808589496,
+            "multiplier_re": 0.26488526400168083,
+            "multiplier_im": 0.8142489163557828,
+            "residual": 0.015494497175800306,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 18,
+            "lambda_re": -0.04118963330052705,
+            "lambda_im": 0.4318136023838114,
+            "multiplier_re": -0.45163896878734605,
+            "multiplier_im": 0.6770636474151681,
+            "residual": 0.07165769754103567,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 19,
+            "lambda_re": -0.04118963330052705,
+            "lambda_im": -0.4318136023838114,
+            "multiplier_re": -0.45163896878734605,
+            "multiplier_im": -0.6770636474151681,
+            "residual": 0.07165769754103567,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 20,
+            "lambda_re": -0.04193419857471557,
+            "lambda_im": -0.14386526099759647,
+            "multiplier_re": 0.6099624718516584,
+            "multiplier_im": -0.534251898635908,
+            "residual": 0.12422971697386956,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 21,
+            "lambda_re": -0.04193419857471557,
+            "lambda_im": 0.14386526099759647,
+            "multiplier_re": 0.6099624718516584,
+            "multiplier_im": 0.534251898635908,
+            "residual": 0.12422971697386956,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 22,
+            "lambda_re": -0.04320268856140017,
+            "lambda_im": -0.4868065346376453,
+            "multiplier_re": -0.6123103952791678,
+            "multiplier_im": -0.5237059311867136,
+            "residual": 0.18096840274018303,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 23,
+            "lambda_re": -0.04320268856140017,
+            "lambda_im": 0.4868065346376453,
+            "multiplier_re": -0.6123103952791678,
+            "multiplier_im": 0.5237059311867136,
+            "residual": 0.18096840274018303,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 24,
+            "lambda_re": -0.05172245474043785,
+            "lambda_im": 0.5831749625836522,
+            "multiplier_re": -0.7525364511643005,
+            "multiplier_im": 0.17280565151004781,
+            "residual": 0.01686167689724152,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 25,
+            "lambda_re": -0.05172245474043785,
+            "lambda_im": -0.5831749625836522,
+            "multiplier_re": -0.7525364511643005,
+            "multiplier_im": -0.17280565151004781,
+            "residual": 0.01686167689724152,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 26,
+            "lambda_re": -0.12962921593249102,
+            "lambda_im": 0.5847438760396981,
+            "multiplier_re": -0.5106501063958212,
+            "multiplier_im": 0.11305150176695344,
+            "residual": 0.28372663941679943,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 27,
+            "lambda_re": -0.12962921593249102,
+            "lambda_im": -0.5847438760396981,
+            "multiplier_re": -0.5106501063958212,
+            "multiplier_im": -0.11305150176695344,
+            "residual": 0.28372663941679943,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 28,
+            "lambda_re": -0.1341126082511037,
+            "lambda_im": 0.0,
+            "multiplier_re": 0.5114205458409894,
+            "multiplier_im": 0.0,
+            "residual": 0.5144202303845118,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 29,
+            "lambda_re": -0.149135458180893,
+            "lambda_im": 0.40771173902005736,
+            "multiplier_re": -0.21390809347798026,
+            "multiplier_im": 0.42345118261557435,
+            "residual": 0.37150944053014245,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 30,
+            "lambda_re": -0.149135458180893,
+            "lambda_im": -0.40771173902005736,
+            "multiplier_re": -0.21390809347798026,
+            "multiplier_im": -0.42345118261557435,
+            "residual": 0.37150944053014245,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 31,
+            "lambda_re": -0.16388684331365325,
+            "lambda_im": 0.2350314380966586,
+            "multiplier_re": 0.16983755644216392,
+            "multiplier_im": 0.40663850326522466,
+            "residual": 0.5361606234200016,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 32,
+            "lambda_re": -0.16388684331365325,
+            "lambda_im": -0.2350314380966586,
+            "multiplier_re": 0.16983755644216392,
+            "multiplier_im": -0.40663850326522466,
+            "residual": 0.5361606234200016,
+            "unstable": false,
+            "eigenvector": null
+          }
+        ],
+        "files": {
+          "args": "equilibria/ghc_re400_literature_fuzz_007/eigen/findeigenvals.args",
+          "lambda": "equilibria/ghc_re400_literature_fuzz_007/eigen/lambda.asc",
+          "multipliers": "equilibria/ghc_re400_literature_fuzz_007/eigen/Lambda.asc",
+          "residuals": "equilibria/ghc_re400_literature_fuzz_007/eigen/Residu.asc"
+        },
+        "eigenvectors": [
+          "equilibria/ghc_re400_literature_fuzz_007/eigen/ef1.nc",
+          "equilibria/ghc_re400_literature_fuzz_007/eigen/ef2.nc",
+          "equilibria/ghc_re400_literature_fuzz_007/eigen/ef3.nc",
+          "equilibria/ghc_re400_literature_fuzz_007/eigen/ef4.nc",
+          "equilibria/ghc_re400_literature_fuzz_007/eigen/ef5.nc",
+          "equilibria/ghc_re400_literature_fuzz_007/eigen/ef6.nc",
+          "equilibria/ghc_re400_literature_fuzz_007/eigen/ef7.nc",
+          "equilibria/ghc_re400_literature_fuzz_007/eigen/ef8.nc",
+          "equilibria/ghc_re400_literature_fuzz_007/eigen/ef9.nc",
+          "equilibria/ghc_re400_literature_fuzz_007/eigen/ef10.nc",
+          "equilibria/ghc_re400_literature_fuzz_007/eigen/ef11.nc",
+          "equilibria/ghc_re400_literature_fuzz_007/eigen/ef12.nc",
+          "equilibria/ghc_re400_literature_fuzz_007/eigen/ef13.nc",
+          "equilibria/ghc_re400_literature_fuzz_007/eigen/ef14.nc",
+          "equilibria/ghc_re400_literature_fuzz_007/eigen/ef15.nc"
+        ],
+        "error": null,
+        "parameters": {
+          "R": 400.0,
+          "T": 5.0,
+          "N": 32,
+          "Ns": 6,
+          "dt": null,
+          "variabledt": false
+        }
+      },
+      "literature": "",
       "deduplication": {
         "component_id": "",
         "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_014"
-        ],
         "status": "single",
+        "members": [
+          "ghc_re400_literature_fuzz_007"
+        ],
+        "edges": [],
         "strong_edges": 0,
         "weak_edges": 0
       },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
       "group_representatives": [
         {
+          "group": "E",
+          "symmetry": "<sxyz, sztxz>",
+          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/E/jkl_1_4_5/dns_findsoln/sol005/ubest.nc",
+          "members": "fuzz:sol005@J1K4L5",
           "J": 1,
           "K": 4,
-          "L": 5,
-          "group": "B",
-          "members": "fuzz:sol003@J1K4L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/B/jkl_1_4_5/dns_findsoln/sol003/ubest.nc",
-          "symmetry": "<sxy, sz>"
+          "L": 5
+        },
+        {
+          "group": "E",
+          "symmetry": "<sxyz, sztxz>",
+          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/E/jkl_2_4_6/dns_findsoln/sol002/ubest.nc",
+          "members": "fuzz:sol002@J2K4L6",
+          "J": 2,
+          "K": 4,
+          "L": 6
         }
-      ],
+      ]
+    },
+    {
+      "physical_id": "ghc_re400_literature_fuzz_010",
+      "case": "ghc_re400_literature_fuzz",
+      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
+      "catalog_path": "equilibria/ghc_re400_literature_fuzz_010",
+      "Re": 400.0,
+      "Lx": 5.511566576198634,
+      "Lz": 2.5132741228718345,
+      "shear": 2.50069,
+      "L2": 0.333628,
       "groups": [
         "B"
       ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_014",
-      "representative_J": 1,
-      "representative_K": 4,
-      "representative_L": 5,
       "representative_group": "B",
-      "shear": 1.9235361482724125
-    },
-    {
-      "L2": 0.4534002106077702,
-      "Lx": 5.511566576198634,
-      "Lz": 2.5132741228718345,
-      "Re": 400.0,
-      "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_015/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_015/representative.asc"
-      },
-      "bifurcation": {
-        "available": false,
-        "csv": null,
-        "curve": [],
-        "max_Re": null,
-        "max_input": null,
-        "min_Re": null,
-        "min_input": null,
-        "n_points": 0
-      },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_015",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
-      "deduplication": {
-        "component_id": "",
-        "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_015"
-        ],
-        "status": "single",
-        "strong_edges": 0,
-        "weak_edges": 0
-      },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
-      "group_representatives": [
-        {
-          "J": 1,
-          "K": 3,
-          "L": 5,
-          "group": "F",
-          "members": "fuzz:sol002@J1K3L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/F/jkl_1_3_5/dns_findsoln/sol002/ubest.nc",
-          "symmetry": "<sxy, sz, txz>"
-        }
-      ],
-      "groups": [
-        "F"
-      ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_015",
-      "representative_J": 1,
-      "representative_K": 3,
-      "representative_L": 5,
-      "representative_group": "F",
-      "shear": 3.628887123828002
-    },
-    {
-      "L2": 0.6827797606406849,
-      "Lx": 5.511566576198634,
-      "Lz": 2.5132741228718345,
-      "Re": 400.0,
-      "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_016/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_016/representative.asc"
-      },
-      "bifurcation": {
-        "available": false,
-        "csv": null,
-        "curve": [],
-        "max_Re": null,
-        "max_input": null,
-        "min_Re": null,
-        "min_input": null,
-        "n_points": 0
-      },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_016",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
-      "deduplication": {
-        "component_id": "",
-        "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_016"
-        ],
-        "status": "single",
-        "strong_edges": 0,
-        "weak_edges": 0
-      },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
-      "group_representatives": [
-        {
-          "J": 2,
-          "K": 4,
-          "L": 9,
-          "group": "F",
-          "members": "fuzz:sol001@J2K4L9",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/F/jkl_2_4_9/dns_findsoln/sol001/ubest.nc",
-          "symmetry": "<sxy, sz, txz>"
-        }
-      ],
-      "groups": [
-        "F"
-      ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_016",
-      "representative_J": 2,
-      "representative_K": 4,
-      "representative_L": 9,
-      "representative_group": "F",
-      "shear": 4.8543513772182685
-    },
-    {
-      "L2": 0.641280076558064,
-      "Lx": 5.511566576198634,
-      "Lz": 2.5132741228718345,
-      "Re": 400.0,
-      "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_017/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_017/representative.asc"
-      },
-      "bifurcation": {
-        "available": false,
-        "csv": null,
-        "curve": [],
-        "max_Re": null,
-        "max_input": null,
-        "min_Re": null,
-        "min_input": null,
-        "n_points": 0
-      },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_017",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
-      "deduplication": {
-        "component_id": "",
-        "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_017"
-        ],
-        "status": "single",
-        "strong_edges": 0,
-        "weak_edges": 0
-      },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
-      "group_representatives": [
-        {
-          "J": 2,
-          "K": 4,
-          "L": 5,
-          "group": "F",
-          "members": "fuzz:sol001@J2K4L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/F/jkl_2_4_5/dns_findsoln/sol001/ubest.nc",
-          "symmetry": "<sxy, sz, txz>"
-        }
-      ],
-      "groups": [
-        "F"
-      ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_017",
-      "representative_J": 2,
-      "representative_K": 4,
-      "representative_L": 5,
-      "representative_group": "F",
-      "shear": 4.9487388189010915
-    },
-    {
-      "L2": 0.6604495398736785,
-      "Lx": 5.511566576198634,
-      "Lz": 2.5132741228718345,
-      "Re": 400.0,
-      "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_018/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_018/representative.asc"
-      },
-      "bifurcation": {
-        "available": false,
-        "csv": null,
-        "curve": [],
-        "max_Re": null,
-        "max_input": null,
-        "min_Re": null,
-        "min_input": null,
-        "n_points": 0
-      },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_018",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
-      "deduplication": {
-        "component_id": "",
-        "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_018"
-        ],
-        "status": "single",
-        "strong_edges": 0,
-        "weak_edges": 0
-      },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
-      "group_representatives": [
-        {
-          "J": 2,
-          "K": 4,
-          "L": 7,
-          "group": "F",
-          "members": "fuzz:sol001@J2K4L7",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/F/jkl_2_4_7/dns_findsoln/sol001/ubest.nc",
-          "symmetry": "<sxy, sz, txz>"
-        }
-      ],
-      "groups": [
-        "F"
-      ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_018",
-      "representative_J": 2,
-      "representative_K": 4,
-      "representative_L": 7,
-      "representative_group": "F",
-      "shear": 5.229521227871877
-    },
-    {
-      "L2": 0.7005751835926031,
-      "Lx": 5.511566576198634,
-      "Lz": 2.5132741228718345,
-      "Re": 400.0,
-      "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_019/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_019/representative.asc"
-      },
-      "bifurcation": {
-        "available": false,
-        "csv": null,
-        "curve": [],
-        "max_Re": null,
-        "max_input": null,
-        "min_Re": null,
-        "min_input": null,
-        "n_points": 0
-      },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_019",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
-      "deduplication": {
-        "component_id": "",
-        "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_019"
-        ],
-        "status": "single",
-        "strong_edges": 0,
-        "weak_edges": 0
-      },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
-      "group_representatives": [
-        {
-          "J": 2,
-          "K": 4,
-          "L": 8,
-          "group": "F",
-          "members": "fuzz:sol001@J2K4L8",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/F/jkl_2_4_8/dns_findsoln/sol001/ubest.nc",
-          "symmetry": "<sxy, sz, txz>"
-        }
-      ],
-      "groups": [
-        "F"
-      ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_019",
-      "representative_J": 2,
-      "representative_K": 4,
-      "representative_L": 8,
-      "representative_group": "F",
-      "shear": 5.479326743148226
-    },
-    {
-      "L2": 0.7139411173868035,
-      "Lx": 5.511566576198634,
-      "Lz": 2.5132741228718345,
-      "Re": 400.0,
-      "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_020/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_020/representative.asc"
-      },
-      "bifurcation": {
-        "available": false,
-        "csv": null,
-        "curve": [],
-        "max_Re": null,
-        "max_input": null,
-        "min_Re": null,
-        "min_input": null,
-        "n_points": 0
-      },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_020",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
-      "deduplication": {
-        "component_id": "",
-        "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_020"
-        ],
-        "status": "single",
-        "strong_edges": 0,
-        "weak_edges": 0
-      },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
-      "group_representatives": [
-        {
-          "J": 1,
-          "K": 4,
-          "L": 5,
-          "group": "F",
-          "members": "fuzz:sol002@J1K4L5",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/F/jkl_1_4_5/dns_findsoln/sol002/ubest.nc",
-          "symmetry": "<sxy, sz, txz>"
-        }
-      ],
-      "groups": [
-        "F"
-      ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_020",
       "representative_J": 1,
       "representative_K": 4,
       "representative_L": 5,
-      "representative_group": "F",
-      "shear": 5.572708102998686
-    },
-    {
-      "L2": 0.6822920048656471,
-      "Lx": 5.511566576198634,
-      "Lz": 2.5132741228718345,
-      "Re": 400.0,
       "assets": {
-        "dns": "equilibria/ghc_re400_literature_fuzz_021/ubest.nc",
-        "dns_ode_comparison": null,
-        "ode": "equilibria/ghc_re400_literature_fuzz_021/representative.asc"
+        "ode": "equilibria/ghc_re400_literature_fuzz_010/representative.asc",
+        "dns": "equilibria/ghc_re400_literature_fuzz_010/ubest.nc",
+        "dns_ode_comparison": null
       },
       "bifurcation": {
         "available": false,
@@ -63453,53 +64774,432 @@
         "min_input": null,
         "n_points": 0
       },
-      "case": "ghc_re400_literature_fuzz",
-      "catalog_path": "equilibria/ghc_re400_literature_fuzz_021",
-      "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
+      "dns_diagnostics": {
+        "method": "fieldconverge",
+        "source": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/B/jkl_1_4_5/dns_findsoln/sol003/fieldconverge.asc",
+        "values": {
+          "L2": 0.333628,
+          "u2": 0.451017,
+          "v2": 0.091353,
+          "w2": 0.10418,
+          "e3d": 0.129477,
+          "ecf": 0.0191988,
+          "ubulk": 0.0,
+          "wbulk": 0.0,
+          "wallshear": 2.50069,
+          "wallshear_a": 1.25035,
+          "wallshear_b": -1.25035,
+          "dissipation": 2.50069
+        },
+        "derived": {
+          "D_total": 3.50069,
+          "I_total": 3.50069
+        }
+      },
+      "eigen_analysis": {
+        "available": true,
+        "method": "findeigenvals",
+        "n_eigenvalues": 32,
+        "n_unstable": 20,
+        "leading": {
+          "index": 1,
+          "lambda_re": 0.09027919141949373,
+          "lambda_im": -0.44441001939188357,
+          "multiplier_re": -0.9520138535351994,
+          "multiplier_im": -1.2490593779480157,
+          "residual": 5.584482423281946e-05,
+          "unstable": true,
+          "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef1.nc"
+        },
+        "spectrum": [
+          {
+            "index": 1,
+            "lambda_re": 0.09027919141949373,
+            "lambda_im": -0.44441001939188357,
+            "multiplier_re": -0.9520138535351994,
+            "multiplier_im": -1.2490593779480157,
+            "residual": 5.584482423281946e-05,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef1.nc"
+          },
+          {
+            "index": 2,
+            "lambda_re": 0.09027919141949373,
+            "lambda_im": 0.44441001939188357,
+            "multiplier_re": -0.9520138535351994,
+            "multiplier_im": 1.2490593779480157,
+            "residual": 5.584482423281946e-05,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef2.nc"
+          },
+          {
+            "index": 3,
+            "lambda_re": 0.07718803993051412,
+            "lambda_im": 0.2887295405252393,
+            "multiplier_re": 0.1865316547609301,
+            "multiplier_im": 1.4591220782631042,
+            "residual": 0.0004848904383195523,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef3.nc"
+          },
+          {
+            "index": 4,
+            "lambda_re": 0.07718803993051412,
+            "lambda_im": -0.2887295405252393,
+            "multiplier_re": 0.1865316547609301,
+            "multiplier_im": -1.4591220782631042,
+            "residual": 0.0004848904383195523,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef4.nc"
+          },
+          {
+            "index": 5,
+            "lambda_re": 0.06785327284635431,
+            "lambda_im": 0.27106142434620256,
+            "multiplier_re": 0.3001930894366692,
+            "multiplier_im": 1.3714473195860561,
+            "residual": 0.009363082379681505,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef5.nc"
+          },
+          {
+            "index": 6,
+            "lambda_re": 0.06785327284635431,
+            "lambda_im": -0.27106142434620256,
+            "multiplier_re": 0.3001930894366692,
+            "multiplier_im": -1.3714473195860561,
+            "residual": 0.009363082379681505,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef6.nc"
+          },
+          {
+            "index": 7,
+            "lambda_re": 0.057810269070084665,
+            "lambda_im": 0.0,
+            "multiplier_re": 1.3351602810410683,
+            "multiplier_im": 0.0,
+            "residual": 0.01841711585405209,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef7.nc"
+          },
+          {
+            "index": 8,
+            "lambda_re": 0.033804626855873314,
+            "lambda_im": 0.06581180873303043,
+            "multiplier_re": 1.1206142700476311,
+            "multiplier_im": 0.38266047312471313,
+            "residual": 0.03663018352299146,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef8.nc"
+          },
+          {
+            "index": 9,
+            "lambda_re": 0.033804626855873314,
+            "lambda_im": -0.06581180873303043,
+            "multiplier_re": 1.1206142700476311,
+            "multiplier_im": -0.38266047312471313,
+            "residual": 0.03663018352299146,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef9.nc"
+          },
+          {
+            "index": 10,
+            "lambda_re": 0.030452320565034382,
+            "lambda_im": -0.4366750753291793,
+            "multiplier_re": -0.6695433621931997,
+            "multiplier_im": -0.9527276694792824,
+            "residual": 0.04530828051442856,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef10.nc"
+          },
+          {
+            "index": 11,
+            "lambda_re": 0.030452320565034382,
+            "lambda_im": 0.4366750753291793,
+            "multiplier_re": -0.6695433621931997,
+            "multiplier_im": 0.9527276694792824,
+            "residual": 0.04530828051442856,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef11.nc"
+          },
+          {
+            "index": 12,
+            "lambda_re": 0.030303166500963576,
+            "lambda_im": 0.10272319973722069,
+            "multiplier_re": 1.0134619784175052,
+            "multiplier_im": 0.5717098522307456,
+            "residual": 0.034743698765530094,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef12.nc"
+          },
+          {
+            "index": 13,
+            "lambda_re": 0.030303166500963576,
+            "lambda_im": -0.10272319973722069,
+            "multiplier_re": 1.0134619784175052,
+            "multiplier_im": -0.5717098522307456,
+            "residual": 0.034743698765530094,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef13.nc"
+          },
+          {
+            "index": 14,
+            "lambda_re": 0.024744602516477268,
+            "lambda_im": -0.5004233218115791,
+            "multiplier_re": -0.9080876517306227,
+            "multiplier_im": -0.6753717857667032,
+            "residual": 0.019102758517170484,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef14.nc"
+          },
+          {
+            "index": 15,
+            "lambda_re": 0.024744602516477268,
+            "lambda_im": 0.5004233218115791,
+            "multiplier_re": -0.9080876517306227,
+            "multiplier_im": 0.6753717857667032,
+            "residual": 0.019102758517170484,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef15.nc"
+          },
+          {
+            "index": 16,
+            "lambda_re": 0.018758325704845438,
+            "lambda_im": 0.6283185307179586,
+            "multiplier_re": -1.0983308612490386,
+            "multiplier_im": 0.0,
+            "residual": 0.13123047408244548,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef16.nc"
+          },
+          {
+            "index": 17,
+            "lambda_re": 0.01844160362507687,
+            "lambda_im": -0.1960745068799814,
+            "multiplier_re": 0.6104876592621306,
+            "multiplier_im": -0.9109450187480759,
+            "residual": 0.008705444870475065,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef17.nc"
+          },
+          {
+            "index": 18,
+            "lambda_re": 0.01844160362507687,
+            "lambda_im": 0.1960745068799814,
+            "multiplier_re": 0.6104876592621306,
+            "multiplier_im": 0.9109450187480759,
+            "residual": 0.008705444870475065,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef18.nc"
+          },
+          {
+            "index": 19,
+            "lambda_re": 0.003424194545939751,
+            "lambda_im": 0.32478835951942836,
+            "multiplier_re": -0.05403776067764021,
+            "multiplier_im": 1.0158321074274623,
+            "residual": 0.009823786764646729,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef19.nc"
+          },
+          {
+            "index": 20,
+            "lambda_re": 0.003424194545939751,
+            "lambda_im": -0.32478835951942836,
+            "multiplier_re": -0.05403776067764021,
+            "multiplier_im": -1.0158321074274623,
+            "residual": 0.009823786764646729,
+            "unstable": true,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef20.nc"
+          },
+          {
+            "index": 21,
+            "lambda_re": -0.005563198451410133,
+            "lambda_im": 0.5485515082274678,
+            "multiplier_re": -0.8962343899626961,
+            "multiplier_im": 0.3776917939546887,
+            "residual": 0.11337441046411853,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef21.nc"
+          },
+          {
+            "index": 22,
+            "lambda_re": -0.005563198451410133,
+            "lambda_im": -0.5485515082274678,
+            "multiplier_re": -0.8962343899626961,
+            "multiplier_im": -0.3776917939546887,
+            "residual": 0.11337441046411853,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef22.nc"
+          },
+          {
+            "index": 23,
+            "lambda_re": -0.014110031537884721,
+            "lambda_im": 0.4846789745386785,
+            "multiplier_re": -0.7016997403795735,
+            "multiplier_im": 0.6132044256072466,
+            "residual": 0.2696124262503797,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef23.nc"
+          },
+          {
+            "index": 24,
+            "lambda_re": -0.014110031537884721,
+            "lambda_im": -0.4846789745386785,
+            "multiplier_re": -0.7016997403795735,
+            "multiplier_im": -0.6132044256072466,
+            "residual": 0.2696124262503797,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef24.nc"
+          },
+          {
+            "index": 25,
+            "lambda_re": -0.014677768664050706,
+            "lambda_im": -0.09573691369988785,
+            "multiplier_re": 0.8247944004222233,
+            "multiplier_im": -0.4280188285201754,
+            "residual": 0.06846527758922055,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef25.nc"
+          },
+          {
+            "index": 26,
+            "lambda_re": -0.014677768664050706,
+            "lambda_im": 0.09573691369988785,
+            "multiplier_re": 0.8247944004222233,
+            "multiplier_im": 0.4280188285201754,
+            "residual": 0.06846527758922055,
+            "unstable": false,
+            "eigenvector": "equilibria/ghc_re400_literature_fuzz_010/eigen/ef26.nc"
+          },
+          {
+            "index": 27,
+            "lambda_re": -0.02328688871679172,
+            "lambda_im": 0.0,
+            "multiplier_re": 0.8900884460725622,
+            "multiplier_im": 0.0,
+            "residual": 0.03902259891988407,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 28,
+            "lambda_re": -0.08883087917165625,
+            "lambda_im": 0.20896206718089383,
+            "multiplier_re": 0.3220082332943394,
+            "multiplier_im": 0.5546724641269968,
+            "residual": 0.29078734778125104,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 29,
+            "lambda_re": -0.08883087917165625,
+            "lambda_im": -0.20896206718089383,
+            "multiplier_re": 0.3220082332943394,
+            "multiplier_im": -0.5546724641269968,
+            "residual": 0.29078734778125104,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 30,
+            "lambda_re": -0.20098781022952317,
+            "lambda_im": 0.47942955574182955,
+            "multiplier_re": -0.2692291142742507,
+            "multiplier_im": 0.2480336521589908,
+            "residual": 0.5760474115604296,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 31,
+            "lambda_re": -0.20098781022952317,
+            "lambda_im": -0.47942955574182955,
+            "multiplier_re": -0.2692291142742507,
+            "multiplier_im": -0.2480336521589908,
+            "residual": 0.5760474115604296,
+            "unstable": false,
+            "eigenvector": null
+          },
+          {
+            "index": 32,
+            "lambda_re": -0.27963275436842155,
+            "lambda_im": 0.0,
+            "multiplier_re": 0.24705018821468688,
+            "multiplier_im": 0.0,
+            "residual": 0.5065236147505111,
+            "unstable": false,
+            "eigenvector": null
+          }
+        ],
+        "files": {
+          "args": "equilibria/ghc_re400_literature_fuzz_010/eigen/findeigenvals.args",
+          "lambda": "equilibria/ghc_re400_literature_fuzz_010/eigen/lambda.asc",
+          "multipliers": "equilibria/ghc_re400_literature_fuzz_010/eigen/Lambda.asc",
+          "residuals": "equilibria/ghc_re400_literature_fuzz_010/eigen/Residu.asc"
+        },
+        "eigenvectors": [
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef1.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef2.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef3.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef4.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef5.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef6.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef7.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef8.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef9.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef10.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef11.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef12.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef13.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef14.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef15.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef16.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef17.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef18.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef19.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef20.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef21.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef22.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef23.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef24.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef25.nc",
+          "equilibria/ghc_re400_literature_fuzz_010/eigen/ef26.nc"
+        ],
+        "error": null,
+        "parameters": {
+          "R": 400.0,
+          "T": 5.0,
+          "N": 32,
+          "Ns": 6,
+          "dt": null,
+          "variabledt": false
+        }
+      },
+      "literature": "",
       "deduplication": {
         "component_id": "",
         "component_size": 1,
-        "edges": [],
-        "members": [
-          "ghc_re400_literature_fuzz_021"
-        ],
         "status": "single",
+        "members": [
+          "ghc_re400_literature_fuzz_010"
+        ],
+        "edges": [],
         "strong_edges": 0,
         "weak_edges": 0
       },
-      "dns_diagnostics": null,
-      "eigen_analysis": {
-        "available": false,
-        "eigenvectors": [],
-        "error": null,
-        "files": {},
-        "leading": null,
-        "method": null,
-        "n_eigenvalues": 0,
-        "n_unstable": null,
-        "spectrum": []
-      },
       "group_representatives": [
         {
-          "J": 2,
+          "group": "B",
+          "symmetry": "<sxy, sz>",
+          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/B/jkl_1_4_5/dns_findsoln/sol003/ubest.nc",
+          "members": "fuzz:sol003@J1K4L5",
+          "J": 1,
           "K": 4,
-          "L": 6,
-          "group": "F",
-          "members": "fuzz:sol001@J2K4L6",
-          "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/F/jkl_2_4_6/dns_findsoln/sol001/ubest.nc",
-          "symmetry": "<sxy, sz, txz>"
+          "L": 5
         }
-      ],
-      "groups": [
-        "F"
-      ],
-      "literature": "",
-      "physical_id": "ghc_re400_literature_fuzz_021",
-      "representative_J": 2,
-      "representative_K": 4,
-      "representative_L": 6,
-      "representative_group": "F",
-      "shear": 6.100847269789515
+      ]
     }
   ],
   "source_catalog": "/home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/eqb_fuzzing/eqb_catalog"

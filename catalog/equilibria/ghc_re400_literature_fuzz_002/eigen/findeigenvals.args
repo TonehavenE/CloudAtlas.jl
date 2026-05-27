@@ -1,0 +1,1 @@
+Wed May 27 16:11:02 2026	14	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/findeigenvals -R 400.0 -T 5.0 -N 32 -Ns 6 --outdir catalog/equilibria/ghc_re400_literature_fuzz_002/eigen --variabledt false catalog/equilibria/ghc_re400_literature_fuzz_002/ubest.nc
