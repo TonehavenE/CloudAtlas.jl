@@ -1,0 +1,68 @@
+{
+  "L2": 0.08848482602437843,
+  "Lx": 5.511566576198634,
+  "Lz": 2.5132741228718345,
+  "Re": 400.0,
+  "assets": {
+    "dns": "equilibria/ghc_re400_literature_fuzz_002/ubest.nc",
+    "dns_ode_comparison": null,
+    "ode": "equilibria/ghc_re400_literature_fuzz_002/representative.asc"
+  },
+  "bifurcation": {
+    "available": false,
+    "csv": null,
+    "curve": [],
+    "max_Re": null,
+    "max_input": null,
+    "min_Re": null,
+    "min_input": null,
+    "n_points": 0
+  },
+  "case": "ghc_re400_literature_fuzz",
+  "catalog_path": "equilibria/ghc_re400_literature_fuzz_002",
+  "catalog_source": "literature_target_runs:ghc_re400_literature_fuzz",
+  "deduplication": {
+    "component_id": "",
+    "component_size": 1,
+    "edges": [],
+    "members": [
+      "ghc_re400_literature_fuzz_002"
+    ],
+    "status": "single",
+    "strong_edges": 0,
+    "weak_edges": 0
+  },
+  "dns_diagnostics": null,
+  "eigen_analysis": {
+    "available": false,
+    "eigenvectors": [],
+    "error": null,
+    "files": {},
+    "leading": null,
+    "method": null,
+    "n_eigenvalues": 0,
+    "n_unstable": null,
+    "spectrum": []
+  },
+  "group_representatives": [
+    {
+      "J": 1,
+      "K": 4,
+      "L": 5,
+      "group": "G",
+      "members": "fuzz:sol002@J1K4L5",
+      "representative": "/home/ebenq/dev/MyCloudAtlas.jl/notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/ghc_re400_literature_fuzz/G/jkl_1_4_5/dns_findsoln/sol002/ubest.nc",
+      "symmetry": "<sxyz>"
+    }
+  ],
+  "groups": [
+    "G"
+  ],
+  "literature": "",
+  "physical_id": "ghc_re400_literature_fuzz_002",
+  "representative_J": 1,
+  "representative_K": 4,
+  "representative_L": 5,
+  "representative_group": "G",
+  "shear": 0.02885333011016722
+}
