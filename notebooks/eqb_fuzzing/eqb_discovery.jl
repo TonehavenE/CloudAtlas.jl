@@ -39,6 +39,13 @@ const DEFAULT_LADDER_PERTURB_TRIALS_EARLY = 10_000
 const DEFAULT_LADDER_PERTURB_TRIALS_LATE = 500
 const DEFAULT_LADDER_PERTURB_SWITCH_JKL = (2, 4, 5)
 const DEFAULT_LADDER_PERTURB_SCALE = 0.05
+const DEFAULT_HOMOTOPY_ENABLED = true
+const DEFAULT_HOMOTOPY_INITIAL_DMU = 0.1
+const DEFAULT_HOMOTOPY_MIN_DMU = 1e-3
+const DEFAULT_HOMOTOPY_MAX_DMU = 0.2
+const DEFAULT_HOMOTOPY_GROWTH = 1.4
+const DEFAULT_HOMOTOPY_SHRINK = 0.5
+const DEFAULT_HOMOTOPY_MAX_FAILURES = 20
 const DEFAULT_XNORM = 0.4
 const DEFAULT_SHEAR_TARGET = 5.0
 const DEFAULT_SHEAR_TOL = 0.1
@@ -157,6 +164,16 @@ ladder_perturb_switch_jkl = parse_jkl_env(
 )
 ladder_perturb_scale = parse_float_env("EQB_LADDER_PERTURB_SCALE", DEFAULT_LADDER_PERTURB_SCALE)
 ladder_perturb_switch_idx = something(findfirst(==(ladder_perturb_switch_jkl), discretization_ladder), length(discretization_ladder))
+
+# Residual homotopy fallback for ODE promotion. Given projected x0 at the new
+# resolution, solve f(x) - (1-mu)f(x0) = 0 from mu=0 to mu=1.
+homotopy_enabled = parse_bool_env("EQB_HOMOTOPY", DEFAULT_HOMOTOPY_ENABLED)
+homotopy_initial_dmu = parse_float_env("EQB_HOMOTOPY_INITIAL_DMU", DEFAULT_HOMOTOPY_INITIAL_DMU)
+homotopy_min_dmu = parse_float_env("EQB_HOMOTOPY_MIN_DMU", DEFAULT_HOMOTOPY_MIN_DMU)
+homotopy_max_dmu = parse_float_env("EQB_HOMOTOPY_MAX_DMU", DEFAULT_HOMOTOPY_MAX_DMU)
+homotopy_growth = parse_float_env("EQB_HOMOTOPY_GROWTH", DEFAULT_HOMOTOPY_GROWTH)
+homotopy_shrink = parse_float_env("EQB_HOMOTOPY_SHRINK", DEFAULT_HOMOTOPY_SHRINK)
+homotopy_max_failures = parse_int_env("EQB_HOMOTOPY_MAX_FAILURES", DEFAULT_HOMOTOPY_MAX_FAILURES)
 
 # Hookstep parameters
 hookparams = SearchParams(
@@ -455,6 +472,234 @@ function refine_projected_solutions(model_from::ODEModel, model_to::ODEModel, Re
     return refined, fingerprints, stats
 end
 
+function homotopy_promote_seed(
+    ξ_base,
+    model_to::ODEModel,
+    Re::Real;
+    hookparams,
+    initial_dmu::Real,
+    min_dmu::Real,
+    max_dmu::Real,
+    growth::Real,
+    shrink::Real,
+    max_failures::Int,
+)
+    residual0 = model_to.f(ξ_base, Re)
+    μ = 0.0
+    dμ = Float64(initial_dmu)
+    ξ_current = copy(ξ_base)
+    successes = 0
+    failures = 0
+
+    while μ < 1.0 - 10eps(Float64)
+        μ_next = min(1.0, μ + dμ)
+        fμ = x -> model_to.f(x, Re) .- (1.0 - μ_next) .* residual0
+        Dfμ = x -> model_to.Df(x, Re)
+        ξ_star, converged = CloudAtlas.hookstepsolve(fμ, Dfμ, ξ_current, hookparams)
+        if converged
+            ξ_current = ξ_star
+            μ = μ_next
+            successes += 1
+            dμ = min(Float64(max_dmu), dμ * Float64(growth))
+        else
+            failures += 1
+            dμ *= Float64(shrink)
+            if dμ < min_dmu || failures > max_failures
+                return (
+                    converged = false,
+                    ξ = ξ_current,
+                    μ = μ,
+                    successes = successes,
+                    failures = failures,
+                    final_residual = norm(model_to.f(ξ_current, Re)),
+                )
+            end
+        end
+    end
+
+    return (
+        converged = true,
+        ξ = ξ_current,
+        μ = μ,
+        successes = successes,
+        failures = failures,
+        final_residual = norm(model_to.f(ξ_current, Re)),
+    )
+end
+
+function refine_projected_solutions_with_homotopy(model_from::ODEModel, model_to::ODEModel, Re::Real;
+    solutions_from,
+    hookparams,
+    norm_threshold::Real = 1e-3,
+    perturb_trials::Int = 1,
+    perturb_scale::Real = 0.0,
+    homotopy_enabled::Bool = true,
+    homotopy_initial_dmu::Real = 0.1,
+    homotopy_min_dmu::Real = 1e-3,
+    homotopy_max_dmu::Real = 0.2,
+    homotopy_growth::Real = 1.4,
+    homotopy_shrink::Real = 0.5,
+    homotopy_max_failures::Int = 20,
+    homotopy_summary_path::AbstractString = "",
+)
+    refined = Vector{Vector{Float64}}()
+    fingerprints = Vector{SolutionFingerprint}()
+    data_lock = ReentrantLock()
+    io_lock = ReentrantLock()
+
+    attempted = length(solutions_from)
+    hookstep_converged = Threads.Atomic{Int}(0)
+    accepted_postfilter = Threads.Atomic{Int}(0)
+    direct_converged = Threads.Atomic{Int}(0)
+    homotopy_converged = Threads.Atomic{Int}(0)
+    homotopy_attempted = Threads.Atomic{Int}(0)
+    homotopy_steps = Threads.Atomic{Int}(0)
+
+    rngs = [MersenneTwister(0xBEEF + i) for i in 1:Threads.maxthreadid()]
+    progress = Threads.Atomic{Int}(0)
+    rejected_norms = Float64[]
+    rejected_shears = Float64[]
+    homotopy_rows = NamedTuple[]
+    progress_every = max(1, attempted ÷ 100)
+
+    @threads for i in eachindex(solutions_from)
+        tid = threadid()
+        rng = tid <= length(rngs) ? rngs[tid] : Random.default_rng()
+
+        ξ_base = project_solution(solutions_from[i], model_from, model_to)
+        accepted = false
+        accepted_source = ""
+        accepted_ξ = ξ_base
+        final_residual = Inf
+        hμ = 0.0
+        hsuccesses = 0
+        hfailures = 0
+
+        for trial in 1:perturb_trials
+            ξ_guess = if trial == 1 || perturb_scale == 0.0
+                ξ_base
+            else
+                x, _, _ = extract_components(ξ_base, model_to)
+                noise = (rand(rng, length(x)) .- 0.5) .* (2 * perturb_scale)
+                state_to_xi(model_to, ODEState(x .+ noise))
+            end
+
+            f = x -> model_to.f(x, Re)
+            Df = x -> model_to.Df(x, Re)
+            ξ_star, converged = CloudAtlas.hookstepsolve(f, Df, ξ_guess, hookparams)
+            if converged
+                Threads.atomic_add!(hookstep_converged, 1)
+                Threads.atomic_add!(direct_converged, 1)
+                accepted = true
+                accepted_source = "direct"
+                accepted_ξ = ξ_star
+                final_residual = norm(f(ξ_star))
+                break
+            end
+        end
+
+        if !accepted && homotopy_enabled
+            Threads.atomic_add!(homotopy_attempted, 1)
+            result = homotopy_promote_seed(
+                ξ_base,
+                model_to,
+                Re;
+                hookparams = hookparams,
+                initial_dmu = homotopy_initial_dmu,
+                min_dmu = homotopy_min_dmu,
+                max_dmu = homotopy_max_dmu,
+                growth = homotopy_growth,
+                shrink = homotopy_shrink,
+                max_failures = homotopy_max_failures,
+            )
+            hμ = result.μ
+            hsuccesses = result.successes
+            hfailures = result.failures
+            final_residual = result.final_residual
+            Threads.atomic_add!(homotopy_steps, result.successes)
+            if result.converged
+                Threads.atomic_add!(hookstep_converged, 1)
+                Threads.atomic_add!(homotopy_converged, 1)
+                accepted = true
+                accepted_source = "homotopy"
+                accepted_ξ = result.ξ
+            end
+        end
+
+        if accepted
+            x, _, _ = extract_components(accepted_ξ, model_to)
+            if norm(x) > norm_threshold
+                Threads.atomic_add!(accepted_postfilter, 1)
+                fp = fingerprint(model_to, accepted_ξ)
+                lock(data_lock) do
+                    if is_distinct(fp, fingerprints; tol = fp_tol)
+                        push!(fingerprints, fp)
+                        push!(refined, accepted_ξ)
+                    end
+                end
+            else
+                lock(data_lock) do
+                    push!(rejected_norms, Float64(norm(x)))
+                    push!(rejected_shears, Float64(shear(x, model_to)))
+                end
+            end
+        end
+
+        lock(data_lock) do
+            push!(homotopy_rows, (
+                seed_index = i,
+                status = accepted ? "accepted" : "failed",
+                source = accepted_source,
+                final_mu = hμ,
+                homotopy_success_steps = hsuccesses,
+                homotopy_failures = hfailures,
+                final_residual = final_residual,
+            ))
+        end
+
+        done = Threads.atomic_add!(progress, 1) + 1
+        if done % progress_every == 0 || done == attempted
+            local_unique = lock(data_lock) do
+                length(refined)
+            end
+            lock(io_lock) do
+                pct = round(100 * done / attempted; digits = 1)
+                println("Promotion progress: $(done)/$(attempted) ($(pct)%) (unique=$(local_unique), homotopy=$(homotopy_converged[])/$(homotopy_attempted[]))")
+            end
+        end
+    end
+
+    if !isempty(homotopy_summary_path)
+        open(homotopy_summary_path, "w") do io
+            println(io, "seed_index,status,source,final_mu,homotopy_success_steps,homotopy_failures,final_residual")
+            for r in sort(homotopy_rows; by = x -> x.seed_index)
+                println(io, "$(r.seed_index),$(r.status),$(r.source),$(r.final_mu),$(r.homotopy_success_steps),$(r.homotopy_failures),$(r.final_residual)")
+            end
+        end
+    end
+
+    rejected_stats = summarize_rejected_convergences(rejected_norms, rejected_shears)
+    stats = (
+        attempted_seeds = attempted,
+        hookstep_converged = hookstep_converged[],
+        accepted_postfilter = accepted_postfilter[],
+        rejected_postfilter = rejected_stats.rejected_postfilter,
+        rejected_norm_min = rejected_stats.rejected_norm_min,
+        rejected_norm_median = rejected_stats.rejected_norm_median,
+        rejected_norm_max = rejected_stats.rejected_norm_max,
+        rejected_shear_min = rejected_stats.rejected_shear_min,
+        rejected_shear_median = rejected_stats.rejected_shear_median,
+        rejected_shear_max = rejected_stats.rejected_shear_max,
+        unique_solutions = length(refined),
+        promotions_reconverged = length(refined),
+        direct_converged = direct_converged[],
+        homotopy_attempted = homotopy_attempted[],
+        homotopy_converged = homotopy_converged[],
+        homotopy_steps = homotopy_steps[],
+    )
+    return refined, fingerprints, stats
+end
+
 function summarize_rejected_convergences(norms::Vector{Float64}, shears::Vector{Float64})
     if isempty(norms)
         return (
@@ -573,6 +818,12 @@ println(
     "ladder_perturb_switch_jkl=$(ladder_perturb_switch_jkl), " *
     "ladder_perturb_switch_idx=$(ladder_perturb_switch_idx), " *
     "ladder_perturb_scale=$(ladder_perturb_scale)",
+)
+println(
+    "  homotopy_enabled=$(homotopy_enabled), homotopy_initial_dmu=$(homotopy_initial_dmu), " *
+    "homotopy_min_dmu=$(homotopy_min_dmu), homotopy_max_dmu=$(homotopy_max_dmu), " *
+    "homotopy_growth=$(homotopy_growth), homotopy_shrink=$(homotopy_shrink), " *
+    "homotopy_max_failures=$(homotopy_max_failures)",
 )
 println("  shear_band=[$(shear_min), $(shear_max)]")
 println("  julia_threads=$(Threads.nthreads())")
@@ -709,9 +960,10 @@ for symm in symmetry_groups
                     ladder_perturb_trials_early : ladder_perturb_trials_late
                 println(
                     "[promotion config] level=$(level_idx) JKL=($(J),$(K),$(L)) " *
-                    "perturb_trials=$(level_perturb_trials), perturb_scale=$(ladder_perturb_scale)",
+                    "perturb_trials=$(level_perturb_trials), perturb_scale=$(ladder_perturb_scale), " *
+                    "homotopy_enabled=$(homotopy_enabled)",
                 )
-                promoted, _, stats_promote = refine_projected_solutions(
+                promoted, _, stats_promote = refine_projected_solutions_with_homotopy(
                     prev_model,
                     model,
                     Re;
@@ -720,9 +972,17 @@ for symm in symmetry_groups
                     norm_threshold = norm_threshold,
                     perturb_trials = level_perturb_trials,
                     perturb_scale = ladder_perturb_scale,
+                    homotopy_enabled = homotopy_enabled,
+                    homotopy_initial_dmu = homotopy_initial_dmu,
+                    homotopy_min_dmu = homotopy_min_dmu,
+                    homotopy_max_dmu = homotopy_max_dmu,
+                    homotopy_growth = homotopy_growth,
+                    homotopy_shrink = homotopy_shrink,
+                    homotopy_max_failures = homotopy_max_failures,
+                    homotopy_summary_path = joinpath(level_dir, "homotopy_promotion_summary.csv"),
                 )
                 prev_solutions = promoted
-                source = "promotion"
+                source = stats_promote.homotopy_converged > 0 ? "promotion+homotopy" : "promotion"
                 level_stats = (
                     attempted_seeds = stats_promote.attempted_seeds,
                     hookstep_converged = stats_promote.hookstep_converged,
