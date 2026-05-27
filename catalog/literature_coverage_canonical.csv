@@ -1,0 +1,30 @@
+status,Re,object_id,geometry_label,literature_rows,D_values,H_values,mapped_physical_ids,mapped_literature_labels
+missing_direct,270,EQ1,GHC,Sharma2020:Pi_11(EQ8),1.5415,Sigma,,
+missing_direct,270,EQ12,GHC,Sharma2020:Pi_2(EQ1),1.5444,Theta6,,
+missing_direct,270,EQ20,GHC,Sharma2020:Pi_38(EQ8),3.1529,K,,
+missing_direct,270,EQ7,GHC,Sharma2020:Pi_3(EQ8),1.5530,Theta,,
+missing_direct,270,EQ8,GHC,Sharma2020:EQ8,3.6719,Theta,,
+missing_direct,330,EQ1,GHC,Sharma2020:Pi_6(EQ6),1.4705,Sigma,,
+missing_direct,330,EQ12,GHC,Sharma2020:Pi_31(EQ19),1.5650,Theta6,,
+missing_direct,330,EQ17,GHC,Sharma2020:Pi_67(EQ6),2.3047,Theta6,,
+missing_direct,330,EQ18,GHC,Sharma2020:Pi_66(EQ19),2.6274,Theta6,,
+missing_direct,330,EQ19,GHC,Sharma2020:Pi_42(EQ6),2.6947,Theta6,,
+missing_direct,330,EQ5,GHC,Sharma2020:Pi_40(EQ6),2.2785,Sigma,,
+missing_direct,330,EQ6,GHC,GHC2008:EQ6;Sharma2020:EQ6,2.8180;2.8185,S;Sigma,,
+missing_direct,330,EQ7,GHC,Sharma2020:Pi_2(EQ6),1.3433,Theta,,
+laminar,400,EQ0,GHC,GHC2008:EQ0;Sharma2020:EQ0,1.0000;1.0000,Gamma;Gamma,,
+mapped,400,EQ1,GHC,GHC2008:EQ1;Sharma2020:Pi_1(EQ2),1.4290;1.4293,S;Sigma,ghc_re400_alpha1p14_gamma2p5_low_shear_004,"GHC, 2008, EQ1"
+missing_direct,400,EQ10,GHC,GHC2008:EQ10;Sharma2020:EQ10,2.3730;2.3721,"{e,sigma_xu};Theta6",,
+missing_direct,400,EQ11,GHC,GHC2008:EQ11;Sharma2020:EQ11,3.4320;3.4322,"{e,sigma_xu};Theta6",,
+missing_direct,400,EQ12,GHC,GHC2008:EQ12;Sharma2020:Pi_5(EQ9),2.0710;1.6034,"{e,sigma_xu};Theta6",,
+missing_direct,400,EQ13,GHC,GHC2008:EQ13;Sharma2020:Pi_3(EQ10),3.3610;1.7630,"{e,sigma_xu};Theta6",,
+missing_direct,400,EQ14,GHC,Sharma2020:Pi_7(EQ11),3.2474,Theta6,,
+missing_direct,400,EQ15,GHC,Sharma2020:Pi_7(EQ10),2.0713,Theta6,,
+missing_direct,400,EQ16,GHC,Sharma2020:Pi_10(EQ11),3.3612,Theta6,,
+missing_direct,400,EQ2,GHC,GHC2008:EQ2;Sharma2020:Pi_5(EQ14),3.0440;3.0437,S;Sigma,,
+mapped,400,EQ3,GHC,GHC2008:EQ3;Sharma2020:Pi_3(EQ4),1.3180;1.3177,S;Sigma,ghc_re400_alpha1p14_gamma2p5_low_shear_003,"GHC, 2008, EQ3"
+mapped,400,EQ4,GHC,GHC2008:EQ4;Sharma2020:EQ4,1.4540;1.4537,S;Sigma,ghc_re400_alpha1p14_gamma2p5_low_shear_005,"GHC, 2008, EQ4"
+mapped,400,EQ5,GHC,GHC2008:EQ5;Sharma2020:EQ5,2.0200;2.0201,S;Sigma,ghc_re400_alpha1p14_gamma2p5_low_shear_006,"GHC, 2008, EQ5"
+mapped,400,EQ7,GHC,GHC2008:EQ7;Sharma2020:Pi_2(EQ5),1.2520;1.2523,"S x {e,tau_xu};Theta",ghc_re400_alpha1p14_gamma2p5_low_shear_002,"GHC, 2008, EQ7;Sharma, 2020, Pi_2(EQ5) EQ7"
+missing_direct,400,EQ8,GHC,GHC2008:EQ8,3.0440,"S x {e,tau_xu}",,
+missing_direct,400,EQ9,GHC,GHC2008:EQ9;Sharma2020:Pi_7(EQ4),1.4040;1.4048,"{e,sigma_xu};Theta6",,

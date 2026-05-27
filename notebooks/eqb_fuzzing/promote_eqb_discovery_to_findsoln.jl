@@ -1,8 +1,12 @@
-import Pkg
-Pkg.activate(joinpath(@__DIR__, "..", ".."))
+if get(ENV, "CLOUDATLAS_SKIP_ACTIVATE", "false") != "true"
+    import Pkg
+    Pkg.activate(joinpath(@__DIR__, "..", ".."))
+end
 
 using CloudAtlas
 using ChannelflowWrapper
+using CSV
+using DataFrames
 using DelimitedFiles
 using Printf
 using Dates
@@ -167,6 +171,60 @@ function parse_sol_id(fname::AbstractString)
     return safeparse(Int, m.captures[1])
 end
 
+function read_solution_summary(level_dir::AbstractString, sol_id::Int)
+    path = joinpath(level_dir, "solutions_summary.csv")
+    isfile(path) || return (found=false, norm=NaN, shear=NaN)
+    _, rows = parse_csv(path)
+    for row in rows
+        safeparse(Int, get(row, "id", "0")) == sol_id || continue
+        return (
+            found=true,
+            norm=safeparse(Float64, get(row, "norm", "NaN")),
+            shear=safeparse(Float64, get(row, "shear", "NaN")),
+        )
+    end
+    return (found=false, norm=NaN, shear=NaN)
+end
+
+function load_catalog_fingerprints(path::AbstractString; Re::Float64, Lx::Float64, Lz::Float64, parameter_tol::Float64=1e-8)
+    isfile(path) || return NamedTuple[]
+    df = CSV.read(path, DataFrame; stringtype=String)
+    required = [:physical_id, :Re, :Lx, :Lz, :L2, :shear]
+    all(c -> c in propertynames(df), required) || return NamedTuple[]
+    out = NamedTuple[]
+    for row in eachrow(df)
+        rowRe = try Float64(row.Re) catch; NaN end
+        rowLx = try Float64(row.Lx) catch; NaN end
+        rowLz = try Float64(row.Lz) catch; NaN end
+        if abs(rowRe - Re) <= parameter_tol && abs(rowLx - Lx) <= parameter_tol && abs(rowLz - Lz) <= parameter_tol
+            l2 = try Float64(row.L2) catch; NaN end
+            shear = try Float64(row.shear) catch; NaN end
+            if isfinite(l2) && isfinite(shear)
+                push!(out, (physical_id=String(row.physical_id), L2=l2, shear=shear))
+            end
+        end
+    end
+    return out
+end
+
+function is_catalog_known(summary, known; l2_tol::Float64, shear_tol::Float64)
+    summary.found || return (known=false, physical_id="", l2_gap=NaN, shear_gap=NaN)
+    best = (physical_id="", l2_gap=Inf, shear_gap=Inf)
+    for row in known
+        l2_gap = abs(summary.norm - row.L2)
+        shear_gap = abs(summary.shear - row.shear)
+        if l2_gap <= l2_tol && shear_gap <= shear_tol && l2_gap + shear_gap < best.l2_gap + best.shear_gap
+            best = (physical_id=row.physical_id, l2_gap=l2_gap, shear_gap=shear_gap)
+        end
+    end
+    return (
+        known = !isempty(best.physical_id),
+        physical_id = best.physical_id,
+        l2_gap = best.l2_gap,
+        shear_gap = best.shear_gap,
+    )
+end
+
 function read_last_residual(convergence_path::AbstractString)
     isfile(convergence_path) || return Inf
     try
@@ -228,10 +286,23 @@ function ensure_symm_file!(cache::Dict{String,String}, lk::ReentrantLock, refs_d
     end
 end
 
-function gather_jobs(runs_root::String, queue_meta, cases, groups; resume::Bool=true, conv_tol::Float64=1e-10, stop_on_first::Bool=true)
+function gather_jobs(
+    runs_root::String,
+    queue_meta,
+    cases,
+    groups;
+    resume::Bool=true,
+    conv_tol::Float64=1e-10,
+    stop_on_first::Bool=true,
+    skip_catalog_known::Bool=false,
+    catalog_manifest::String="",
+    catalog_l2_tol::Float64=2e-3,
+    catalog_shear_tol::Float64=5e-3,
+)
     symm_map = symmetry_groups()
     jobs = NamedTuple[]
     solved_keys = Set{Tuple{String,String,Int}}()
+    skipped_known = NamedTuple[]
     for case in cases
         meta = get(
             queue_meta,
@@ -243,6 +314,11 @@ function gather_jobs(runs_root::String, queue_meta, cases, groups; resume::Bool=
         alpha = 2pi / meta.Lx
         gamma = 2pi / meta.Lz
         refs_dir = joinpath(case_dir, "channelflow_refs")
+        known = if skip_catalog_known && !isempty(catalog_manifest)
+            load_catalog_fingerprints(catalog_manifest; Re=meta.Re, Lx=meta.Lx, Lz=meta.Lz)
+        else
+            NamedTuple[]
+        end
         for g in groups
             H = get(symm_map, g, nothing)
             H === nothing && continue
@@ -267,6 +343,28 @@ function gather_jobs(runs_root::String, queue_meta, cases, groups; resume::Bool=
                             push!(solved_keys, traj_key)
                         end
                         continue
+                    end
+                    if skip_catalog_known && !isempty(known)
+                        summary = read_solution_summary(level_dir, sid)
+                        match = is_catalog_known(summary, known; l2_tol=catalog_l2_tol, shear_tol=catalog_shear_tol)
+                        if match.known
+                            push!(skipped_known, (
+                                case_label=case,
+                                group=g,
+                                J=J,
+                                K=K,
+                                L=L,
+                                sol_id=sid,
+                                matched_physical_id=match.physical_id,
+                                l2_gap=match.l2_gap,
+                                shear_gap=match.shear_gap,
+                                job_dir=job_dir,
+                            ))
+                            if stop_on_first
+                                push!(solved_keys, traj_key)
+                            end
+                            continue
+                        end
                     end
                     push!(jobs, (
                         case_label=case,
@@ -293,7 +391,7 @@ function gather_jobs(runs_root::String, queue_meta, cases, groups; resume::Bool=
         jobs = [j for j in jobs if !(j.traj_key in solved_keys)]
     end
     sort!(jobs; by=j -> (j.case_label, String(j.group), j.sol_id, -j.J, -j.K, -j.L))
-    return jobs, solved_keys
+    return jobs, solved_keys, skipped_known
 end
 
 function main()
@@ -312,10 +410,14 @@ function main()
     resume = parse_bool(args, "resume"; default=true)
     dry_run = parse_bool(args, "dry-run"; default=false)
     stop_on_first = parse_bool(args, "stop-on-first"; default=true)
+    skip_catalog_known = parse_bool(args, "skip-catalog-known"; default=false)
     conv_tol = parse(Float64, get(args, "conv-tol", "1e-10"))
     parallel = parse(Int, get(args, "parallel", string(Threads.nthreads())))
     workers = max(1, min(parallel, Threads.nthreads()))
     Tfind = parse(Float64, get(args, "T", "10.0"))
+    catalog_manifest = get(args, "catalog-manifest", joinpath(@__DIR__, "..", "..", "catalog", "catalog_manifest.csv"))
+    catalog_l2_tol = parse(Float64, get(args, "catalog-l2-tol", "2e-3"))
+    catalog_shear_tol = parse(Float64, get(args, "catalog-shear-tol", "5e-3"))
     reference_base = get(
         args,
         "reference",
@@ -323,7 +425,19 @@ function main()
     )
     isfile(reference_base) || error("Reference field not found: $reference_base")
 
-    jobs, pre_solved_keys = gather_jobs(runs_root, queue_meta, cases, groups; resume=resume, conv_tol=conv_tol, stop_on_first=stop_on_first)
+    jobs, pre_solved_keys, skipped_known = gather_jobs(
+        runs_root,
+        queue_meta,
+        cases,
+        groups;
+        resume=resume,
+        conv_tol=conv_tol,
+        stop_on_first=stop_on_first,
+        skip_catalog_known=skip_catalog_known,
+        catalog_manifest=catalog_manifest,
+        catalog_l2_tol=catalog_l2_tol,
+        catalog_shear_tol=catalog_shear_tol,
+    )
     buckets = Dict{Tuple{String,String,Int}, Vector{NamedTuple}}()
     for j in jobs
         push!(get!(buckets, j.traj_key, NamedTuple[]), j)
@@ -338,8 +452,9 @@ function main()
     println("runs_root=$(runs_root)")
     println("cases=$(join(cases, ","))")
     println("groups=$(join(groups, ","))")
-    println("jobs=$(length(jobs)) trajectories=$(length(bucket_keys)) pre_solved_trajectories=$(length(pre_solved_keys)) resume=$(resume) dry_run=$(dry_run) workers=$(workers)")
+    println("jobs=$(length(jobs)) trajectories=$(length(bucket_keys)) pre_solved_trajectories=$(length(pre_solved_keys)) skipped_catalog_known=$(length(skipped_known)) resume=$(resume) dry_run=$(dry_run) workers=$(workers)")
     println("stop_on_first=$(stop_on_first) conv_tol=$(conv_tol)")
+    println("skip_catalog_known=$(skip_catalog_known) catalog_manifest=$(catalog_manifest) catalog_l2_tol=$(catalog_l2_tol) catalog_shear_tol=$(catalog_shear_tol)")
     println("reference=$(reference_base)")
 
     summary_path = joinpath(runs_root, "findsoln_jobs_summary.csv")
@@ -351,6 +466,31 @@ function main()
         open(summary_path, "a") do io
             println(io, "timestamp,case,group,J,K,L,sol_id,status,error,job_dir")
         end
+    end
+
+    if !isempty(skipped_known)
+        skipped_path = joinpath(runs_root, "findsoln_catalog_known_skips.csv")
+        new_file = !isfile(skipped_path) || filesize(skipped_path) == 0
+        open(skipped_path, "a") do io
+            if new_file
+                println(io, "timestamp,case,group,J,K,L,sol_id,matched_physical_id,l2_gap,shear_gap,job_dir")
+            end
+            for row in skipped_known
+                println(
+                    io,
+                    "$(Dates.format(now(), "yyyy-mm-ddTHH:MM:SS")),$(row.case_label),$(row.group),$(row.J),$(row.K),$(row.L),$(row.sol_id),$(row.matched_physical_id),$(row.l2_gap),$(row.shear_gap),$(row.job_dir)",
+                )
+            end
+        end
+        open(summary_path, "a") do io
+            for row in skipped_known
+                println(
+                    io,
+                    "$(Dates.format(now(), "yyyy-mm-ddTHH:MM:SS")),$(row.case_label),$(row.group),$(row.J),$(row.K),$(row.L),$(row.sol_id),skip_catalog_known:$(row.matched_physical_id),,$(row.job_dir)",
+                )
+            end
+        end
+        println("catalog_known_skips=$(skipped_path)")
     end
 
     if dry_run

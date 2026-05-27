@@ -1,0 +1,7 @@
+physical_id,citation_key,authors,year,paper_title,literature_label,object_type,object_id,notes,confidence
+ghc_re400_alpha1p14_gamma2p5_low_shear_003,GHC2008,"Gibson; Halcrow; Cvitanovic",2008,"Equilibrium and travelling-wave solutions of plane Couette flow","GHC, 2008, EQ3",EQ,EQ3,"",curated
+ghc_re400_alpha1p14_gamma2p5_low_shear_004,GHC2008,"Gibson; Halcrow; Cvitanovic",2008,"Equilibrium and travelling-wave solutions of plane Couette flow","GHC, 2008, EQ1",EQ,EQ1,"",curated
+ghc_re400_alpha1p14_gamma2p5_low_shear_005,GHC2008,"Gibson; Halcrow; Cvitanovic",2008,"Equilibrium and travelling-wave solutions of plane Couette flow","GHC, 2008, EQ4",EQ,EQ4,"",curated
+ghc_re400_alpha1p14_gamma2p5_low_shear_006,GHC2008,"Gibson; Halcrow; Cvitanovic",2008,"Equilibrium and travelling-wave solutions of plane Couette flow","GHC, 2008, EQ5",EQ,EQ5,"",curated
+ghc_re400_alpha1p14_gamma2p5_low_shear_002,GHC2008,"Gibson; Halcrow; Cvitanovic",2008,"Equilibrium and travelling-wave solutions of plane Couette flow","GHC, 2008, EQ7",EQ,EQ7,"Same Re and GHC box; scalar diagnostics match GHC/Sharma EQ7.",curated
+ghc_re400_alpha1p14_gamma2p5_low_shear_002,Sharma2020,Sharma,2020,,"Sharma, 2020, Pi_2(EQ5) EQ7",EQ,EQ7,"Same Re and GHC box; Sharma table identifies this as Pi_2(EQ5).",curated

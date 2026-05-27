@@ -1,0 +1,43 @@
+status,reason,citation_key,source_table,root_label,object_id,Re,geometry_label,norm,E,D,H,unstable_dim,unstable_dim_H,mapped_physical_ids,mapped_literature_labels,mapped_cases
+laminar,Laminar/trivial equilibrium; not counted as nonlinear-solution coverage.,GHC2008,GHC_equilibria,,EQ0,400,GHC,0.0000,0.1667,1.0000,Gamma,0,0,,,
+mapped,Curated direct mapping exists.,GHC2008,GHC_equilibria,,EQ1,400,GHC,0.2091,0.1363,1.4290,S,1,1,ghc_re400_alpha1p14_gamma2p5_low_shear_004,"GHC, 2008, EQ1",ghc_re400_alpha1p14_gamma2p5_low_shear
+missing_direct,No curated same-parameter mapping in the current catalog.,GHC2008,GHC_equilibria,,EQ2,400,GHC,0.3858,0.0780,3.0440,S,8,2,,,
+mapped,Curated direct mapping exists.,GHC2008,GHC_equilibria,,EQ3,400,GHC,0.1259,0.1382,1.3180,S,4,2,ghc_re400_alpha1p14_gamma2p5_low_shear_003,"GHC, 2008, EQ3",ghc_re400_alpha1p14_gamma2p5_low_shear
+mapped,Curated direct mapping exists.,GHC2008,GHC_equilibria,,EQ4,400,GHC,0.1681,0.1243,1.4540,S,6,3,ghc_re400_alpha1p14_gamma2p5_low_shear_005,"GHC, 2008, EQ4",ghc_re400_alpha1p14_gamma2p5_low_shear
+mapped,Curated direct mapping exists.,GHC2008,GHC_equilibria,,EQ5,400,GHC,0.2186,0.1073,2.0200,S,11,4,ghc_re400_alpha1p14_gamma2p5_low_shear_006,"GHC, 2008, EQ5",ghc_re400_alpha1p14_gamma2p5_low_shear
+missing_direct,No curated same-parameter mapping in the current catalog.,GHC2008,GHC_equilibria,,EQ6,330,GHC,0.2751,0.0972,2.8180,S,19,6,,,
+mapped,Curated direct mapping exists.,GHC2008,GHC_equilibria,,EQ7,400,GHC,0.0935,0.1469,1.2520,"S x {e,tau_xu}",3,1,ghc_re400_alpha1p14_gamma2p5_low_shear_002,"GHC, 2008, EQ7;Sharma, 2020, Pi_2(EQ5) EQ7",ghc_re400_alpha1p14_gamma2p5_low_shear
+missing_direct,No curated same-parameter mapping in the current catalog.,GHC2008,GHC_equilibria,,EQ8,400,GHC,0.1756,0.1204,3.0440,"S x {e,tau_xu}",15,2,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,GHC2008,GHC_equilibria,,EQ9,400,GHC,0.1565,0.1290,1.4040,"{e,sigma_xu}",5,3,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,GHC2008,GHC_equilibria,,EQ10,400,GHC,0.3285,0.1080,2.3730,"{e,sigma_xu}",10,7,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,GHC2008,GHC_equilibria,,EQ11,400,GHC,0.4049,0.0803,3.4320,"{e,sigma_xu}",13,10,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,GHC2008,GHC_equilibria,,EQ12,400,GHC,0.3037,0.1159,2.0710,"{e,sigma_xu}",5,4,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,GHC2008,GHC_equilibria,,EQ13,400,GHC,0.4049,0.0813,3.3610,"{e,sigma_xu}",15,9,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,,EQ8,270,GHC,0.3466,0.0853,3.6719,Theta,21,2,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,Pi_11(EQ8),EQ1,270,GHC,0.2292,0.1294,1.5415,Sigma,1,1,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,Pi_3(EQ8),EQ7,270,GHC,0.1546,0.1301,1.5530,Theta,5,1,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,Pi_38(EQ8),EQ20,270,GHC,0.3148,0.0904,3.1529,K,12,0,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,Pi_2(EQ1),EQ12,270,GHC,0.2297,0.1292,1.5444,Theta6,2,2,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,,EQ6,330,GHC,0.2751,0.0972,2.8185,Sigma,19,5,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,Pi_6(EQ6),EQ1,330,GHC,0.2168,0.1337,1.4705,Sigma,1,1,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,Pi_40(EQ6),EQ5,330,GHC,0.2375,0.1052,2.2785,Sigma,15,6,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,Pi_2(EQ6),EQ7,330,GHC,0.1145,0.1410,1.3433,Theta,3,1,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,Pi_67(EQ6),EQ17,330,GHC,0.2348,0.1063,2.3047,Theta6,15,8,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,Pi_42(EQ6),EQ19,330,GHC,0.2674,0.0988,2.6947,Theta6,18,9,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,Pi_31(EQ19),EQ12,330,GHC,0.2331,0.1292,1.5650,Theta6,3,2,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,Pi_66(EQ19),EQ18,330,GHC,0.2707,0.0975,2.6274,Theta6,17,9,,,
+laminar,Laminar/trivial equilibrium; not counted as nonlinear-solution coverage.,Sharma2020,Sharma,,EQ0,400,GHC,0.0000,0.1667,1.0000,Gamma,0,0,,,
+mapped,Curated direct mapping exists.,Sharma2020,Sharma,Pi_3(EQ4),EQ3,400,GHC,0.1259,0.1382,1.3177,Sigma,4,2,ghc_re400_alpha1p14_gamma2p5_low_shear_003,"GHC, 2008, EQ3",ghc_re400_alpha1p14_gamma2p5_low_shear
+mapped,Curated direct mapping exists.,Sharma2020,Sharma,,EQ4,400,GHC,0.1681,0.1243,1.4537,Sigma,6,3,ghc_re400_alpha1p14_gamma2p5_low_shear_005,"GHC, 2008, EQ4",ghc_re400_alpha1p14_gamma2p5_low_shear
+mapped,Curated direct mapping exists.,Sharma2020,Sharma,Pi_1(EQ2),EQ1,400,GHC,0.2091,0.1363,1.4293,Sigma,1,1,ghc_re400_alpha1p14_gamma2p5_low_shear_004,"GHC, 2008, EQ1",ghc_re400_alpha1p14_gamma2p5_low_shear
+mapped,Curated direct mapping exists.,Sharma2020,Sharma,,EQ5,400,GHC,0.2186,0.1073,2.0201,Sigma,11,4,ghc_re400_alpha1p14_gamma2p5_low_shear_006,"GHC, 2008, EQ5",ghc_re400_alpha1p14_gamma2p5_low_shear
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,Pi_5(EQ14),EQ2,400,GHC,0.3858,0.0780,3.0437,Sigma,8,2,,,
+mapped,Curated direct mapping exists.,Sharma2020,Sharma,Pi_2(EQ5),EQ7,400,GHC,0.0936,0.1469,1.2523,Theta,3,1,ghc_re400_alpha1p14_gamma2p5_low_shear_002,"GHC, 2008, EQ7;Sharma, 2020, Pi_2(EQ5) EQ7",ghc_re400_alpha1p14_gamma2p5_low_shear
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,Pi_7(EQ4),EQ9,400,GHC,0.1565,0.1290,1.4048,Theta6,5,3,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,,EQ10,400,GHC,0.3285,0.1080,2.3721,Theta6,10,7,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,,EQ11,400,GHC,0.4049,0.0803,3.4322,Theta6,13,10,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,Pi_5(EQ9),EQ12,400,GHC,0.2405,0.1289,1.6034,Theta6,3,2,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,Pi_3(EQ10),EQ13,400,GHC,0.2683,0.1242,1.7630,Theta6,4,3,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,Pi_7(EQ10),EQ15,400,GHC,0.3037,0.1160,2.0713,Theta6,8,6,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,Pi_7(EQ11),EQ14,400,GHC,0.4014,0.0759,3.2474,Theta6,10,4,,,
+missing_direct,No curated same-parameter mapping in the current catalog.,Sharma2020,Sharma,Pi_10(EQ11),EQ16,400,GHC,0.4049,0.0813,3.3612,Theta6,15,9,,,
