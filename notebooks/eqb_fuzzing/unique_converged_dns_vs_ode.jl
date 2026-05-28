@@ -1,11 +1,13 @@
-import Pkg
-Pkg.activate(joinpath(@__DIR__, "..", ".."))
+if get(ENV, "CLOUDATLAS_SKIP_ACTIVATE", "false") != "true"
+    import Pkg
+    Pkg.activate(joinpath(@__DIR__, "..", ".."))
+end
 
 using DelimitedFiles
 using Printf
 using Dates
 
-const GROUP_ORDER = ["A", "B", "C", "D", "E", "F", "G"]
+const GROUP_ORDER_DEFAULT = ["A", "B", "C", "D", "E", "F", "G", "SigmaGHC", "ThetaGHC", "Theta6", "K", "Rxz"]
 
 function parse_args(args)
     out = Dict{String, String}()
@@ -34,6 +36,16 @@ function parse_case_list(s::AbstractString)
     t = strip(s)
     isempty(t) && return String[]
     [String(strip(x)) for x in split(t, ",") if !isempty(strip(x))]
+end
+
+function parse_group_list(s::AbstractString)
+    groups = parse_case_list(s)
+    isempty(groups) && return GROUP_ORDER_DEFAULT
+    allowed = Set(GROUP_ORDER_DEFAULT)
+    for g in groups
+        g in allowed || error("Unknown group '$g'")
+    end
+    return groups
 end
 
 function parse_jkl(dirname::AbstractString)
@@ -117,9 +129,9 @@ end
 
 getmetric(stats::Dict{String,Float64}, key::String) = get(stats, key, NaN)
 
-function collect_dns_records(case_dir::AbstractString; conv_tol::Float64=1e-10)
+function collect_dns_records(case_dir::AbstractString, groups; conv_tol::Float64=1e-10)
     recs = NamedTuple[]
-    for group in GROUP_ORDER
+    for group in groups
         group_dir = joinpath(case_dir, group)
         isdir(group_dir) || continue
         for d in readdir(group_dir)
@@ -245,8 +257,8 @@ function lookup_ode_for_sol(case_dir::AbstractString, group::String, sol_id::Int
     return (found=true, exact=false, J=best.J, K=best.K, L=best.L, norm=best.norm, shear=best.shear, source=best.source)
 end
 
-function write_unique_summary_txt(out_path::AbstractString, case_label::String, Re, Lx, Lz, best_by_sol, shear_tol, l2_tol)
-    by_group = Dict(g => NamedTuple[] for g in GROUP_ORDER)
+function write_unique_summary_txt(out_path::AbstractString, case_label::String, Re, Lx, Lz, best_by_sol, groups, shear_tol, l2_tol)
+    by_group = Dict(g => NamedTuple[] for g in groups)
     for ((g, _), r) in best_by_sol
         push!(by_group[g], r)
     end
@@ -257,7 +269,7 @@ function write_unique_summary_txt(out_path::AbstractString, case_label::String, 
         println(io, "# dedupe tolerances: shear_tol=$(shear_tol), l2_tol=$(l2_tol)")
         println(io, "# generated: $(Dates.format(now(), "yyyy-mm-dd HH:MM:SS"))")
         println(io)
-        for g in GROUP_ORDER
+        for g in groups
             recs = by_group[g]
             isempty(recs) && continue
             uniq = dedupe_group_records(recs; shear_tol=shear_tol, l2_tol=l2_tol)
@@ -272,15 +284,15 @@ function write_unique_summary_txt(out_path::AbstractString, case_label::String, 
     end
 end
 
-function write_unique_summary_csv(out_path::AbstractString, case_label::String, Re, Lx, Lz, best_by_sol, shear_tol, l2_tol)
-    by_group = Dict(g => NamedTuple[] for g in GROUP_ORDER)
+function write_unique_summary_csv(out_path::AbstractString, case_label::String, Re, Lx, Lz, best_by_sol, groups, shear_tol, l2_tol)
+    by_group = Dict(g => NamedTuple[] for g in groups)
     for ((g, _), r) in best_by_sol
         push!(by_group[g], r)
     end
     mkpath(dirname(out_path))
     open(out_path, "w") do io
         println(io, "case,Re,Lx,Lz,group,unique_id,shear,L2,multiplicity,members")
-        for g in GROUP_ORDER
+        for g in groups
             recs = by_group[g]
             isempty(recs) && continue
             uniq = dedupe_group_records(recs; shear_tol=shear_tol, l2_tol=l2_tol)
@@ -370,6 +382,7 @@ function main()
     shear_tol = parse(Float64, get(args, "shear-tol", "1e-6"))
     l2_tol = parse(Float64, get(args, "l2-tol", "1e-6"))
     req_cases = parse_case_list(get(args, "cases", ""))
+    groups = parse_group_list(get(args, "groups", ""))
 
     queue = read_run_queue(runs_root)
     all_cases = sort(collect(keys(queue)))
@@ -382,14 +395,14 @@ function main()
     println("== Unique converged DNS + ODE comparison ==")
     println("runs_root=$(runs_root)")
     println("out_dir=$(out_dir)")
-    println("cases=$(join(cases, ',')) conv_tol=$(conv_tol) shear_tol=$(shear_tol) l2_tol=$(l2_tol)")
+    println("cases=$(join(cases, ',')) groups=$(join(groups, ',')) conv_tol=$(conv_tol) shear_tol=$(shear_tol) l2_tol=$(l2_tol)")
 
     for case in cases
         meta = get(queue, case, (case_label=case, Re=NaN, Lx=NaN, Lz=NaN, out_dir=joinpath(runs_root, case)))
         case_dir = abspath(meta.out_dir)
         isdir(case_dir) || continue
 
-        dns = collect_dns_records(case_dir; conv_tol=conv_tol)
+        dns = collect_dns_records(case_dir, groups; conv_tol=conv_tol)
         best_by_sol = pick_best_converged_by_solid(dns)
 
         txt_out = joinpath(out_dir, "unique_converged_dns_$(case).txt")
@@ -397,8 +410,8 @@ function main()
         cmp_csv_out = joinpath(out_dir, "ode_dns_compare_$(case).csv")
         cmp_txt_out = joinpath(out_dir, "ode_dns_compare_$(case).txt")
 
-        write_unique_summary_txt(txt_out, case, meta.Re, meta.Lx, meta.Lz, best_by_sol, shear_tol, l2_tol)
-        write_unique_summary_csv(csv_out, case, meta.Re, meta.Lx, meta.Lz, best_by_sol, shear_tol, l2_tol)
+        write_unique_summary_txt(txt_out, case, meta.Re, meta.Lx, meta.Lz, best_by_sol, groups, shear_tol, l2_tol)
+        write_unique_summary_csv(csv_out, case, meta.Re, meta.Lx, meta.Lz, best_by_sol, groups, shear_tol, l2_tol)
         write_ode_dns_compare_csv(cmp_csv_out, case, case_dir, meta.Re, meta.Lx, meta.Lz, best_by_sol)
         write_ode_dns_compare_txt(cmp_txt_out, case, meta.Re, meta.Lx, meta.Lz, cmp_csv_out)
 

@@ -12,7 +12,7 @@ using Printf
 using Dates
 using Base.Threads
 
-const SYMM_ORDER = ["A", "B", "C", "D", "E", "F", "G"]
+const SYMM_ORDER = ["A", "B", "C", "D", "E", "F", "G", "SigmaGHC", "ThetaGHC", "Theta6", "K", "Rxz"]
 
 function parse_args(args)
     out = Dict{String, String}()
@@ -110,6 +110,11 @@ function symmetry_groups()
         "E" => [sx * sy * sz, sz * tx * tz],
         "F" => [sx * sy, sz, tx * tz],
         "G" => [sx * sy * sz],
+        "SigmaGHC" => [sz * tx, sx * sy * tx * tz],
+        "ThetaGHC" => [sx * sy, sz * tx, tx * tz],
+        "Theta6" => [sx * sy * sz * tz],
+        "K" => [sx * sy, sz],
+        "Rxz" => [sx * sy * sz, sz * tx * tz],
     )
 end
 
@@ -121,6 +126,8 @@ function symm_lines(group::String)
     sxytz = "1 -1 -1 1 0.0 0.5"
     sztx = "1 1 1 -1 0.5 0.0"
     sztxz = "1 1 1 -1 0.5 0.5"
+    sxytxz = "1 -1 -1 1 0.5 0.5"
+    sxyztz = "1 -1 -1 -1 0.0 0.5"
     if group == "A"
         return [sxyz, txz]
     elseif group == "B"
@@ -135,6 +142,16 @@ function symm_lines(group::String)
         return [sxy, sz, txz]
     elseif group == "G"
         return [sxyz]
+    elseif group == "SigmaGHC"
+        return [sztx, sxytxz]
+    elseif group == "ThetaGHC"
+        return [sxy, sztx, txz]
+    elseif group == "Theta6"
+        return [sxyztz]
+    elseif group == "K"
+        return [sxy, sz]
+    elseif group == "Rxz"
+        return [sxyz, sztxz]
     end
     error("Unknown group: $group")
 end

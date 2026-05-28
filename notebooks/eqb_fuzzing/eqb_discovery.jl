@@ -221,6 +221,11 @@ symmetry_groups = [
     (name = "E", desc = "<sxyz, sztxz>", H = [sx * sy * sz, sz * tx * tz]),
     (name = "F", desc = "<sxy, sz, txz>", H = [sx * sy, sz, tx * tz]),
     (name = "G", desc = "<sxyz>", H = [sx * sy * sz]),
+    (name = "SigmaGHC", desc = "<sztx, sxy*txz>", H = [sz * tx, sx * sy * tx * tz]),
+    (name = "ThetaGHC", desc = "<sxy, sztx, txz>", H = [sx * sy, sz * tx, tx * tz]),
+    (name = "Theta6", desc = "<sxyz*tz>", H = [sx * sy * sz * tz]),
+    (name = "K", desc = "<sxy, sz> (Sharma K; alias of B)", H = [sx * sy, sz]),
+    (name = "Rxz", desc = "<sxyz, sztxz> (canonical GHC R_xz; alias of E)", H = [sx * sy * sz, sz * tx * tz]),
 ]
 
 selected_symmetry_names = begin

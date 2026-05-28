@@ -80,7 +80,8 @@ Common env vars:
   PHASES=discover,promote,summarize
   RUN_ROOT=path              output root
   ATTEMPTS=100000            low-JKL fuzz attempts per symmetry group
-  SYMMETRIES=A,B,C,D,E,F,G   groups to search
+  SYMMETRIES=A,B,C,D,E,F,G   groups to search; exact literature groups include
+                              SigmaGHC,ThetaGHC,Theta6,K,Rxz
   LADDER=1x3x5,...           ODE promotion ladder
   JULIA_NUM_THREADS=16       Julia threads for ODE work
   DNS_PARALLEL=2             concurrent DNS findsoln trajectories
@@ -95,6 +96,7 @@ Common env vars:
 Examples:
   DRY_RUN=true bash notebooks/eqb_fuzzing/run_ghc_re400_fuzz_pipeline.sh
   DRY_RUN=false PHASES=discover SYMMETRIES=E ATTEMPTS=200000 bash notebooks/eqb_fuzzing/run_ghc_re400_fuzz_pipeline.sh
+  DRY_RUN=false PHASES=discover,promote SYMMETRIES=SigmaGHC,ThetaGHC,Theta6,B,G bash notebooks/eqb_fuzzing/run_ghc_re400_fuzz_pipeline.sh
   DRY_RUN=false PHASES=promote,summarize DNS_PARALLEL=2 bash notebooks/eqb_fuzzing/run_ghc_re400_fuzz_pipeline.sh
 EOF
 }
@@ -213,6 +215,7 @@ if has_phase "summarize"; then
     julia --startup-file=no --project="${ROOT_DIR}" "${SCRIPT_DIR}/unique_converged_dns_vs_ode.jl"
     --runs-root "${RUN_ROOT}"
     --cases "${CASE_LABEL}"
+    --groups "${SYMMETRIES}"
     --out-dir "${RUN_ROOT}/analysis/findsoln_unique"
   )
   run_or_print "${RUN_ROOT}/summarize_unique.log" "${summarize_cmd[@]}" || exit "$?"
