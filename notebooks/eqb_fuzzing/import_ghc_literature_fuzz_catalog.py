@@ -8,7 +8,6 @@ import json
 import math
 import re
 import shutil
-import subprocess
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -19,10 +18,20 @@ RUN_ROOT = (
     / "notebooks/eqb_fuzzing/literature_target_runs/ghc_re400/"
     / "ghc_re400_literature_fuzz"
 )
+RUN_ROOT_V2 = (
+    ROOT
+    / "notebooks/eqb_fuzzing/literature_target_runs_v2/ghc_re400/"
+    / "ghc_re400_literature_fuzz"
+)
 CATALOG_ROOT = ROOT / "catalog"
 
 CASE = "ghc_re400_literature_fuzz"
 CATALOG_SOURCE = "literature_target_runs:ghc_re400_literature_fuzz"
+CATALOG_SOURCE_V2 = "literature_target_runs_v2:ghc_re400_literature_fuzz"
+SOURCE_PATHS = {
+    CATALOG_SOURCE: RUN_ROOT,
+    CATALOG_SOURCE_V2: RUN_ROOT_V2,
+}
 RE = 400.0
 LX = 5.511566576198634
 LZ = 2.5132741228718345
@@ -52,6 +61,8 @@ class Candidate:
     ubest: Path
     fieldconverge: Path
     diagnostics: dict[str, float]
+    catalog_source: str = CATALOG_SOURCE
+    member_prefix: str = "fuzz"
 
     @property
     def L2(self) -> float:
@@ -67,7 +78,7 @@ class Candidate:
 
     @property
     def member(self) -> str:
-        return f"fuzz:sol{self.sol_id:03d}@J{self.J}K{self.K}L{self.L}"
+        return f"{self.member_prefix}:sol{self.sol_id:03d}@J{self.J}K{self.K}L{self.L}"
 
 
 @dataclass
@@ -130,6 +141,66 @@ def read_candidates() -> list[Candidate]:
             )
         )
     return out
+
+
+def read_candidate(
+    root: Path,
+    group: str,
+    J: int,
+    K: int,
+    L: int,
+    sol_id: int,
+    *,
+    catalog_source: str,
+    member_prefix: str,
+) -> Candidate:
+    sol_root = root / group / f"jkl_{J}_{K}_{L}"
+    sol_dir = sol_root / "dns_findsoln" / f"sol{sol_id:03d}"
+    asc = sol_root / f"sol{sol_id}.asc"
+    ubest = sol_dir / "ubest.nc"
+    fc = sol_dir / "fieldconverge.asc"
+    if not asc.is_file():
+        raise FileNotFoundError(asc)
+    if not ubest.is_file():
+        raise FileNotFoundError(ubest)
+    diagnostics = read_fieldconverge(fc)
+    if diagnostics["L2"] <= TRIVIAL_TOL and abs(diagnostics["wallshear"]) <= TRIVIAL_TOL:
+        raise ValueError(f"Trivial DNS convergence is not catalogable: {fc}")
+    return Candidate(
+        group=group,
+        J=J,
+        K=K,
+        L=L,
+        sol_id=sol_id,
+        asc=asc,
+        ubest=ubest,
+        fieldconverge=fc,
+        diagnostics=diagnostics,
+        catalog_source=catalog_source,
+        member_prefix=member_prefix,
+    )
+
+
+def read_extra_catalog_clusters() -> list[tuple[int, Cluster]]:
+    return [
+        (
+            15,
+            Cluster(
+                [
+                    read_candidate(
+                        RUN_ROOT_V2,
+                        "E",
+                        1,
+                        4,
+                        5,
+                        5,
+                        catalog_source=CATALOG_SOURCE_V2,
+                        member_prefix="fuzz_v2",
+                    )
+                ]
+            ),
+        )
+    ]
 
 
 def cluster_candidates(candidates: list[Candidate]) -> list[Cluster]:
@@ -270,7 +341,7 @@ def metadata_for(pid: str, cluster: Cluster, cat_path: str, out_dir: Path) -> di
     return {
         "physical_id": pid,
         "case": CASE,
-        "catalog_source": CATALOG_SOURCE,
+        "catalog_source": rep.catalog_source,
         "catalog_path": cat_path,
         "Re": RE,
         "Lx": LX,
@@ -346,7 +417,7 @@ def index_markdown(pid: str, meta: dict[str, object]) -> str:
     return f"""---
 physical_id: "{pid}"
 case: "{CASE}"
-catalog_source: "{CATALOG_SOURCE}"
+catalog_source: "{meta["catalog_source"]}"
 Re: {RE}
 Lx: {LX}
 Lz: {LZ}
@@ -381,7 +452,7 @@ dedup_status: "single"
 | Quantity | Value |
 |---|---:|
 | Case | `{CASE}` |
-| Catalog source | `{CATALOG_SOURCE}` |
+| Catalog source | `{meta["catalog_source"]}` |
 | Re | {RE} |
 | Lx | {LX} |
 | Lz | {LZ} |
@@ -435,16 +506,20 @@ No DNS bidirectional bifurcation curve is available for this solution.
 
 def sync_indexes(new_meta: list[dict[str, object]]) -> None:
     index_path = CATALOG_ROOT / "index.json"
-    original = subprocess.check_output(["git", "show", "HEAD~1:catalog/index.json"], text=True)
-    data = json.loads(original)
+    data = json.loads(index_path.read_text())
     data["solutions"] = [s for s in data["solutions"] if s.get("case") != CASE] + new_meta
     data["cases"] = sorted({s["case"] for s in data["solutions"]})
     sources = {s["label"]: s for s in data.get("catalog_sources", [])}
-    sources[CATALOG_SOURCE] = {
-        "label": CATALOG_SOURCE,
-        "path": str(RUN_ROOT),
-        "solutions": len(new_meta),
-    }
+    for label in SOURCE_PATHS:
+        count = sum(1 for s in new_meta if s["catalog_source"] == label)
+        if count:
+            sources[label] = {
+                "label": label,
+                "path": str(SOURCE_PATHS[label]),
+                "solutions": count,
+            }
+        else:
+            sources.pop(label, None)
     data["catalog_sources"] = sorted(sources.values(), key=lambda s: s["label"])
     c = data["counts"]
     c["solutions"] = len(data["solutions"])
@@ -464,9 +539,7 @@ def sync_indexes(new_meta: list[dict[str, object]]) -> None:
     data["generated_at"] = GENERATED_AT
     index_path.write_text(json.dumps(data, indent=2) + "\n")
 
-    site_original = subprocess.check_output(
-        ["git", "show", "HEAD~1:catalog/site/catalog-data.js"], text=True
-    )
+    site_original = CATALOG_ROOT.joinpath("site/catalog-data.js").read_text()
     prefix = "window.CATALOG_DATA = "
     if not site_original.startswith(prefix):
         raise ValueError("Unexpected catalog-data.js prefix")
@@ -494,6 +567,12 @@ def main() -> None:
         for idx, cluster in enumerate(clusters, start=1)
         if has_completed_eigen(f"{CASE}_{idx:03d}")
     ]
+    extra_clusters = [
+        (idx, cluster)
+        for idx, cluster in read_extra_catalog_clusters()
+        if has_completed_eigen(f"{CASE}_{idx:03d}")
+    ]
+    catalog_clusters.extend(extra_clusters)
     valid_ids = {f"{CASE}_{idx:03d}" for idx, _ in catalog_clusters}
     cleanup_obsolete_dirs(valid_ids)
 
@@ -521,7 +600,7 @@ def main() -> None:
             {
                 "physical_id": pid,
                 "case": CASE,
-                "catalog_source": CATALOG_SOURCE,
+                "catalog_source": rep.catalog_source,
                 "Re": RE,
                 "Lx": LX,
                 "Lz": LZ,
@@ -559,10 +638,11 @@ def main() -> None:
     write_csv_rows(manifest_path, fieldnames, rows)
     sync_indexes(new_meta)
     readme = CATALOG_ROOT / "README.md"
-    readme.write_text(re.sub(r"\b\d+ unique", f"{97 + len(catalog_clusters)} unique", readme.read_text(), count=1))
+    total = len(json.loads((CATALOG_ROOT / "index.json").read_text())["solutions"])
+    readme.write_text(re.sub(r"\b\d+ unique", f"{total} unique", readme.read_text(), count=1))
 
-    print(f"Imported {len(candidates)} non-trivial DNS-converged candidates")
-    print(f"Found {len(clusters)} distinct DNS-converged clusters")
+    print(f"Imported {len(candidates) + sum(len(c.candidates) for _, c in extra_clusters)} non-trivial DNS-converged candidates")
+    print(f"Found {len(clusters) + len(extra_clusters)} distinct DNS-converged clusters")
     print(f"Added {len(catalog_clusters)} catalog solutions with completed eigen diagnostics for {CASE}")
     print(f"Eigen analyses present: {sum(1 for m in new_meta if m['eigen_analysis']['available'])}")
 

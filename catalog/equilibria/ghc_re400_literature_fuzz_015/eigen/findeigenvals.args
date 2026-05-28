@@ -1,0 +1,1 @@
+Wed May 27 22:29:12 2026	2	/home/ebenq/.julia/artifacts/6c1f2435997ed534492ee48fcb3cbe0e484642f9/bin/findeigenvals -R 400.0 -T 5.0 -N 32 -Ns 6 --outdir catalog/equilibria/ghc_re400_literature_fuzz_015/eigen --variabledt false notebooks/eqb_fuzzing/literature_target_runs_v2/ghc_re400/ghc_re400_literature_fuzz/E/jkl_1_4_5/dns_findsoln/sol005/ubest.nc 
