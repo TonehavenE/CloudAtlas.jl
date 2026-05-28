@@ -13,11 +13,11 @@ import SparseArrays: sparse
 
 include("Symmetries.jl")
 
-export Symmetry, symmetric, halfbox_symmetries, has_shift_symmetry
+export Symmetry, symmetric, symmetry_sign, halfbox_symmetries, has_shift_symmetry
 
 include("SparseBilinear.jl")
 
-export SparseBilinear, sparse 
+export SparseBilinear, sparse, gql_mask_N
 
 include("BasisFunctions.jl")
 
@@ -26,11 +26,18 @@ export FourierMode, BasisComponent, BasisFunction, compatible, isorthogonal, inn
 include("ODEModels.jl")
 
 export ODEModel, shear, length, is_tw
+export apply_symmetry, apply_continuous_shift, g_rpo_with_ref
+export gql_model, epsilon_ql
 export build_dissipation_matrix, power_input, dissipation_rate
 
 include("Hookstep.jl")
 
-export hookstepsolve, hookstepsolve_tw, SearchParams
+export hookstepsolve, hookstepsolve_tw, hookstepsolve_rpo, SearchParams
+
+include("Continuation.jl")
+
+export GeometryContinuationPoint, model_resolution, remake_model
+export continue_equilibrium_geometry, continue_alpha, continue_gamma
 
 include("TWModels.jl")
 
@@ -116,10 +123,18 @@ function animate_tw_fluctuations end
 function plot_coefficient_evolution end
 function plot_stability_spectrum end
 
+# GLMakie extension stubs (3D visualizations)
+function animate_flow_3d end
+function animate_flow_3d_comparison end
+function flowfield3d end
+function flowfield3d_comparison end
+function flowfield3d_u_comparison end
+
 # EXPORTS
 export PlotSettings, VelocityField
 export plot_xz_plane!, plot_xy_plane!, plot_yz_plane!
 export velocity_fields, velocity_fields_dns, velocity_fields_comparison, animate_flow, plot_id_series, animate_tw_fluctuations, plot_coefficient_evolution, plot_stability_spectrum
+export animate_flow_3d, animate_flow_3d_comparison, flowfield3d, flowfield3d_comparison, flowfield3d_u_comparison
 
 # ====================================================================================
 # Diff Eqs API

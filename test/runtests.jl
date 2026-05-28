@@ -118,6 +118,27 @@ tz = Symmetry(1, 1, 1, 0//1, 1//2)
         model = ODEModel(α, γ, J, K, L, H)  # Form ODE model via Galerkin projection
 
         @test norm(model.f(xeqb, R))/norm(xeqb) < 1e-10
+        @test model_resolution(model) == (J = J, K = K, L = L)
+
+        model_copy = remake_model(model; alpha = α, gamma = γ)
+        @test length(model_copy) == length(model)
+        @test model_copy.α == model.α
+        @test model_copy.γ == model.γ
+
+        branch = continue_gamma(
+            model,
+            xeqb,
+            R,
+            [γ];
+            params = SearchParams(; ftol = 1e-8, verbosity = 0),
+            compute_dissipation = false,
+        )
+        @test length(branch) == 1
+        @test branch[1].converged
+        @test branch[1].parameter == :gamma
+        @test branch[1].gamma == γ
+        @test branch[1].relative_residual < 1e-10
+        @test isnan(branch[1].dissipation)
         
     end
 

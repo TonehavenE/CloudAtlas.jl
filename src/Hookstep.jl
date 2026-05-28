@@ -40,6 +40,52 @@ end
 hookstepsolve_tw(model::ODEModel, R::Real, xguess::AbstractVector{T}, params = SearchParams()) where {T<:Real} =
     hookstepsolve(model, R, xguess, params)
 
+# Convenience overload: zero initial phase guesses (backward-compatible call site)
+hookstepsolve_rpo(model::ODEModel, R::Real, σ::Symmetry, x0guess::AbstractVector{T}, T_guess::Real, params = SearchParams()) where {T<:Real} =
+    hookstepsolve_rpo(model, R, σ, x0guess, zero(T), zero(T), T_guess, params)
+
+"""
+    hookstepsolve_rpo(model, R, σ, x0guess, ax_guess, az_guess, T_guess, params=SearchParams())
+
+Find a relative periodic orbit (RPO) satisfying τ_{ax,az}(σ(φ_R(x0,T))) = x0 using
+single shooting and the Hookstep Newton method.
+
+The unknown vector is xi = [x0; (ax); (az); T], where the continuous phase shifts ax, az
+are included only when `model.keep_cx` / `model.keep_cz` are true.
+
+Returns `(x0_sol, ax_sol, az_sol, T_sol, success)`.
+
+Requires `integrate_flow` from `CloudAtlasDiffEqExt` (load DifferentialEquations.jl first).
+"""
+function hookstepsolve_rpo(
+    model::ODEModel,
+    R::Real,
+    σ::Symmetry,
+    x0guess::AbstractVector{T},
+    ax_guess::Real,
+    az_guess::Real,
+    T_guess::Real,
+    params = SearchParams()
+) where {T<:Real}
+    xref = copy(x0guess)
+    g, Dg = g_rpo_with_ref(model, R, σ, xref)
+
+    xi0 = T[x0guess...]
+    model.keep_cx && push!(xi0, T(ax_guess))
+    model.keep_cz && push!(xi0, T(az_guess))
+    push!(xi0, T(T_guess))
+
+    xi_sol, success = hookstepsolve(g, Dg, xi0, params)
+
+    m   = length(x0guess)
+    x0_sol = xi_sol[1:m]
+    idx = m
+    ax_sol = model.keep_cx ? (idx += 1; xi_sol[idx]) : zero(T)
+    az_sol = model.keep_cz ? (idx += 1; xi_sol[idx]) : zero(T)
+    T_sol  = xi_sol[idx + 1]
+    return x0_sol, ax_sol, az_sol, T_sol, success
+end
+
 Base.@kwdef struct SearchParams{T<:Real}
     ftol::T=1e-08 
     xtol::T=1e-08 
@@ -111,20 +157,27 @@ function hookstep(fx, Dfx, δ, Δx_newt; δtol = 1e-04, Nmusearch=10, verbosity=
 end
 
 
-function Df_finitediff(f,x; eps=1e-06)
+function Df_finitediff(f, x; eps=1e-06, parallel=Threads.nthreads() > 1)
     fx = f(x)
     M = length(fx)
     N = length(x)
     
-    Df = zeros(M,N)
+    Df = zeros(eltype(fx), M, N)
+    if parallel
+        Threads.@threads :static for j in 1:N
+            dxj = zeros(eltype(x), N)
+            dxj[j] = eps
+            fx_dxj = f(x + dxj)
+            @views Df[:, j] .= (fx_dxj .- fx) ./ eps
+        end
+        return Df
+    end
+
     for j=1:N
-        dxj = zeros(N)
+        dxj = zeros(eltype(x), N)
         dxj[j] = eps
         fx_dxj = f(x + dxj)
-        dfdxj = (fx_dxj - fx)/eps
-        for i=1:M
-            Df[i,j] = dfdxj[i]
-        end
+        @views Df[:, j] .= (fx_dxj .- fx) ./ eps
     end
     Df
 end

@@ -1,0 +1,17 @@
+timestamp = 2026-05-27T22:45:40
+git_revision = fbb84461
+script = /home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/periodic_orbits/eqb_hopf_restartable_eq_scan.jl
+alpha = 1.0
+gamma = 2.0
+J = 3
+K = 5
+L = 9
+m = 367
+symmetry_group = <sxyz, sztxz>
+Re0 = 370.0
+scan_start = 370.0
+scan_stop = 550.0
+dRe = 5.0
+eig_top = 48
+real_tol = 1.0e-7
+imag_tol = 1.0e-7

@@ -3,7 +3,7 @@ The ChannelflowWrapper.jl module is designed to provide convenient wrappers arou
 """
 module ChannelflowWrapper
 
-export projectfield, field2coeff, coeff2field, changegrid, findsoln, continuesoln, plotfield, L2op, L2norm, diffop, addfields, addbaseflow, findsymmetries
+export projectfield, field2coeff, coeff2field, changegrid, findsoln, continuesoln, findeigenvals, edgetracking, simulateflow, fieldprops, randomfield, plotfield, L2op, L2norm, diffop, perturbfield, addfields, addbaseflow, findsymmetries
 
 import Channelflow_jll
 
@@ -36,7 +36,7 @@ function field2coeff(
     ijklfile::AbstractString,
     source::AbstractString,
     output_base::AbstractString;
-    workdir::AbstractString = ".",
+    workdir::AbstractString=".",
     kwargs...
 )
     verify_file(ijklfile)
@@ -53,7 +53,7 @@ function field2coeff(
 
     cmd = Cmd(
         `$(Channelflow_jll.projectfield()) $flags $(abspath(ijklfile)) $(abspath(source)) $output_working`;
-        dir = workdir
+        dir=workdir
     )
     run(cmd)
 
@@ -82,14 +82,14 @@ function field2coeff(
     ijkl::AbstractMatrix,
     source::AbstractString,
     output::AbstractString;
-    workdir::AbstractString = ".",
+    workdir::AbstractString=".",
     kwargs...
 )
     mkpath(workdir)
     tag = string(time_ns())
     ijkl_path = joinpath(workdir, "temp_ijkl_" * tag * ".asc")
     ijkl2file(ijkl, ijkl_path)
-    coeffs = field2coeff(ijkl_path, source, output; workdir = workdir, kwargs...)
+    coeffs = field2coeff(ijkl_path, source, output; workdir=workdir, kwargs...)
     rm(ijkl_path)
     return coeffs
 end
@@ -117,7 +117,7 @@ function coeff2field(
     ijklfile::AbstractString,
     field_example::AbstractString,
     output::AbstractString;
-    workdir::AbstractString = ".",
+    workdir::AbstractString=".",
     kwargs...
 )
     verify_file(source_coeffs)
@@ -132,7 +132,7 @@ function coeff2field(
     flags = kwargs_to_flags(kwargs)
     cmd = Cmd(
         `$(Channelflow_jll.projectfield()) $flags -x $(abspath(source_coeffs)) $(abspath(ijklfile)) $(abspath(field_example)) $output_working`;
-        dir = workdir
+        dir=workdir
     )
     run(cmd)
 
@@ -156,7 +156,7 @@ function coeff2field(
     ijkl::AbstractMatrix,
     field_example::AbstractString,
     output::AbstractString;
-    workdir::AbstractString = ".",
+    workdir::AbstractString=".",
     kwargs...
 )
     mkpath(workdir)
@@ -166,7 +166,7 @@ function coeff2field(
     ijkl2file(ijkl, ijkl_path)
     save(x, x_path)
 
-    coeff2field(x_path, ijkl_path, field_example, output; workdir = workdir, kwargs...)
+    coeff2field(x_path, ijkl_path, field_example, output; workdir=workdir, kwargs...)
 
     rm(ijkl_path)
     rm(x_path)
@@ -177,8 +177,8 @@ end
 
 Legacy interface, defer to `field2coeff` ideally.
 """
-function projectfield(ijklfile, source, target; workdir::AbstractString = ".", kwargs...)
-    field2coeff(ijklfile, source, target; workdir = workdir, kwargs=kwargs)
+function projectfield(ijklfile, source, target; workdir::AbstractString=".", kwargs...)
+    field2coeff(ijklfile, source, target; workdir=workdir, kwargs=kwargs)
 end
 
 """
@@ -186,8 +186,8 @@ end
 
 Legacy interface, defer to `coeff2field` ideally.
 """
-function projectfield(source_coeffs, ijklfile, field_example, output; workdir::AbstractString = ".", kwargs...)
-    coeff2field(source_coeffs, ijklfile, field_example, output; workdir = workdir, kwargs=kwargs)
+function projectfield(source_coeffs, ijklfile, field_example, output; workdir::AbstractString=".", kwargs...)
+    coeff2field(source_coeffs, ijklfile, field_example, output; workdir=workdir, kwargs=kwargs)
 end
 
 
@@ -242,10 +242,10 @@ findsoln("u_Re350.nc"; eqb=true, R=350, T=10, symms="./sxy_sz_txz.asc")
 findsoln("u_guess.nc"; eqb=true, zrel=true, T=10, R=200, sigma="sigma_guess.asc", symms="sxytxz.asc")
 ```
 """
-function findsoln(guess_flowfield::AbstractString; workdir::AbstractString = ".", kwargs...)
+function findsoln(guess_flowfield::AbstractString; workdir::AbstractString=".", kwargs...)
     verify_file(guess_flowfield)
     flags = kwargs_to_flags(kwargs)
-    cmd = Cmd(`$(Channelflow_jll.findsoln()) $flags $(abspath(guess_flowfield))`; dir = workdir)
+    cmd = Cmd(`$(Channelflow_jll.findsoln()) $flags $(abspath(guess_flowfield))`; dir=workdir)
     run(cmd)
 end
 
@@ -277,10 +277,10 @@ This calls the Channelflow binary `changegrid`.
 - `np0::Int` or `nproc0::Int`: Number of MPI-processes for transpose.
 - `np1::Int` or `nproc1::Int`: Number of MPI-processes for one fft.
 """
-function changegrid(infield::AbstractString, outfield::AbstractString; workdir::AbstractString = ".", kwargs...)
+function changegrid(infield::AbstractString, outfield::AbstractString; workdir::AbstractString=".", kwargs...)
     verify_file(infield)
     flags = kwargs_to_flags(kwargs)
-    cmd = Cmd(`$(Channelflow_jll.changegrid()) $flags $(abspath(infield)) $(abspath(outfield))`; dir = workdir)
+    cmd = Cmd(`$(Channelflow_jll.changegrid()) $flags $(abspath(infield)) $(abspath(outfield))`; dir=workdir)
     run(cmd)
 end
 
@@ -326,17 +326,630 @@ continuesoln("ueqd_Re400.nc";
     cont="Re",
     eqb=true,
     R=400,
-    T=19,
+    T=10,
     dmu=-0.01,
     symms="sxy_sztx.asc"
 )
 ```
 """
-function continuesoln(initial_flowfield::AbstractString; workdir::AbstractString = ".", kwargs...)
+function continuesoln(initial_flowfield::AbstractString; workdir::AbstractString=".", kwargs...)
     verify_file(initial_flowfield)
     flags = kwargs_to_flags(kwargs)
-    cmd = Cmd(`$(Channelflow_jll.continuesoln()) $flags $(abspath(initial_flowfield))`; dir = workdir)
+    cmd = Cmd(`$(Channelflow_jll.continuesoln()) $flags $(abspath(initial_flowfield))`; dir=workdir)
     run(cmd)
+end
+
+const _FINDEIGENVALS_FLAG_MAP = Dict{Symbol, String}(
+    # System parameters
+    :R => "-R",
+    :Reynolds => "--Reynolds",
+    :nu => "-nu",
+
+    # Boundary conditions
+    :bf => "-bf",
+    :baseflow => "--baseflow",
+    :mc => "-mc",
+    :meanconstraint => "--meanconstraint",
+    :dPds => "-dPds",
+    :Ubulk => "-Ubulk",
+    :Uwall => "-Uwall",
+    :theta => "-theta",
+    :Vs => "-Vs",
+    :Vsuck => "--Vsuck",
+    :rot => "-rot",
+    :rotation => "--rotation",
+
+    # Numerical setup
+    :da => "-da",
+    :dealiasing => "--dealiasing",
+    :T0 => "-T0",
+    :T => "-T",
+    :T1 => "--T1",
+    :dT => "-dT",
+    :dt => "-dt",
+    :vdt => "-vdt",
+    :variabledt => "--variabledt",
+    :dtmin => "-dtmin",
+    :dtmax => "-dtmax",
+    :CFLmin => "-CFLmin",
+    :CFLmax => "-CFLmax",
+    :ts => "-ts",
+    :timestepping => "--timestepping",
+    :is => "-is",
+    :initstepping => "--initstepping",
+    :nl => "-nl",
+    :nonlinearity => "--nonlinearity",
+    :symmpi => "-symmpi",
+    :symmetryprojection => "--symmetryprojection",
+    :symms => "-symms",
+    :symmetries => "--symmetries",
+
+    # Arnoldi options
+    :isnorm => "-isnorm",
+    :isnormal => "--isnormal",
+    :N => "-N",
+    :Narnoldi => "--Narnoldi",
+    :Ns => "-Ns",
+    :Nstable => "--Nstable",
+    :fNs => "-fNs",
+    :fixedNsave => "--fixedNsave",
+    :ek => "-ek",
+    :epsKrylov => "--epsKrylov",
+    :cd => "-cd",
+    :centerdiff => "--centerdiff",
+    :oc => "-oc",
+    :orthocheck => "--orthocheck",
+    :o => "-o",
+    :outdir => "--outdir",
+    :est => "-est",
+    :epsStability => "--epsStability",
+
+    # Program options
+    :poinc => "-poinc",
+    :poincare => "--poincare",
+    :sigma => "-sigma",
+    :sd => "-sd",
+    :seed => "--seed",
+    :s => "-s",
+    :smoothness => "--smoothness",
+    :edu => "-edu",
+    :epsdu => "--epsdu",
+    :du => "-du",
+    :perturb => "--perturb",
+    :np0 => "-np0",
+    :nproc0 => "--nproc0",
+    :np1 => "-np1",
+    :nproc1 => "--nproc1",
+)
+
+const _FINDEIGENVALS_BOOL_VALUE_FLAGS = Set([
+    :vdt, :variabledt,
+])
+
+function _findeigenvals_flag_for_key(key::Symbol)
+    haskey(_FINDEIGENVALS_FLAG_MAP, key) && return _FINDEIGENVALS_FLAG_MAP[key]
+    throw(ArgumentError("Unknown findeigenvals option keyword: $(key)"))
+end
+
+function _findeigenvals_kwargs_to_flags(kwargs)
+    flags = String[]
+    for (key, value) in kwargs
+        flag_name = _findeigenvals_flag_for_key(key)
+        if (key in _FINDEIGENVALS_BOOL_VALUE_FLAGS) && (value isa Bool)
+            push!(flags, flag_name, lowercase(string(value)))
+        elseif value isa Bool
+            value && push!(flags, flag_name)
+        else
+            push!(flags, flag_name, string(value))
+        end
+    end
+    return flags
+end
+
+"""
+    findeigenvals(flowfield::AbstractString; kwargs...)
+
+Computes the spectrum of eigenvalues of equilibria, traveling waves, or periodic
+orbits using Arnoldi iteration.
+
+This is a Julia wrapper for the Channelflow binary `findeigenvals`.
+
+# Arguments
+- `flowfield::AbstractString`: Input EQB/TW/PO solution field.
+
+# Keyword Arguments
+All command-line options are passed via keywords.
+
+Common groups include:
+- System/boundary/numerics: `R`, `nu`, `bf`, `T`, `dt`, `vdt`, `symms`, ...
+- Arnoldi: `N`, `Ns`, `isnorm`, `fNs`, `ek`, `cd`, `oc`, `o`, `est`
+- Program: `poinc`, `sigma`, `sd`, `s`, `edu`, `du`, `np0`, `np1`
+"""
+function findeigenvals(flowfield::AbstractString; kwargs...)
+    verify_file(flowfield)
+    flags = _findeigenvals_kwargs_to_flags(kwargs)
+    run(`$(Channelflow_jll.findeigenvals()) $flags $flowfield`)
+end
+
+const _EDGETRACKING_FLAG_MAP = Dict{Symbol, String}(
+    # System parameters
+    :R => "-R",
+    :Reynolds => "--Reynolds",
+    :nu => "-nu",
+
+    # Boundary conditions
+    :bf => "-bf",
+    :baseflow => "--baseflow",
+    :mc => "-mc",
+    :meanconstraint => "--meanconstraint",
+    :dPds => "-dPds",
+    :Ubulk => "-Ubulk",
+    :Uwall => "-Uwall",
+    :theta => "-theta",
+    :Vs => "-Vs",
+    :Vsuck => "--Vsuck",
+    :rot => "-rot",
+    :rotation => "--rotation",
+
+    # Numerical setup
+    :da => "-da",
+    :dealiasing => "--dealiasing",
+    :T0 => "-T0",
+    :T => "-T",
+    :T1 => "--T1",
+    :dT => "-dT",
+    :dt => "-dt",
+    :vdt => "-vdt",
+    :variabledt => "--variabledt",
+    :dtmin => "-dtmin",
+    :dtmax => "-dtmax",
+    :CFLmin => "-CFLmin",
+    :CFLmax => "-CFLmax",
+    :ts => "-ts",
+    :timestepping => "--timestepping",
+    :is => "-is",
+    :initstepping => "--initstepping",
+    :nl => "-nl",
+    :nonlinearity => "--nonlinearity",
+    :symmpi => "-symmpi",
+    :symmetryprojection => "--symmetryprojection",
+    :symms => "-symms",
+    :symmetries => "--symmetries",
+
+    # Program options
+    :c => "-c",
+    :cont => "--continue",
+    :continue_ => "--continue",
+    :EcfH => "-EcfH",
+    :EcfHigh => "--EcfHigh",
+    :EcfL => "-EcfL",
+    :EcfLow => "--EcfLow",
+    :L2H => "-L2H",
+    :L2High => "--L2High",
+    :L2L => "-L2L",
+    :L2Low => "--L2Low",
+    :n2h => "-n2h",
+    :normToHeight => "--normToHeight",
+    :maxDcy => "-maxDcy",
+    :tMaxDecay => "--tMaxDecay",
+    :tMaxAtt => "-tMaxAtt",
+    :tMaxAttractor => "--tMaxAttractor",
+    :tMinAtt => "-tMinAtt",
+    :tMinAttractor => "--tMinAttractor",
+    :epsA => "-epsA",
+    :epsilonAdvance => "--epsilonAdvance",
+    :epsB => "-epsB",
+    :epsilonBisection => "--epsilonBisection",
+    :nBis => "-nBis",
+    :nBisecTrajectories => "--nBisecTrajectories",
+    :cLH => "-cLH",
+    :chooseLHfirst => "--chooseLHfirst",
+    :lS => "-lS",
+    :lambdaStep => "--lambdaStep",
+    :lH => "-lH",
+    :lambdaH => "--lambdaH",
+    :lL => "-lL",
+    :lambdaL => "--lambdaL",
+    :keepUL => "-keepUL",
+    :vrfyLH => "-vrfyLH",
+    :verifyLH => "--verifyLH",
+    :s => "-s",
+    :saveInterval => "--saveInterval",
+    :saveUL => "-saveUL",
+    :saveUH => "-saveUH",
+    :saveMin => "-saveMin",
+    :saveMinima => "--saveMinima",
+    :np0 => "-np0",
+    :nproc0 => "--nproc0",
+    :np1 => "-np1",
+    :nproc1 => "--nproc1",
+    :log => "-log",
+    :logfile => "--logfile",
+    :sd => "-sd",
+    :savedir => "--savedir",
+)
+
+const _EDGETRACKING_BOOL_VALUE_FLAGS = Set([
+    :vdt, :variabledt,
+    :saveUL, :saveUH, :saveMin, :saveMinima,
+])
+
+function _edgetracking_flag_for_key(key::Symbol)
+    haskey(_EDGETRACKING_FLAG_MAP, key) && return _EDGETRACKING_FLAG_MAP[key]
+    throw(ArgumentError("Unknown edgetracking option keyword: $(key)"))
+end
+
+function _edgetracking_kwargs_to_flags(kwargs)
+    flags = String[]
+    for (key, value) in kwargs
+        flag_name = _edgetracking_flag_for_key(key)
+        if (key in _EDGETRACKING_BOOL_VALUE_FLAGS) && (value isa Bool)
+            push!(flags, flag_name, lowercase(string(value)))
+        elseif value isa Bool
+            value && push!(flags, flag_name)
+        else
+            push!(flags, flag_name, string(value))
+        end
+    end
+    return flags
+end
+
+"""
+    edgetracking(initial_flowfield::AbstractString; kwargs...)
+
+Runs edge tracking to locate edge states starting from an initial flowfield.
+
+This is a Julia wrapper for the Channelflow binary `edgetracking`.
+
+# Arguments
+- `initial_flowfield::AbstractString`: Initial flow field.
+
+# Keyword Arguments
+All command-line options are passed via keywords.
+
+Notes:
+- Use `cont=true` (or `continue_=true`) for `--continue`.
+- Bool-valued options like `saveUL`, `saveUH`, `saveMin` and `vdt` are emitted
+  as explicit `true/false` values when provided as Bool.
+"""
+function edgetracking(initial_flowfield::AbstractString; kwargs...)
+    verify_file(initial_flowfield)
+    flags = _edgetracking_kwargs_to_flags(kwargs)
+    run(`$(Channelflow_jll.edgetracking()) $flags $initial_flowfield`)
+end
+
+const _FIELDPROPS_FLAG_MAP = Dict{Symbol, String}(
+    # Property/report options
+    :g => "-g",
+    :geometry => "--geometry",
+    :m => "-m",
+    :mean => "--mean",
+    :n => "-n",
+    :norm => "--norm",
+    :sp => "-sp",
+    :spectral => "--spectral",
+    :sy => "-sy",
+    :symmetry => "--symmetry",
+    :d => "-d",
+    :dynamic => "--dynamic",
+    :mcs => "-mcs",
+    :e => "-e",
+    :energy => "--energy",
+    :w => "-w",
+    :wall => "--wall",
+    :l => "-l",
+    :local_ => "--local",
+    :sup => "-sup",
+    :saveUprofile => "--saveUprofile",
+    :fst => "-fst",
+    :fieldstats => "--fieldstats",
+    :eps => "-eps",
+    :dg => "-dg",
+    :digits => "--digits",
+
+    # System parameters
+    :R => "-R",
+    :Reynolds => "--Reynolds",
+    :nu => "-nu",
+
+    # Boundary conditions
+    :bf => "-bf",
+    :baseflow => "--baseflow",
+    :mc => "-mc",
+    :meanconstraint => "--meanconstraint",
+    :dPds => "-dPds",
+    :Ubulk => "-Ubulk",
+    :Uwall => "-Uwall",
+    :theta => "-theta",
+    :Vs => "-Vs",
+    :Vsuck => "--Vsuck",
+    :rot => "-rot",
+    :rotation => "--rotation",
+    :ub => "-ub",
+    :Ubase => "--Ubase",
+    :wb => "-wb",
+    :Wbase => "--Wbase",
+    :Uf => "-Uf",
+    :Tint => "-Tint",
+
+    # Numerical setup
+    :da => "-da",
+    :dealiasing => "--dealiasing",
+    :T0 => "-T0",
+    :T => "-T",
+    :T1 => "--T1",
+    :dT => "-dT",
+    :dt => "-dt",
+    :vdt => "-vdt",
+    :variabledt => "--variabledt",
+    :dtmin => "-dtmin",
+    :dtmax => "-dtmax",
+    :CFLmin => "-CFLmin",
+    :CFLmax => "-CFLmax",
+    :ts => "-ts",
+    :timestepping => "--timestepping",
+    :is => "-is",
+    :initstepping => "--initstepping",
+    :nl => "-nl",
+    :nonlinearity => "--nonlinearity",
+    :symmpi => "-symmpi",
+    :symmetryprojection => "--symmetryprojection",
+    :symms => "-symms",
+    :symmetries => "--symmetries",
+)
+
+const _FIELDPROPS_BOOL_VALUE_FLAGS = Set([
+    :vdt, :variabledt,
+])
+
+function _fieldprops_flag_for_key(key::Symbol)
+    haskey(_FIELDPROPS_FLAG_MAP, key) && return _FIELDPROPS_FLAG_MAP[key]
+    throw(ArgumentError("Unknown fieldprops option keyword: $(key)"))
+end
+
+function _fieldprops_kwargs_to_flags(kwargs)
+    flags = String[]
+    for (key, value) in kwargs
+        flag_name = _fieldprops_flag_for_key(key)
+        if (key in _FIELDPROPS_BOOL_VALUE_FLAGS) && (value isa Bool)
+            push!(flags, flag_name, lowercase(string(value)))
+        elseif value isa Bool
+            value && push!(flags, flag_name)
+        else
+            push!(flags, flag_name, string(value))
+        end
+    end
+    return flags
+end
+
+"""
+    fieldprops(flowfield::AbstractString; kwargs...)
+
+Prints information and diagnostics for a `FlowField`.
+
+This is a Julia wrapper for the Channelflow binary `fieldprops`.
+
+# Arguments
+- `flowfield::AbstractString`: Input flow field.
+
+# Keyword Arguments
+All command-line options are passed via keywords, including:
+- Property options: `g`, `m`, `n`, `sp`, `sy`, `d`, `mcs`, `e`, `w`, `l`,
+  `sup`, `fst`, `eps`, `dg`.
+- System/baseflow/numerics options: `R`, `nu`, `bf`, `Ubulk`, `ub`, `wb`,
+  `Uf`, `Tint`, `T`, `dt`, `vdt`, `symms`, etc.
+"""
+function fieldprops(flowfield::AbstractString; kwargs...)
+    verify_file(flowfield)
+    flags = _fieldprops_kwargs_to_flags(kwargs)
+    run(`$(Channelflow_jll.fieldprops()) $flags $flowfield`)
+end
+
+const _RANDOMFIELD_FLAG_MAP = Dict{Symbol, String}(
+    :Nx => "-Nx",
+    :Ny => "-Ny",
+    :Nz => "-Nz",
+    :a => "-a",
+    :alpha => "--alpha",
+    :g => "-g",
+    :gamma => "--gamma",
+    :lx => "-lx",
+    :lz => "-lz",
+    :Lx => "-Lx",
+    :Lz => "-Lz",
+    :ymin => "-ymin",
+    :ymax => "-ymax",
+    :sd => "-sd",
+    :seed => "--seed",
+    :s => "-s",
+    :smoothness => "--smoothness",
+    :m => "-m",
+    :magnitude => "--magnitude",
+    :mf => "-mf",
+    :meanflow => "--meanflow",
+    :symms => "-symms",
+    :symmetries => "--symmetries",
+)
+
+function _randomfield_flag_for_key(key::Symbol)
+    haskey(_RANDOMFIELD_FLAG_MAP, key) && return _RANDOMFIELD_FLAG_MAP[key]
+    throw(ArgumentError("Unknown randomfield option keyword: $(key)"))
+end
+
+function _randomfield_kwargs_to_flags(kwargs)
+    flags = String[]
+    for (key, value) in kwargs
+        flag_name = _randomfield_flag_for_key(key)
+        if value isa Bool
+            value && push!(flags, flag_name)
+        else
+            push!(flags, flag_name, string(value))
+        end
+    end
+    return flags
+end
+
+"""
+    randomfield(outfield::AbstractString; kwargs...)
+
+Constructs a random divergence-free field with Dirichlet boundary conditions and
+writes it to `outfield`.
+
+This is a Julia wrapper for the Channelflow binary `randomfield`.
+
+# Arguments
+- `outfield::AbstractString`: Output field filename.
+
+# Keyword Arguments
+All command-line options are passed via keywords, including:
+- Grid/geometry: `Nx`, `Ny`, `Nz`, `a`, `g`, `lx`, `lz`, `Lx`, `Lz`, `ymin`, `ymax`
+- Randomization: `sd`, `s`, `m`, `mf`
+- Symmetry constraints: `symms`
+"""
+function randomfield(outfield::AbstractString; kwargs...)
+    flags = _randomfield_kwargs_to_flags(kwargs)
+    run(`$(Channelflow_jll.randomfield()) $flags $outfield`)
+end
+
+const _SIMULATEFLOW_FLAG_MAP = Dict{Symbol, String}(
+    # System parameters
+    :R => "-R",
+    :Reynolds => "--Reynolds",
+    :nu => "-nu",
+
+    # Boundary conditions
+    :bf => "-bf",
+    :baseflow => "--baseflow",
+    :mc => "-mc",
+    :meanconstraint => "--meanconstraint",
+    :dPds => "-dPds",
+    :Ubulk => "-Ubulk",
+    :Uwall => "-Uwall",
+    :theta => "-theta",
+    :Vs => "-Vs",
+    :Vsuck => "--Vsuck",
+    :rot => "-rot",
+    :rotation => "--rotation",
+
+    # Numerical setup
+    :da => "-da",
+    :dealiasing => "--dealiasing",
+    :T0 => "-T0",
+    :T => "-T",
+    :T1 => "--T1",
+    :dT => "-dT",
+    :dt => "-dt",
+    :vdt => "-vdt",
+    :variabledt => "--variabledt",
+    :dtmin => "-dtmin",
+    :dtmax => "-dtmax",
+    :CFLmin => "-CFLmin",
+    :CFLmax => "-CFLmax",
+    :ts => "-ts",
+    :timestepping => "--timestepping",
+    :is => "-is",
+    :initstepping => "--initstepping",
+    :nl => "-nl",
+    :nonlinearity => "--nonlinearity",
+    :symmpi => "-symmpi",
+    :symmetryprojection => "--symmetryprojection",
+    :symms => "-symms",
+    :symmetries => "--symmetries",
+
+    # Program options
+    :o => "-o",
+    :outdir => "--outdir",
+    :l => "-l",
+    :label => "--label",
+    :sp => "-sp",
+    :savepressure => "--savepressure",
+    :cfl => "-cfl",
+    :l2 => "-l2",
+    :l2norm => "--l2norm",
+    :ch => "-ch",
+    :chebyNorm => "--chebyNorm",
+    :D => "-D",
+    :dissipation => "--dissipation",
+    :I => "-I",
+    :input => "--input",
+    :dv => "-dv",
+    :divergence => "--divergence",
+    :u => "-u",
+    :ubulk => "--ubulk",
+    :Up => "-Up",
+    :Ubulk_print => "--Ubulk-print",
+    :p => "-p",
+    :pressure => "--pressure",
+    :e => "-e",
+    :ecfmin => "--ecfmin",
+    :umin => "--umin",
+    :s => "-s",
+    :saveinterval => "--saveinterval",
+    :np0 => "-np0",
+    :nproc0 => "--nproc0",
+    :np1 => "-np1",
+    :nproc1 => "--nproc1",
+)
+
+const _SIMULATEFLOW_BOOL_VALUE_FLAGS = Set([
+    :vdt, :variabledt, :ch, :chebyNorm,
+])
+
+function _simulateflow_flag_for_key(key::Symbol)
+    haskey(_SIMULATEFLOW_FLAG_MAP, key) && return _SIMULATEFLOW_FLAG_MAP[key]
+    throw(ArgumentError("Unknown simulateflow option keyword: $(key)"))
+end
+
+function _simulateflow_kwargs_to_flags(kwargs)
+    flags = String[]
+    for (key, value) in kwargs
+        flag_name = _simulateflow_flag_for_key(key)
+        if (key in _SIMULATEFLOW_BOOL_VALUE_FLAGS) && (value isa Bool)
+            # simulateflow expects an explicit bool value for these options.
+            push!(flags, flag_name, lowercase(string(value)))
+        elseif value isa Bool
+            value && push!(flags, flag_name)
+        else
+            push!(flags, flag_name, string(value))
+        end
+    end
+    return flags
+end
+
+"""
+    simulateflow(initial_flowfield::AbstractString; kwargs...)
+
+Integrates plane Couette or channel flow from a given initial condition and
+saves velocity fields to disk.
+
+This is a Julia wrapper for the Channelflow binary `simulateflow`.
+
+# Arguments
+- `initial_flowfield::AbstractString`: File path to the input initial condition.
+
+# Keyword Arguments
+All command-line options are passed via keywords.
+
+## Common Option Groups
+- System: `R`, `nu`
+- Boundary/baseflow: `bf`, `mc`, `dPds`, `Ubulk`, `Uwall`, `theta`, `Vs`, `rot`
+- Time integration: `T0`, `T`, `dT`, `dt`, `vdt`, `dtmin`, `dtmax`, `CFLmin`, `CFLmax`, `ts`, `is`, `nl`
+- Output and reporting: `outdir`, `label`, `sp`, `cfl`, `l2`, `ch`, `D`, `I`, `dv`, `u`, `Up`, `p`, `umin`, `ecfmin`, `s`
+- Parallel setup: `np0`, `np1`
+
+Boolean-valued options such as `vdt` and `ch` are emitted as explicit values,
+so `simulateflow(...; vdt=false, ch=false)` is supported.
+
+# Example Usage
+```julia
+simulateflow("u0.nc"; R=400, T=20, dT=1, outdir="data", label="u")
+simulateflow("u0.nc"; T=0, vdt=false, ch=false, outdir="smoke", label="u_test")
+```
+"""
+function simulateflow(initial_flowfield::AbstractString; kwargs...)
+    verify_file(initial_flowfield)
+    flags = _simulateflow_kwargs_to_flags(kwargs)
+    run(`$(Channelflow_jll.simulateflow()) $flags $initial_flowfield`)
 end
 
 """
@@ -390,11 +1003,11 @@ plotfield("u_re400.nc"; xavg=true, spectra=true, outdir="plots")
 plotfield("u_re400.nc"; xval=2.5, zstride=2)
 """
 
-function plotfield(flowfield::AbstractString; workdir::AbstractString = ".", kwargs...)
+function plotfield(flowfield::AbstractString; workdir::AbstractString=".", kwargs...)
     verify_file(flowfield)
     flags = kwargs_to_flags(kwargs)
     # The Channelflow binary is named 'plotfield'
-    cmd = Cmd(`$(Channelflow_jll.plotfield()) $flags $(abspath(flowfield))`; dir = workdir)
+    cmd = Cmd(`$(Channelflow_jll.plotfield()) $flags $(abspath(flowfield))`; dir=workdir)
     run(cmd)
 end
 
@@ -433,7 +1046,7 @@ inner_product = L2op("u1.nc", "u2.nc"; ip=true, n=true)
 distance = L2op("u1.nc", "u2.nc"; dist=true, sx=true)
 ```
 """
-function L2op(field1::AbstractString, field2::AbstractString; workdir::AbstractString = ".", kwargs...)
+function L2op(field1::AbstractString, field2::AbstractString; workdir::AbstractString=".", kwargs...)
     verify_file(field1)
     verify_file(field2)
     flags = kwargs_to_flags(kwargs)
@@ -441,7 +1054,7 @@ function L2op(field1::AbstractString, field2::AbstractString; workdir::AbstractS
     # Capture the output from the L2op binary
     println("The flags are: $flags")
     println(`$flags $field1 $field2`)
-    cmd = Cmd(`$(Channelflow_jll.L2op()) $flags $(abspath(field1)) $(abspath(field2))`; dir = workdir)
+    cmd = Cmd(`$(Channelflow_jll.L2op()) $flags $(abspath(field1)) $(abspath(field2))`; dir=workdir)
     output = read(cmd, String)
 
     # Parse the output to extract the numerical value
@@ -519,11 +1132,73 @@ diffop("u.nc", "nonl_u.nc"; nonl=true, bf="laminar", R=400)
 diffop("u.nc", "u_xavg.nc"; xavg=true)
 ```
 """
-function diffop(infield::AbstractString, outfield::AbstractString; workdir::AbstractString = ".", kwargs...)
+function diffop(infield::AbstractString, outfield::AbstractString; workdir::AbstractString=".", kwargs...)
     verify_file(infield)
     flags = kwargs_to_flags(kwargs)
-    cmd = Cmd(`$(Channelflow_jll.diffop()) $flags $(abspath(infield)) $(abspath(outfield))`; dir = workdir)
+    cmd = Cmd(`$(Channelflow_jll.diffop()) $flags $(abspath(infield)) $(abspath(outfield))`; dir=workdir)
     run(cmd)
+end
+
+const _PERTURBFIELD_FLAG_MAP = Dict{Symbol, String}(
+    :sd => "-sd",
+    :seed => "--seed",
+    :s => "-s",
+    :smoothness => "--smoothness",
+    :m => "-m",
+    :magnitude => "--magnitude",
+    :mf => "-mf",
+    :meanflow => "--meanflow",
+    :s1 => "-s1",
+    :s1_symmetry => "--s1-symmetry",
+    :s2 => "-s2",
+    :s2_symmetry => "--s2-symmetry",
+    :s3 => "-s3",
+    :s3_symmetry => "--s3-symmetry",
+)
+
+function _perturbfield_flag_for_key(key::Symbol)
+    haskey(_PERTURBFIELD_FLAG_MAP, key) && return _PERTURBFIELD_FLAG_MAP[key]
+    throw(ArgumentError("Unknown perturbfield option keyword: $(key)"))
+end
+
+function _perturbfield_kwargs_to_flags(kwargs)
+    flags = String[]
+    for (key, value) in kwargs
+        flag_name = _perturbfield_flag_for_key(key)
+        if value isa Bool
+            value && push!(flags, flag_name)
+        else
+            push!(flags, flag_name, string(value))
+        end
+    end
+    return flags
+end
+
+"""
+    perturbfield(infield::AbstractString, outfield::AbstractString; kwargs...)
+
+Randomly perturbs `infield` and writes the perturbed flow field to `outfield`.
+The perturbation is divergence-free and satisfies Dirichlet boundary conditions.
+
+This is a Julia wrapper for the Channelflow binary `perturbfield`.
+
+# Arguments
+- `infield::AbstractString`: Input flow field filename.
+- `outfield::AbstractString`: Output flow field filename.
+
+# Keyword Arguments
+- `sd` or `seed`: RNG seed (default 1).
+- `s` or `smoothness`: smoothness parameter in (0, 1), default 0.4.
+- `m` or `magnitude`: perturbation magnitude in (0, 1), default 0.2.
+- `mf` or `meanflow`: perturb the mean.
+- `s1` or `s1_symmetry`: enforce s1 symmetry.
+- `s2` or `s2_symmetry`: enforce s2 symmetry.
+- `s3` or `s3_symmetry`: enforce s3 symmetry.
+"""
+function perturbfield(infield::AbstractString, outfield::AbstractString; kwargs...)
+    verify_file(infield)
+    flags = _perturbfield_kwargs_to_flags(kwargs)
+    run(`$(Channelflow_jll.perturbfield()) $flags $infield $outfield`)
 end
 
 """
@@ -550,7 +1225,7 @@ addfields("u_combo.nc", 0.5 => "u1.nc", 0.3 => "u2.nc", -0.2 => "u3.nc")
 addfields("u_sum.nc", 1.0 => "u1.nc", 1.0 => "u2.nc")
 ```
 """
-function addfields(outfield::AbstractString, fields_and_coeffs::Pair{<:Real,<:AbstractString}...; workdir::AbstractString = ".", kwargs...)
+function addfields(outfield::AbstractString, fields_and_coeffs::Pair{<:Real,<:AbstractString}...; workdir::AbstractString=".", kwargs...)
     # Verify all input fields exist
     for (coeff, field) in fields_and_coeffs
         verify_file(field)
@@ -559,7 +1234,7 @@ function addfields(outfield::AbstractString, fields_and_coeffs::Pair{<:Real,<:Ab
     flags = kwargs_to_flags(kwargs)
 
     # Build the command: addfields [flags] c0 u0 c1 u1 c2 u2 ... outfield
-    cmd = Cmd(`$(Channelflow_jll.addfields()) -lc`; dir = workdir)
+    cmd = Cmd(`$(Channelflow_jll.addfields()) -lc`; dir=workdir)
 
     # Add flags
     for flag in flags
@@ -613,13 +1288,13 @@ addbaseflow("u.nc", "u_with_base.nc"; bf="laminar", R=250)
 addbaseflow("u.nc", "u_with_base.nc"; bf="parabolic", R=400)
 ```
 """
-function addbaseflow(infield::AbstractString, outfield::AbstractString; workdir::AbstractString = ".", kwargs...)
+function addbaseflow(infield::AbstractString, outfield::AbstractString; workdir::AbstractString=".", kwargs...)
     verify_file(infield)
 
     # Force the -ab flag
     flags = kwargs_to_flags(kwargs)
 
-    cmd = Cmd(`$(Channelflow_jll.addfields()) -ab $flags $(abspath(infield)) $(abspath(outfield))`; dir = workdir)
+    cmd = Cmd(`$(Channelflow_jll.addfields()) -ab $flags $(abspath(infield)) $(abspath(outfield))`; dir=workdir)
     run(cmd)
 end
 
@@ -652,10 +1327,10 @@ findsymmetries("u.nc"; a=true, v=true)
 findsymmetries("u.nc"; nx=8, nz=8, e=1e-08)
 ```
 """
-function findsymmetries(flowfield::AbstractString; workdir::AbstractString = ".", kwargs...)
+function findsymmetries(flowfield::AbstractString; workdir::AbstractString=".", kwargs...)
     verify_file(flowfield)
     flags = kwargs_to_flags(kwargs)
-    cmd = Cmd(`$(Channelflow_jll.findsymmetries()) $flags $(abspath(flowfield))`; dir = workdir)
+    cmd = Cmd(`$(Channelflow_jll.findsymmetries()) $flags $(abspath(flowfield))`; dir=workdir)
     run(cmd)
 end
 

@@ -1,0 +1,3 @@
+/home/ebenq/Dev/julia/CloudAtlas.jl/notebooks/periodic_orbits/eqb_hopf_outputs_2_3_7/clean_po_pipeline_j2_target270_long/mode_homotopy_2_3_7_to_2_4_7/states/x_eps420930.asc
+eps 4.20929913330078176e-01
+T 7.59221002199473531e+01

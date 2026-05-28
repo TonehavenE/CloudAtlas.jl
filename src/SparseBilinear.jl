@@ -4,12 +4,16 @@ struct SparseBilinear{T}
     ijk::Matrix{Int64}
     val::Vector{T}
     m::Int   # output dimension
-    function SparseBilinear(ijk, val::Vector{T}, m) where T <: Real
+    function SparseBilinear{T}(ijk, val::Vector{T}, m) where T <: Real
         size(ijk,2) == 3 || error("ijk must have three columns")
         size(ijk,1) == length(val) || error("ijk and val must have same number of rows")
         new{T}(ijk, val, m)
     end
-    
+end
+
+# Outer constructor that infers T
+function SparseBilinear(ijk::Matrix{Int64}, val::Vector{T}, m::Int) where T <: Real
+    return SparseBilinear{T}(ijk, val, m)
 end
 
 """
@@ -90,6 +94,26 @@ function derivative(N::SparseBilinear{TN}, x::AbstractVector{TX}) where {TN<:Rea
     DN
 end
 
+"""
+    gql_mask_N(N::SparseBilinear, ijkl::Matrix{Int}, Λ::Int)
+
+Return a masked SparseBilinear where N[i,j,k] is zeroed when BOTH input modes j and k
+have streamwise wavenumber |j_mode| > Λ (Generalized Quasilinear approximation).
+
+- Λ=0: standard QL approximation — keeps only mean×wave interactions (j=0 input modes)
+- Λ=J: full nonlinear system (no masking)
+
+`ijkl` is `model.ijkl`, the (m×4) matrix of (i,j,k,l) indices for each mode.
+Column 2 (`ijkl[:,2]`) holds the streamwise wavenumber index j, so the
+streamwise wavenumber for mode n is `abs(ijkl[n, 2])`.
+"""
+function gql_mask_N(N::SparseBilinear{T}, ijkl::Matrix{Int}, Λ::Int) where T
+    keep = [abs(ijkl[N.ijk[r,2], 2]) <= Λ || abs(ijkl[N.ijk[r,3], 2]) <= Λ
+            for r in 1:length(N.val)]
+    return SparseBilinear(N.ijk[keep, :], N.val[keep], N.m)
+end
+
+
 function save(A::SparseMatrixCSC, filebase)
     filename = occursin(".asc", filebase) ? filebase : filebase * ".asc"
     io = open(filename, "w")
@@ -103,4 +127,3 @@ function save(A::SparseMatrixCSC, filebase)
     end
     close(io)
 end
-

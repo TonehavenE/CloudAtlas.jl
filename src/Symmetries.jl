@@ -46,6 +46,32 @@ end
 
 
 """
+    symmetry_sign(ijkl::Vector{Int}, σ::Symmetry)
+
+Return the sign (±1) with which σ maps Ψᵢⱼₖₗ to itself.
+All supported symmetries (reflections + half-box translations) act diagonally
+on the basis, so `symmetric(ijkl, σ)` is equivalent to `symmetry_sign(ijkl, σ) == 1`.
+"""
+function symmetry_sign(ijkl::Vector{Int}, σ::Symmetry)
+    rtn = σ.s
+    rtn *= σ.sx == -1 ? xreflection(ijkl) : 1
+    rtn *= σ.sy == -1 ? yreflection(ijkl) : 1
+    rtn *= σ.sz == -1 ? zreflection(ijkl) : 1
+    if σ.ax == 1//2
+        rtn *= xtranslationLx2(ijkl)
+    elseif σ.ax != 0//1
+        error("symmetries only implemented for half-box shifts")
+    end
+    if σ.az == 1//2
+        rtn *= ztranslationLz2(ijkl)
+    elseif σ.az != 0//1
+        error("symmetries only implemented for half-box shifts")
+    end
+    return rtn
+end
+
+
+"""
    symmetric(ijkl::Vector{Int}, σ::Vector{Symmetry})
 
 Return true if σ[n] Ψᵢⱼₖₗ = Ψᵢⱼₖₗ n=1:end
