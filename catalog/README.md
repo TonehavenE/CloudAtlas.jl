@@ -1,6 +1,6 @@
 # Equilibrium Catalog
 
-This generated catalog contains 105 unique equilibrium solutions.
+This generated catalog contains 112 unique equilibrium solutions.
 
 - `equilibria/<physical_id>/` contains per-solution markdown, representative ODE/DNS assets, DNS/ODE comparison plots, diagnostics, and optional bifurcation data.
 - `equilibria/<physical_id>/eigen/` contains optional `findeigenvals` output when eigenanalysis is requested.
