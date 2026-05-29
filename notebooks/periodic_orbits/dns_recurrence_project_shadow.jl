@@ -104,6 +104,12 @@ function write_run_config(path::AbstractString, pairs)
     end
 end
 
+function append_csv_row(path::AbstractString, row)
+    mkpath(dirname(path))
+    has_data = isfile(path) && filesize(path) > 0
+    CSV.write(path, DataFrame([row]); append = has_data, writeheader = !has_data)
+end
+
 const HERE = @__DIR__
 series_dir = abspath(get(ENV, "DNS_REC_SERIES_DIR", joinpath(HERE, "dns_recurrence_eq1", "dns_series")))
 label = strip(get(ENV, "DNS_REC_LABEL", "u_dns"))
@@ -120,6 +126,9 @@ top_k = parse_int_env("DNS_REC_TOP_K", 25)
 shadow_k = parse_int_env("DNS_REC_SHADOW_K", min(100, 5 * top_k))
 dns_l2_k = parse_int_env("DNS_REC_DNS_L2_K", min(10, top_k))
 project_normalized = parse_bool_env("DNS_REC_PROJECT_NRM", true)
+restart = parse_bool_env("DNS_REC_RESTART", true)
+project_only = parse_bool_env("DNS_REC_PROJECT_ONLY", false)
+coarse_only = parse_bool_env("DNS_REC_COARSE_ONLY", false)
 abstol = parse_float_env("DNS_REC_SOLVER_ABSTOL", 1e-8)
 reltol = parse_float_env("DNS_REC_SOLVER_RELTOL", 1e-8)
 
@@ -139,6 +148,9 @@ write_run_config(joinpath(outdir, "run_config.txt"), [
     "top_k" => top_k,
     "shadow_k" => shadow_k,
     "dns_l2_k" => dns_l2_k,
+    "restart" => restart,
+    "project_only" => project_only,
+    "coarse_only" => coarse_only,
 ])
 
 sx, sy, sz, tx, tz = halfbox_symmetries()
@@ -165,6 +177,20 @@ for (idx, snap) in enumerate(snaps)
     length(xs[idx]) == length(model) || error("Projection length mismatch for $(snap.path)")
 end
 
+projection_manifest = joinpath(outdir, "projection_manifest_J$(J)_K$(K)_L$(L).csv")
+CSV.write(projection_manifest, DataFrame(
+    snapshot_index = collect(1:length(snaps)),
+    t = [s.t for s in snaps],
+    field_path = [s.path for s in snaps],
+    coeff_path = coeff_paths,
+    coeff_norm = [norm(x) for x in xs],
+))
+@printf("Wrote %s\n", projection_manifest)
+if project_only
+    @printf("Stopping after projection because DNS_REC_PROJECT_ONLY=true\n")
+    exit()
+end
+
 coarse = NamedTuple[]
 for i in 1:length(snaps)-1
     xi = xs[i]
@@ -187,23 +213,37 @@ end
 sort!(coarse; by = c -> c.coeff_relative)
 isempty(coarse) && error("No candidate pairs found in period window")
 
-rows = NamedTuple[]
-for (rank, c) in enumerate(coarse[1:min(length(coarse), shadow_k)])
+coarse_ranked = [merge((coarse_rank = rank,), c) for (rank, c) in enumerate(coarse)]
+coarse_csv = joinpath(outdir, "dns_recurrence_coarse_projected_J$(J)_K$(K)_L$(L).csv")
+CSV.write(coarse_csv, DataFrame(coarse_ranked))
+@printf("Wrote %s\n", coarse_csv)
+if coarse_only
+    @printf("Stopping after coarse recurrence ranking because DNS_REC_COARSE_ONLY=true\n")
+    exit()
+end
+
+shadow_checkpoint = joinpath(outdir, "dns_recurrence_projected_shadow_checkpoint_J$(J)_K$(K)_L$(L).csv")
+completed_coarse_ranks = Set{Int}()
+if restart && isfile(shadow_checkpoint) && filesize(shadow_checkpoint) > 0
+    done_df = CSV.read(shadow_checkpoint, DataFrame)
+    if :coarse_rank in propertynames(done_df)
+        completed_coarse_ranks = Set(Int.(done_df[!, :coarse_rank]))
+    end
+    @printf("Restarting from %s with %d completed shadow rows\n", shadow_checkpoint, length(completed_coarse_ranks))
+end
+
+selected = coarse_ranked[1:min(length(coarse_ranked), shadow_k)]
+for c in selected
+    c.coarse_rank in completed_coarse_ranks && continue
     x0 = xs[c.i]
     x1 = xs[c.j]
-    xT = ode_endpoint(model, x0, c.T; Re = Re, abstol = abstol, reltol = reltol)
-    xT === nothing && continue
     denom0 = max(norm(x0), eps(Float64))
     denom1 = max(norm(x1), eps(Float64))
-    dns_l2 = NaN
-    dns_l2_rel = NaN
-    if rank <= dns_l2_k
-        n0 = ChannelflowWrapper.L2norm(snaps[c.i].path)
-        dns_l2 = ChannelflowWrapper.L2op(snaps[c.i].path, snaps[c.j].path; dist = true)
-        dns_l2_rel = dns_l2 / max(n0, eps(Float64))
-    end
-    push!(rows, (
-        rank = rank,
+    row_base = (
+        rank = 0,
+        coarse_rank = c.coarse_rank,
+        status = "ok",
+        error = "",
         i = c.i,
         j = c.j,
         t0 = c.t0,
@@ -211,20 +251,76 @@ for (rank, c) in enumerate(coarse[1:min(length(coarse), shadow_k)])
         T = c.T,
         coeff_closure = c.coeff_closure,
         coeff_relative = c.coeff_relative,
+        field0 = snaps[c.i].path,
+        field1 = snaps[c.j].path,
+        x0_path = coeff_paths[c.i],
+        x1_path = coeff_paths[c.j],
+    )
+
+    xT = nothing
+    try
+        xT = ode_endpoint(model, x0, c.T; Re = Re, abstol = abstol, reltol = reltol)
+    catch err
+        append_csv_row(shadow_checkpoint, merge(row_base, (
+            status = "ode_error",
+            error = sprint(showerror, err),
+            ode_to_dns_projected_closure = NaN,
+            ode_to_dns_projected_relative = NaN,
+            ode_periodic_closure = NaN,
+            ode_periodic_relative = NaN,
+            dns_l2_closure = NaN,
+            dns_l2_relative = NaN,
+        )))
+        continue
+    end
+    if xT === nothing
+        append_csv_row(shadow_checkpoint, merge(row_base, (
+            status = "ode_failed",
+            error = "ODE solver did not return success",
+            ode_to_dns_projected_closure = NaN,
+            ode_to_dns_projected_relative = NaN,
+            ode_periodic_closure = NaN,
+            ode_periodic_relative = NaN,
+            dns_l2_closure = NaN,
+            dns_l2_relative = NaN,
+        )))
+        continue
+    end
+
+    dns_l2 = NaN
+    dns_l2_rel = NaN
+    status = "ok"
+    err_msg = ""
+    if c.coarse_rank <= dns_l2_k
+        try
+            n0 = ChannelflowWrapper.L2norm(snaps[c.i].path)
+            dns_l2 = ChannelflowWrapper.L2op(snaps[c.i].path, snaps[c.j].path; dist = true)
+            dns_l2_rel = dns_l2 / max(n0, eps(Float64))
+        catch err
+            status = "dns_l2_error"
+            err_msg = sprint(showerror, err)
+        end
+    end
+
+    append_csv_row(shadow_checkpoint, merge(row_base, (
+        status = status,
+        error = err_msg,
         ode_to_dns_projected_closure = norm(xT .- x1),
         ode_to_dns_projected_relative = norm(xT .- x1) / denom1,
         ode_periodic_closure = norm(xT .- x0),
         ode_periodic_relative = norm(xT .- x0) / denom0,
         dns_l2_closure = dns_l2,
         dns_l2_relative = dns_l2_rel,
-        field0 = snaps[c.i].path,
-        field1 = snaps[c.j].path,
-        x0_path = coeff_paths[c.i],
-        x1_path = coeff_paths[c.j],
-    ))
+    )))
+    @printf("Shadowed coarse_rank=%d T=%.6f coeff_rel=%.6e ode_shadow_rel=%.6e status=%s\n",
+            c.coarse_rank, c.T, c.coeff_relative, norm(xT .- x1) / denom1, status)
 end
 
-df = DataFrame(rows)
+isfile(shadow_checkpoint) || error("No shadow checkpoint rows were written")
+df_all = CSV.read(shadow_checkpoint, DataFrame)
+ok_mask = map(status -> status in ("ok", "dns_l2_error"), String.(df_all[!, :status]))
+df = df_all[ok_mask, :]
+nrow(df) > 0 || error("No successful ODE shadow rows in $shadow_checkpoint")
 sort!(df, [:ode_to_dns_projected_relative, :coeff_relative])
 df.rank .= 1:nrow(df)
 out_csv = joinpath(outdir, "dns_recurrence_projected_shadow_J$(J)_K$(K)_L$(L).csv")
